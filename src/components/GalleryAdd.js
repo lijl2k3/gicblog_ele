@@ -17,7 +17,8 @@ export default class GalleryAdd extends Component{
             <Upload
                 className="upload-demo"
                 ref="upload"
-                action="//jsonplaceholder.typicode.com/posts/"
+                action={"http://gicapi.io/index.php/index/index/upload"}
+                // action="//jsonplaceholder.typicode.com/posts/"
                 //onPreview={file => this.handlePreview(file)}
                 //onRemove={(file, fileList) => this.handleRemove(file, fileList)}
                 fileList={fileList}
