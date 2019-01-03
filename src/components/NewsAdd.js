@@ -41,7 +41,8 @@ export default class NewsAdd extends Component{
     handleReset(e) {
 
         e.preventDefault();
-        if(this.refs.form)
+        // if(this.refs.form)
+        //     console.log(this.refs.form);
         this.refs.form.resetFields();
         this.setState({form:{title:'',contents:''}});
 

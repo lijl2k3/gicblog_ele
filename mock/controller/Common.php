@@ -297,17 +297,20 @@ class Common extends Controller
      * @param  [string] $type [图片的类型]
      * @return [null]
      */
-//    public function imageEdit($path, $type)
-//    {
-//        $image = Image::open(ROOT_PATH . 'public' . $path);
-//        switch ($type) {
-//            case 'head_img':
-//                $image->thumb(200, 200, Image::THUMB_CENTER)->save(ROOT_PATH . 'public' . $path);
-//                break;
-//            case 'other_img':
-//                break;
-//        }
-//    }
+    public function imageEdit($path, $type,$file)
+    {   $source=ROOT_PATH.'public'.DS.'uploads'.DS.$file;
+        $source = preg_replace('/\\\\/', '/', $source);
+        $image = Image::open($source);
+        $copy=ROOT_PATH.'public'.DS.$path.DS.$file;
+        $copy = preg_replace('/\\\\/', '/', $copy);
+        switch ($type) {
+            case 'thumb':
+                $image->thumb(200, 200, Image::THUMB_CENTER)->save($copy);
+                break;
+            case 'other_img':
+                break;
+        }
+    }
 
 //    protected function findExistOne($db,$arr)
 //    {

@@ -23,19 +23,29 @@ class Index extends Common
 // 获取表单上传文件
         $file = request()->file('file');
         if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads', '',false);
             if($info){
+                    $path='thumbnail';
+                    $type='thumb';
+                    $file=$info->getSaveName();
+                    $this->imageEdit($path, $type,$file);
 // 成功上传后 获取上传信息
 // 输出 jpg
-                echo $info->getExtension();
+                //echo $info->getExtension();
 // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-                echo $info->getSaveName();
+                $this->returnMsg(200,'upload succeed','upload succeed',$info->getSaveName());
 // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                echo $info->getFilename();
+                //echo $info->getFilename();
             }else{
 // 上传失败获取错误信息
-                echo $file->getError();
+                $this->returnMsg(400,'upload fail',$file->getError());
             }
         }
+    }
+
+    public function thumbimg(){
+
+        $this->imageEdit( 'thumbnail','thumb','bannerx_3.jpg');
+
     }
 }
