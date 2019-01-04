@@ -13,7 +13,7 @@ import NewsAdd from './NewsAdd';
 import GalleryAdd from './GalleryAdd';
 import {Menu}  from 'element-react';
 import 'element-theme-default';
-
+require('../App.css');
 export default class App extends Component {
     onSelect(index){
         console.log(index);
