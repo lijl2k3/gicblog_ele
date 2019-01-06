@@ -31,16 +31,16 @@ export default class NewsAdd extends Component{
         this.forceUpdate();
     }
 
-    handleSubmit=()=>{
-        let title=this.title.value;
-        let contents=this.contents.value;
-        let newsStr=localStorage.getItem('news');
-        let news=newsStr?JSON.parse(newsStr):[];
-        news.push({id:Date.now(),title, contents});
-        localStorage.setItem('news',JSON.stringify(news));
-        this.props.history.push('/blog/news');
-        //this.props.history.goBack();
-    }
+    // handleSubmit=()=>{
+    //     let title=this.title.value;
+    //     let contents=this.contents.value;
+    //     let newsStr=localStorage.getItem('news');
+    //     let news=newsStr?JSON.parse(newsStr):[];
+    //     news.push({id:Date.now(),title, contents});
+    //     localStorage.setItem('news',JSON.stringify(news));
+    //     this.props.history.push('/blog/news');
+    //     //this.props.history.goBack();
+    // }
 
     handleReset(e) {
 

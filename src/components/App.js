@@ -11,6 +11,7 @@ import User from './User';
 import News from './News';
 import NewsAdd from './NewsAdd';
 import GalleryAdd from './GalleryAdd';
+import NewsDetail from './NewsDetail';
 import {Menu}  from 'element-react';
 import 'element-theme-default';
 require('../App.css');
@@ -40,10 +41,11 @@ export default class App extends Component {
                     <div className="row">
                         <div className="col-sm-12">
                             <Route path='/home' component={Home}/>
-                            <Route path='/news' component={News}/>
+                            <Route exact path='/news' component={News}/>
                             <Route path='/newsAdd' component={NewsAdd}/>
                             <Route path='/galleryAdd' component={GalleryAdd}/>
                             <Route path='/user' component={User}/>
+                            <Route path='/news/detail/:id' component={NewsDetail}/>
                         </div>
                     </div>
                 </div>

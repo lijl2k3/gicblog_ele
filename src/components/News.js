@@ -18,13 +18,15 @@ export default class News extends Component{
             <ul className='list-group'>
                 {this.state.news.map(item=>(
                     <li className="list-group-item" key={item.id}>
-                        <Link to={"/blog/news/detail/"+item.id}>{item.title}</Link>
+                        <Link to={"/news/detail/"+item.id}>{item.title}</Link>
 
                     </li>
 
                 ))
                 }
             </ul>
+
+
         )
     }
 
