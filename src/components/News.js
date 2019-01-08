@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Table} from 'element-react';
+import {Table, Layout} from 'element-react';
 export default class News extends Component{
     constructor(){
         super();
@@ -40,14 +40,16 @@ export default class News extends Component{
 
     render(){
         return (
-
+            <Layout.Row>
+                <Layout.Col span="18" offset="3">
             <Table
                     style={{width:'100%'}}
                     columns={this.state.columns}
                     maxHeight={200}
                     data={this.state.news}
              />
-
+                </Layout.Col>
+            </Layout.Row>
 
         )
     }
