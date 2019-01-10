@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "draft-js": "^0.10.5",
     "element-react": "^1.4.26",
     "element-theme-default": "^1.4.13",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-draft-wysiwyg": "^1.12.19",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.3"
   },

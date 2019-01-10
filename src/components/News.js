@@ -30,13 +30,13 @@ export default class News extends Component{
         let newsStr=localStorage.getItem('news');
         let news=newsStr?JSON.parse(newsStr):[];
         news.map(item=>{
-            item.author='lijl';
-            let thedate=new Date();
+            let thedate=new Date(item.date);
             item.date=thedate.getFullYear()+'/'+thedate.getMonth()+1+'/'+thedate.getDate();
             item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
         });
         this.setState({news});
     }
+
 
     render(){
         return (

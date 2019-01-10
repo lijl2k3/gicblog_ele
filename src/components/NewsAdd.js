@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import GalleryAdd from "./GalleryAdd";
+import { Editor } from 'react-draft-wysiwyg';
+import MyEditor from './MyEditor';
 export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
@@ -9,19 +11,19 @@ export default class NewsAdd extends Component{
             form: {
                 title: '',
                 contents: '',
-                pics:[]
+                pics:[],
+                author: 'lijl'
             },
             picAdd:false,
         };
     }
     onSubmit(e) {
         e.preventDefault();
-        let title=this.state.form.title;
-        let contents=this.state.form.contents;
+        let {title,contents,author}=this.state.form;
         let pics=this.refs.gallery.state.fileList;
         let newsStr=localStorage.getItem('news');
         let news=newsStr?JSON.parse(newsStr):[];
-        news.push({id:Date.now(),title, contents,pics});
+        news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
         localStorage.setItem('news',JSON.stringify(news));
         this.props.history.push('/news');
     }
@@ -29,6 +31,16 @@ export default class NewsAdd extends Component{
     onChange(key, value) {
         this.state.form[key] = value;
         this.forceUpdate();
+    }
+
+    changeText(){
+       this.state.form.contents=this.refs.myeditor.state.editorState;
+        this.setState({form:this.state.form});
+        console.log(this.state.form);
+    }
+
+    test(){
+        console.log('aaa');
     }
 
     // handleSubmit=()=>{
@@ -60,6 +72,7 @@ export default class NewsAdd extends Component{
     addPic(){
         this.setState({picAdd:true});
     }
+
     render(){
         return (
             <div>
@@ -76,9 +89,8 @@ export default class NewsAdd extends Component{
                 <Form.Item label="Title">
                     <Input value={this.state.form.title}  placeholder='Add Title Here' onChange={this.onChange.bind(this, 'title')}></Input>
                 </Form.Item>
-
-                <Form.Item label="Contents">
-                    <Input type="textarea" value={this.state.form.contents}  autosize={{ minRows: 6, maxRows: 10} }placeholder="Add Contents Here" onChange={this.onChange.bind(this, 'contents')}></Input>
+                <Form.Item>
+                    <MyEditor ref='myeditor'/>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary"  onClick={this.addPic.bind(this)}>Add Pictures <i className="el-icon-upload el-icon-right"></i></Button>
@@ -89,6 +101,7 @@ export default class NewsAdd extends Component{
                     <GalleryAdd ref='gallery'/>
                     }
                 </Form.Item>
+
 
             </Form>
                     </Layout.Col>
