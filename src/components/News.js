@@ -45,7 +45,6 @@ export default class News extends Component{
             <Table
                     style={{width:'100%'}}
                     columns={this.state.columns}
-                    maxHeight={200}
                     data={this.state.news}
              />
                 </Layout.Col>

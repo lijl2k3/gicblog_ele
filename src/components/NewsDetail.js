@@ -30,7 +30,7 @@ export default class NewsDetail extends Component{
                             {item.pics.map((item,key)=>{
                                     return(
                                         <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item} /></a> </div>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item} rel="noopener noreferrer"><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item} /></a> </div>
                                         </Layout.Col>
                                     )
                                 }
