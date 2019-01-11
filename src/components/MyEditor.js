@@ -1,35 +1,47 @@
 import React, { Component } from 'react';
-import { EditorState,ContentState,convertFromRaw } from 'draft-js';
+import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 class MyEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            editorContent: '',
             editorState: EditorState.createEmpty(),
-
         };
     }
 
-    onEditorStateChange= (editorState) => {
+    handleClearContent = ()=>{
         this.setState({
-            editorState,
+            editorState:'',
+        })
+    }
+
+    onEditorChange = (editorContent) => {
+        this.setState({
+            editorContent,
         });
-        console.log(this.state.editorState.data);
+    };
+
+    onEditorStateChange = (editorState) => {
+        this.setState({
+            editorState
+        });
     };
 
 
     render() {
-        const { editorState } = this.state;
+        const { editorContent,editorState } = this.state;
         return (
             <div>
-            <Editor
+            <Editor ref='myeditor'
                 editorState={editorState}
                 wrapperClassName="demo-wrapper"
                 editorClassName="demo-editor"
                 onEditorStateChange={this.onEditorStateChange}
+                // onContentStateChange={this.onEditorChange}
             />
-                <div>{}</div>
+                {/*<div dangerouslySetInnerHTML={{__html:draftjs(convertToRaw(this.state.editorState.getCurrentContent()))}}></div>*/}
             </div>
 
         )

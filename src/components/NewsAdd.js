@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import GalleryAdd from "./GalleryAdd";
-import { Editor } from 'react-draft-wysiwyg';
+import { EditorState ,convertToRaw} from 'draft-js';
+import { Editor} from 'react-draft-wysiwyg';
+import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
 export default class NewsAdd extends Component{
     constructor(props) {
@@ -19,8 +21,10 @@ export default class NewsAdd extends Component{
     }
     onSubmit(e) {
         e.preventDefault();
-        let {title,contents,author}=this.state.form;
-        let pics=this.refs.gallery.state.fileList;
+        let {title,author}=this.state.form;
+        // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
+        let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
+        let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
         let newsStr=localStorage.getItem('news');
         let news=newsStr?JSON.parse(newsStr):[];
         news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});

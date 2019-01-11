@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "draft-js": "^0.10.5",
+    "draftjs-to-html": "^0.8.4",
     "element-react": "^1.4.26",
     "element-theme-default": "^1.4.13",
     "react": "^16.7.0",

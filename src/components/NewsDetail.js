@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
 import {Layout}from 'element-react';
 import 'element-theme-default';
+import { EditorState ,convertFromRaw} from 'draft-js';
+import draftjs from 'draftjs-to-html';
 export default class NewsDetail extends Component{
     render(){
         let id=this.props.match.params.id;
         let news=JSON.parse(localStorage.getItem('news'));
         let item=news.find(item=>item.id==id);
-        console.log(item.contents);
         return (
             <div>
                 <Layout.Row>
@@ -14,7 +15,7 @@ export default class NewsDetail extends Component{
                         <h2> {item.title} </h2>
                     </Layout.Col>
                     <Layout.Col span="12" offset="4">
-                        <div><span> {item.contents} </span></div>
+                       <div dangerouslySetInnerHTML={ {__html:draftjs(item.contents)} }></div>
                 </Layout.Col>
                 </Layout.Row>
                 {/*{item.pics!=undefined & (item.pics.length>0)&&*/}
