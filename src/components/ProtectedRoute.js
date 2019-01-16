@@ -3,9 +3,10 @@ import {Redirect,Route} from 'react-router-dom';
 export default function ({component:Component, ...rest}) {
     return <Route {...rest}
         render={(props)=>
-            localStorage.getItem('login')?<Component />:<Redirect to={{
+            localStorage.getItem('login')?<Component history={props.history} />:<Redirect to={{
                 pathname:'/login',
-                state:{from:props.location.pathname}
+                state:{from:props.location.pathname
+                }
             }}/>
         }
     />

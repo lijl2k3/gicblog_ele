@@ -47,9 +47,9 @@ export default class App extends Component {
                             <Route path='/login' component={Login}/>
                             <Route path='/home' component={Home}/>
                             <Route exact path='/news' component={News}/>
-                            <Route path='/newsAdd' component={NewsAdd}/>
-                            <Route path='/galleryAdd' component={GalleryAdd}/>
-                            <Route path='/user' component={User}/>
+                            <ProtectedRoute path='/newsAdd' component={NewsAdd}/>
+                            {/*<Route path='/galleryAdd' component={GalleryAdd}/>*/}
+                            <ProtectedRoute path='/user' component={User}/>
                             <Route path='/news/detail/:id' component={NewsDetail}/>
                             <ProtectedRoute path='/mydoc' component={MyDoc}/>
                         </div>

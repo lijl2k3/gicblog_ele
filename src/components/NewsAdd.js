@@ -8,16 +8,20 @@ import MyEditor from './MyEditor';
 export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
-
         this.state = {
             form: {
                 title: '',
                 contents: '',
                 pics:[],
-                author: 'lijl'
+                author: ''
             },
             picAdd:false,
         };
+    }
+    componentWillMount(){
+        let author=JSON.parse(localStorage.getItem('login')).name;
+        this.state.form.author=author;
+        this.setState(this.state);
     }
     onSubmit(e) {
         e.preventDefault();
@@ -30,6 +34,7 @@ export default class NewsAdd extends Component{
         news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
         localStorage.setItem('news',JSON.stringify(news));
         this.props.history.push('/news');
+        //console.log(this.props);
     }
 
     onChange(key, value) {
@@ -40,12 +45,8 @@ export default class NewsAdd extends Component{
     changeText(){
        this.state.form.contents=this.refs.myeditor.state.editorState;
         this.setState({form:this.state.form});
-        console.log(this.state.form);
     }
 
-    test(){
-        console.log('aaa');
-    }
 
     // handleSubmit=()=>{
     //     let title=this.title.value;
