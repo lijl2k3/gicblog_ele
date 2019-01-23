@@ -31,9 +31,8 @@ export default class App extends Component {
                       onSelect={this.onSelect.bind(this)}>
                     <Menu.Item index="1"><Link to='/home'>Home</Link></Menu.Item>
                     <Menu.SubMenu index="2" title="Documents">
-                        <Menu.Item index="2-1"><Link to='/news' style={{'textDecoration':'none'}}>Document List</Link></Menu.Item>
-                        <Menu.Item index="2-2"><Link to='/newsAdd' style={{'textDecoration':'none'}}>Add Document</Link></Menu.Item>
-                        <Menu.Item index="2-3"><Link to='/galleryAdd' style={{'textDecoration':'none'}}>Add Gallery</Link></Menu.Item>
+                        <Menu.Item index="2-1"><Link to='/news' style={{'textDecoration':'none'}}>News List</Link></Menu.Item>
+                        <Menu.Item index="2-2"><Link to='/newsAdd' style={{'textDecoration':'none'}}>Add News</Link></Menu.Item>
                     </Menu.SubMenu>
                     <Menu.SubMenu index="3" title="My Account">
                         <Menu.Item index="3-1">My Favorite</Menu.Item>

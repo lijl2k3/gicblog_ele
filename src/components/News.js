@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Table, Layout} from 'element-react';
+import {Table, Layout,Breadcrumb} from 'element-react';
+import BreadcumbBar from './BreadcumbBar';
 export default class News extends Component{
     constructor(){
         super();
@@ -40,6 +41,8 @@ export default class News extends Component{
 
     render(){
         return (
+            <div className="row">
+                <BreadcumbBar nav_arr={['News','News List']} />
             <Layout.Row>
                 <Layout.Col span="18" offset="3">
             <Table
@@ -49,7 +52,7 @@ export default class News extends Component{
              />
                 </Layout.Col>
             </Layout.Row>
-
+            </div>
         )
     }
 
