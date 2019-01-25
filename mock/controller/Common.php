@@ -312,6 +312,23 @@ class Common extends Controller
         }
     }
 
+    protected function listdir($path){
+        $file_arr=[];
+        if (is_dir($path)) {
+            $handle = opendir($path);
+            if ($handle) {
+                while (false !== ( $item = readdir($handle) )) {
+                    if ($item != "." && $item != ".."){
+                        $file_arr[]=$item;
+                        }
+                    }
+                }
+            return $file_arr;
+    }else{
+        return false;
+        }
+    }
+
 //    protected function findExistOne($db,$arr)
 //    {
 //        $res=db($db)->where($arr)->find();
