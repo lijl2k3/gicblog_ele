@@ -48,4 +48,9 @@ class Index extends Common
         $this->imageEdit( 'thumbnail','thumb','bannerx_3.jpg');
 
     }
+
+    public function news(){
+        echo'test';
+    }
+
 }
