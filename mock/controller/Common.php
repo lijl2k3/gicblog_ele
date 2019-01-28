@@ -329,13 +329,13 @@ class Common extends Controller
         }
     }
 
-//    protected function findExistOne($db,$arr)
-//    {
-//        $res=db($db)->where($arr)->find();
-//        if($res){
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
+    protected function findExistOne($db,$arr)
+    {
+        $res=db($db)->where($arr)->find();
+        if($res){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

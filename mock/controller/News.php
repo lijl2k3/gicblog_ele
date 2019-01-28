@@ -1,6 +1,6 @@
 <?php
 
-namespace app\api\controller;
+namespace app\index\controller;
 
 class News extends Common
 {
@@ -40,42 +40,19 @@ class News extends Common
      * @post activity 各字段. 'images'为通过ajax上传的图片的路径集合，前端组合为字符串形式后传给后端，后端通过explode解析，
      * @return [json]       [返回发布成功或失败信息及活动id] 如果活动添加成功而图片集合没有添加成功，则返回code 201
      */
-    public function addact(){
+    public function addnews(){
         $this->datas=$this->params;
-        if(!isset($this->datas['user_id'])){
-            $this->returnMsg(400,'添加活动记录失败！','用户id缺失');
+        if(!isset($this->datas['author_id'])){
+            $this->returnMsg(400,'Fail to add news','No user Id');
         }
-        if(!$this->findExistOne('user',['id'=>$this->datas['user_id'],'deleted'=>0,'leader'=>1])){
-            $this->returnMsg(400,'添加活动记录失败！','未找到该用户或该用户不是引领者');
+        if(!$this->findExistOne('user',['id'=>$this->datas['author_id'],'deleted'=>0])){
+            $this->returnMsg(400,'Fail to add news','user not found');
         }
-        if(isset($this->datas['start_date'])&&!empty($this->datas['start_date'])){
-            $this->datas['start_date']=strtotime($this->datas['start_date']);
-        }
-        if(isset($this->datas['end_date'])&&!empty($this->datas['end_date'])){
-            $this->datas['end_date']=strtotime($this->datas['end_date']);
-        }
-        if(isset($this->datas['images'])&& !empty($this->datas['images'])){
-            $images=explode(',',$this->datas['images']);
-            unset($this->datas['images']);
-
-        }
-
-        $this->datas['published']=1;
         $this->datas['create_time']=$this->datas['update_time']=time();
-        if($id=db('activity')->insertGetId($this->datas)){
-            if($images){
-                $arr=[];
-                foreach ($images as $image){
-                    $arr[]=['act_id'=>$id,'path'=>$image];
-                }
-                $affected=db('act_img')->insertAll($arr);
-                if(!$affected){
-                    $this->returnMsg(201, '添加图片失败', '添加活动记录成功，图片写入数据库失败',['id'=>$id]);
-                }
-            }
-            $this->returnMsg(200, '添加活动记录成功！', '添加活动记录成功',['id'=>$id]);
+        if($id=db('news')->insertGetId($this->datas)){
+            $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id]);
         }else{
-            $this->returnMsg(400, '添加活动记录失败！', '插入数据库失败');
+            $this->returnMsg(400, 'fail to add news', 'fail to insert to database');
         }
     }
 
