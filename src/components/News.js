@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Table, Layout,Breadcrumb} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
-import newsApi, {getNews} from '../api/news';
 export default class News extends Component{
     constructor(){
         super();
@@ -37,7 +36,7 @@ export default class News extends Component{
             item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
         });
         this.setState({news});
-        getNews();
+
     }
 
 

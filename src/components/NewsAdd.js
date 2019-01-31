@@ -5,6 +5,7 @@ import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
+import {_test} from "../api/userApi";
 export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
@@ -18,10 +19,18 @@ export default class NewsAdd extends Component{
             picAdd:false,
         };
     }
+
+    async test(){
+        const res=await _test();
+        if(res.data.code==200){
+            console.log(res);
+        }
+    }
     componentWillMount(){
-        let author=JSON.parse(localStorage.getItem('login')).name;
-        this.state.form.author=author;
-        this.setState(this.state);
+        // let author=JSON.parse(localStorage.getItem('login')).name;
+        // this.state.form.author=author;
+        // this.setState(this.state);
+        this.test();
     }
     onSubmit(e) {
         e.preventDefault();

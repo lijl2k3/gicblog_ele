@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
+import {_login} from "../api/userApi";
+import qs from 'qs';
 
 export default class  Login extends Component{
     // return(<Button type='primary' onClick={
@@ -19,26 +21,20 @@ export default class  Login extends Component{
         };
     }
 
+    async login(data){
+        const res=await _login(qs.stringify(data));
+        if(res.data.code==200){
+            console.log(res);
+            sessionStorage.setItem('login','true');
+            //this.props.history.push(this.props.location.state.from);
+        }
+    }
+
     handleSubmit(e){
         e.preventDefault();
-        const pass_arr=[
-            {
-                name:'aaa',
-                pass:'aaa'
-            },
-            {
-                name:'lijl',
-                pass:'lijl'
-            }
-        ];
         let {name,password}=this.state.form;
-        let res=pass_arr.find((item)=>{
-            return (item.name==name && item.pass==password);
-        });
-        if(res){
-            localStorage.setItem('login',JSON.stringify(res));
-            this.props.history.push(this.props.location.state.from);
-        }
+        let data={'uname':name, 'pwd':password};
+        this.login(data);
     }
 
     onChange(key, value) {

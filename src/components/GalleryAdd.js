@@ -18,6 +18,7 @@ export default class GalleryAdd extends Component{
         }else{
             file.status='failure';
             let errors=this.state.errMsg;
+            console.log(response);
             errors.push(response.msg);
             this.setState({errMsg:errors});
         }

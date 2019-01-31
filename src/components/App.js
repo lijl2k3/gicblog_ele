@@ -39,6 +39,7 @@ export default class App extends Component {
                         <Menu.Item index="3-2"><Link to='/mydoc' style={{'textDecoration':'none'}}>My Documents</Link></Menu.Item>
                     </Menu.SubMenu>
                     <Menu.Item index="4">My Settings</Menu.Item>
+                    <Menu.Item index="5"><Link to='/login' style={{'textDecoration':'none'}}>Login</Link></Menu.Item>
                 </Menu>
                 <div className='container'>
                     <div className="row">
@@ -48,7 +49,7 @@ export default class App extends Component {
                             <Route exact path='/news' component={News}/>
                             <ProtectedRoute path='/newsAdd' component={NewsAdd}/>
                             {/*<Route path='/galleryAdd' component={GalleryAdd}/>*/}
-                            <ProtectedRoute path='/user' component={User}/>
+                            <ProtectedRoute exact path='/user' component={User}/>
                             <Route path='/news/detail/:id' component={NewsDetail}/>
                             <ProtectedRoute path='/mydoc' component={MyDoc}/>
                         </div>

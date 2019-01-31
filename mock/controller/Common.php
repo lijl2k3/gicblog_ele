@@ -15,6 +15,15 @@ class Common extends Controller
     protected $validater; //用来验证数据/参数
     protected $params; //过滤后符合要求的参数
 
+    protected $rules = array(
+      'User'=>array(
+          'register' => array(
+                'uname' => ['require'],
+                'pwd' => ['require', 'max' => 16, 'min' => 6],
+            ),
+      )
+    );
+
     //控制器下面方法所要接受参数的
 //    protected $rules = array(
 //        'User' => array(
@@ -166,7 +175,7 @@ class Common extends Controller
             $this->validater = new Validate($rule);
 
             if (!$this->validater->check($arr)) {
-                $this->returnMsg(400, '验证失败', $this->validater->getError());
+                $this->returnMsg(400, 'Fail to validate', $this->validater->getError());
             }
 
         }
