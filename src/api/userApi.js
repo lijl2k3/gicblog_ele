@@ -1,7 +1,7 @@
-import axios from 'axios';
+import myaxios from './myaxios';
 export function _login(data){
-    return axios.post('http://gicapi.io/index.php/index/user/login',data);
+    return myaxios.post('/user/login',data);
 }
 export function _test() {
-    return axios.get('http://gicapi.io/index.php/index/user/test');
+    return myaxios.get('/user/test');
 }

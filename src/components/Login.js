@@ -12,7 +12,6 @@ export default class  Login extends Component{
 
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             form: {
                 name: '',
@@ -26,7 +25,7 @@ export default class  Login extends Component{
         if(res.data.code==200){
             console.log(res);
             sessionStorage.setItem('login','true');
-            //this.props.history.push(this.props.location.state.from);
+            this.props.history.push(this.props.location.state.from);
         }
     }
 
