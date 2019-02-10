@@ -2,6 +2,8 @@
 
 namespace app\index\controller;
 
+use think\Session;
+
 class News extends Common
 {
 
@@ -23,11 +25,13 @@ class News extends Common
 
         if (!empty($res)) {
             if(!empty($res['pic_path'])){
-                $files=$this->listdir($res['pic_path']);
+                $files=$this->listdir(ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS .$res['pic_path']);
                 if($files!=false){
                     $res['pics']=$files;
                 }
             }
+            $res['contents']=htmlspecialchars_decode($res['contents']);
+            //$res['contents']=str_replace('""','\"');
             $this->returnMsg(200, 'Succeed in searching the record!', 'Succeed in searching the record!',$res);
         } else {
             $this->returnMsg(400, 'Fail to search the record!', 'No record found');
@@ -42,15 +46,28 @@ class News extends Common
      */
     public function addnews(){
         $this->datas=$this->params;
-        if(!isset($this->datas['author_id'])){
-            $this->returnMsg(400,'Fail to add news','No user Id');
-        }
-        if(!$this->findExistOne('user',['id'=>$this->datas['author_id'],'deleted'=>0])){
-            $this->returnMsg(400,'Fail to add news','user not found');
-        }
         $this->datas['create_time']=$this->datas['update_time']=time();
+        $this->datas['author_id']=Session::get('uid');
+        if(!empty($this->datas['pics'])) {
+            $pics = ($this->datas['pics']);
+            $path=Session::get('uid') . '_' . $this->datas['create_time'];
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $path;
+            mkdir($pic_path);
+            mkdir($pic_path.DS.'thumb');
+            $this->datas['pic_path']=$path;
+            foreach ($pics as $pic) {
+                $oldpic = ROOT_PATH . 'public' . DS . 'uploads' . DS . $pic['path'] . DS . $pic['name'];
+                $oldpic=iconv('UTF-8','GB2312',$oldpic);
+                $oldthumb = ROOT_PATH . 'public' . DS . 'thumbnail' . DS . $pic['path'] . DS . $pic['name'];
+                $oldthumb=iconv('UTF-8','GB2312',$oldthumb);
+                $newpic=$pic_path.DS.$pic['name'];
+                $newthumb=$pic_path.DS.'thumb'.DS.$pic['name'];
+                rename($oldpic,iconv("utf-8", "gb2312", $newpic));
+                rename($oldthumb,iconv("utf-8", "gb2312", $newthumb));
+            }
+        }
         if($id=db('news')->insertGetId($this->datas)){
-            $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id]);
+            $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id,'contents'=>$this->datas['contents']]);
         }else{
             $this->returnMsg(400, 'fail to add news', 'fail to insert to database');
         }
@@ -122,25 +139,35 @@ class News extends Common
      * @return [json]       [返回查询信息，code,title, msg, data:查询记录集合]
      */
 
-    public function actlist($filter='all',$id=0)
-    {
+//    public function newslist($filter='all',$id=0)
+//    {
+//        $this->datas=$this->params;
+//        $this->setPageParam();
+//        $fields='a.id, a.title, a.intro, a.desc, a.file, a.address, c.city_name, a.start_date, a.end_date, a.persons, a.targetpersons, a.price, a.unit';
+//        switch($filter){
+//            case 'label':
+//                $res=db('activity')->alias('a')->join('activity_label l','a.id=l.act_id')->join('city c','a.city_id=c.id')->where(['l.label_id'=>$id, 'a.deleted'=>0, 'a.published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
+//                break;
+//            case 'user':
+//                $res=db('activity')->alias('a')->join('activity_fav f','a.id=f.act_id')->join('city c','a.city_id=c.id')->where(['f.user_id'=>$id, 'a.deleted'=>0, 'a.published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
+//                break;
+//            default:
+//                $res=db('activity')->alias('a')->join('city c','a.city_id=c.id')->where(['deleted'=>0,'published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
+//        }
+//        if($res){
+//            $this->returnMsg(200,'查询成功！','体验活动详情查询成功！',$res);
+//        }
+//        $this->returnMsg(400,'查询失败！','未找到体验活动详情记录！');
+//    }
+
+    public  function newslist(){
         $this->datas=$this->params;
-        $this->setPageParam();
-        $fields='a.id, a.title, a.intro, a.desc, a.file, a.address, c.city_name, a.start_date, a.end_date, a.persons, a.targetpersons, a.price, a.unit';
-        switch($filter){
-            case 'label':
-                $res=db('activity')->alias('a')->join('activity_label l','a.id=l.act_id')->join('city c','a.city_id=c.id')->where(['l.label_id'=>$id, 'a.deleted'=>0, 'a.published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
-                break;
-            case 'user':
-                $res=db('activity')->alias('a')->join('activity_fav f','a.id=f.act_id')->join('city c','a.city_id=c.id')->where(['f.user_id'=>$id, 'a.deleted'=>0, 'a.published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
-                break;
-            default:
-                $res=db('activity')->alias('a')->join('city c','a.city_id=c.id')->where(['deleted'=>0,'published'=>1])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
-        }
+        $fields='n.id, n.title, n.create_time,u.uname';
+        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where(['n.deleted'=>0])->field($fields)->select();
         if($res){
-            $this->returnMsg(200,'查询成功！','体验活动详情查询成功！',$res);
+           $this->returnMsg(200,'succeed in searching records','succeed in searching records！',$res);
         }
-        $this->returnMsg(400,'查询失败！','未找到体验活动详情记录！');
+        $this->returnMsg(400,'fail to search record！','record not found！');
     }
 
 

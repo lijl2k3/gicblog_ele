@@ -5,7 +5,9 @@ import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
-import {_test} from "../api/userApi";
+import {_addNews} from "../api/newsApi";
+import qs from 'qs';
+
 export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
@@ -20,29 +22,33 @@ export default class NewsAdd extends Component{
         };
     }
 
-    async test(){
-        const res=await _test();
+
+    async addNews(data){
+        const res=await _addNews(qs.stringify(data));
         if(res.data.code==200){
-            console.log(res);
+            //sessionStorage.setItem('login','true');
+            this.props.history.push('/news');
         }
     }
     componentWillMount(){
         // let author=JSON.parse(localStorage.getItem('login')).name;
         // this.state.form.author=author;
         // this.setState(this.state);
-        this.test();
+
     }
     onSubmit(e) {
         e.preventDefault();
-        let {title,author}=this.state.form;
+        let {title}=this.state.form;
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
         let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
-        let newsStr=localStorage.getItem('news');
-        let news=newsStr?JSON.parse(newsStr):[];
-        news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
-        localStorage.setItem('news',JSON.stringify(news));
-        this.props.history.push('/news');
+        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics};
+        this.addNews(data);
+        // let newsStr=localStorage.getItem('news');
+        // let news=newsStr?JSON.parse(newsStr):[];
+        // news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
+        // localStorage.setItem('news',JSON.stringify(news));
+        //this.props.history.push('/news');
         //console.log(this.props);
     }
 

@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 
+use think\Session;
+
 class Index extends Common
 {
     public function index()
@@ -23,9 +25,18 @@ class Index extends Common
 // 获取表单上传文件
         $file = request()->file('file');
         if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads', '',false);
+            $mypath=Session::get('uid');
+            if(!file_exists(ROOT_PATH . 'public' . DS . 'uploads'.DS.$mypath)){
+                mkdir(ROOT_PATH . 'public' . DS . 'uploads'.DS.$mypath);
+            }
+//            if(!file_exists(ROOT_PATH . 'public' . DS . 'thumbnail'.DS.$mypath)){
+//                mkdir(ROOT_PATH . 'public' . DS . 'thumbnail'.DS.$mypath);
+//            }
+            $filepath=ROOT_PATH.'public'.DS.'uploads'.DS.$mypath;
+            //$thumbpath=ROOT_PATH.'public'.DS.'thumbnail'.DS.$mypath;
+            $info = $file->move(ROOT_PATH.'public'.DS.'uploads'.DS.$mypath, '');
             if($info){
-                    $path='thumbnail';
+                    $path=$mypath;
                     $type='thumb';
                     $file=$info->getSaveName();
                     $this->imageEdit($path, $type,$file);
@@ -33,7 +44,7 @@ class Index extends Common
 // 输出 jpg
                 //echo $info->getExtension();
 // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-                $this->returnMsg(200,'upload succeed','upload succeed',$info->getSaveName());
+                $this->returnMsg(200,'upload succeed','upload succeed',['path'=>$mypath,'name'=>iconv("GB2312","UTF-8",$info->getSaveName())]);
 // 输出 42a79759f284b767dfcb2a0197904287.jpg
                 //echo $info->getFilename();
             }else{

@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Table, Layout,Breadcrumb} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
+import {_newsList} from "../api/newsApi";
 export default class News extends Component{
     constructor(){
         super();
@@ -14,7 +15,7 @@ export default class News extends Component{
                 },
                 {
                     label: "Author",
-                    prop: "author",
+                    prop: "uname",
                     width: 180
                 },
                 {
@@ -27,15 +28,27 @@ export default class News extends Component{
         };
     }
 
-    componentWillMount(){
-        let newsStr=localStorage.getItem('news');
-        let news=newsStr?JSON.parse(newsStr):[];
+    async newsList(){
+        const res=await _newsList();
+        let news= res.data.data;
+        console.log(news);
         news.map(item=>{
-            let thedate=new Date(item.date);
-            item.date=thedate.getFullYear()+'/'+thedate.getMonth()+1+'/'+thedate.getDate();
-            item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
-        });
+                let thedate=new Date(item.create_time*1000);
+            item.date=thedate.getFullYear()+'/'+parseInt(thedate.getMonth()+1)+'/'+thedate.getDate();
+                item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
+            });
         this.setState({news});
+    }
+
+    componentWillMount(){
+        this.newsList();
+        // let news=newsStr?JSON.parse(newsStr):[];
+        // news.map(item=>{
+        //     let thedate=new Date(item.date);
+        //     item.date=thedate.getFullYear()+'/'+thedate.getMonth()+1+'/'+thedate.getDate();
+        //     item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
+        // });
+        // this.setState({news});
 
     }
 

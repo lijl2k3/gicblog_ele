@@ -35,6 +35,7 @@ export default class GalleryAdd extends Component{
                 className="upload-demo"
                 ref="upload"
                 action={"http://gicapi.io/index.php/index/index/upload"}
+                withCredentials={true}
                 // action="//jsonplaceholder.typicode.com/posts/"
                 //onPreview={file => this.handlePreview(file)}
                 //onRemove={(file, fileList) => this.handleRemove(file, fileList)}
@@ -69,7 +70,7 @@ export default class GalleryAdd extends Component{
                             {this.state.fileList.map((item,key)=>{
                                  return(
                                      <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                         <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item} /></a> </div>
+                                         <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.path+'/'+item.name} /></a> </div>
                                      </Layout.Col>
                                     )
                                 }

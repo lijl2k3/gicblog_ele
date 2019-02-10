@@ -307,11 +307,14 @@ class Common extends Controller
      * @return [null]
      */
     public function imageEdit($path, $type,$file)
-    {   $source=ROOT_PATH.'public'.DS.'uploads'.DS.$file;
+    {   $source=ROOT_PATH.'public'.DS.'uploads'.DS.$path.DS.$file;
         $source = preg_replace('/\\\\/', '/', $source);
         $image = Image::open($source);
-        $copy=ROOT_PATH.'public'.DS.$path.DS.$file;
-        $copy = preg_replace('/\\\\/', '/', $copy);
+        $copypath=ROOT_PATH.'public'.DS.'thumbnail'.DS.$path;
+        if(!file_exists($copypath)){
+        mkdir($copypath);
+        }
+        $copy = preg_replace('/\\\\/', '/', $copypath).'/'.$file;
         switch ($type) {
             case 'thumb':
                 $image->thumb(200, 200, Image::THUMB_CENTER)->save($copy);
@@ -327,8 +330,8 @@ class Common extends Controller
             $handle = opendir($path);
             if ($handle) {
                 while (false !== ( $item = readdir($handle) )) {
-                    if ($item != "." && $item != ".."){
-                        $file_arr[]=$item;
+                    if ($item != "." && $item != ".." && $item !='thumb'){
+                        $file_arr[]=iconv("gb2312", "utf-8", $item);
                         }
                     }
                 }

@@ -3,11 +3,37 @@ import {Layout}from 'element-react';
 import 'element-theme-default';
 import { EditorState ,convertFromRaw} from 'draft-js';
 import draftjs from 'draftjs-to-html';
+import {_details} from "../api/newsApi";
+import qs from 'qs';
 export default class NewsDetail extends Component{
-    render(){
+
+    constructor(){
+        super();
+        this.state={info:{},
+        };
+    }
+
+    async details(data){
+        const res=await _details(data);
+        if(res.data.code==200){
+            let info=res.data.data;
+            this.setState({info});
+        }
+    }
+
+    componentWillMount(){
         let id=this.props.match.params.id;
-        let news=JSON.parse(localStorage.getItem('news'));
-        let item=news.find(item=>item.id==id);
+        let data={id:id};
+        this.details(data);
+    }
+
+    render(){
+
+        let item=this.state.info;
+        let contents=(item.contents);
+       if(contents!==undefined){
+          contents=JSON.parse(contents);
+       }
         return (
             <div>
                 <Layout.Row>
@@ -15,7 +41,7 @@ export default class NewsDetail extends Component{
                         <h2> {item.title} </h2>
                     </Layout.Col>
                     <Layout.Col span="12" offset="4">
-                       <div dangerouslySetInnerHTML={ {__html:draftjs(item.contents)} }></div>
+                       <div dangerouslySetInnerHTML={ {__html:draftjs(contents)} }></div>
                 </Layout.Col>
                 </Layout.Row>
                 {/*{item.pics!=undefined & (item.pics.length>0)&&*/}
@@ -27,10 +53,10 @@ export default class NewsDetail extends Component{
                         <Layout.Col span="12" offset="4">
                             <h2>Related Pictures:</h2>
                             <Layout.Row>
-                            {item.pics.map((item,key)=>{
+                            {item.pics.map((pic,key)=>{
                                     return(
                                         <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item} rel="noopener noreferrer"><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item} /></a> </div>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+item.pic_path+'/'+pic} rel="noopener noreferrer"><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+item.pic_path+'/thumb/'+pic} /></a> </div>
                                         </Layout.Col>
                                     )
                                 }
@@ -41,6 +67,8 @@ export default class NewsDetail extends Component{
             </div>
 
         )
+
+
     }
 
 }
