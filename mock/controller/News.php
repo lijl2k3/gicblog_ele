@@ -162,13 +162,25 @@ class News extends Common
 
     public  function newslist(){
         $this->datas=$this->params;
+        $this->setPageParam();
         $fields='n.id, n.title, n.create_time,u.uname';
-        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where(['n.deleted'=>0])->field($fields)->select();
+        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where(['n.deleted'=>0])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
         if($res){
            $this->returnMsg(200,'succeed in searching records','succeed in searching records！',$res);
         }
         $this->returnMsg(400,'fail to search record！','record not found！');
     }
+
+    public  function total(){
+        $this->datas=$this->params;
+        $res=db('news')->where(['deleted'=>0])->count();
+        if($res){
+            $this->returnMsg(200,'succeed in getting records count','succeed in getting records count',$res);
+        }
+        $this->returnMsg(400,'fail to get record count！','records not found！');
+    }
+
+
 
 
 

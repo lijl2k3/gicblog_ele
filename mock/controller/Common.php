@@ -14,7 +14,8 @@ class Common extends Controller
     protected $req; //用来处理客户端传递过来的参数
     protected $validater; //用来验证数据/参数
     protected $params; //过滤后符合要求的参数
-
+    protected $pagestart;
+    protected $pagecount;
     protected $rules = array(
       'User'=>array(
           'register' => array(
@@ -350,4 +351,22 @@ class Common extends Controller
             return false;
         }
     }
+
+    protected function setPageParam(){
+        if(isset($this->datas['start'])&&!empty($this->datas['start'])){
+            $this->pagestart=$this->datas['start'];
+        }else {
+            $this->pagestart=0;
+        }
+        unset($this->datas['start']);
+
+        if(isset($this->datas['count'])&&!empty($this->datas['count'])){
+            $this->pagecount=$this->datas['count'];
+        }else {
+            $this->pagecount=20;
+        }
+        unset($this->datas['count']);
+
+    }
+
 }
