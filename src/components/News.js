@@ -4,6 +4,7 @@ import {Table, Layout,Breadcrumb} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
 import PageBar from './PageBar';
 import {_newsList,_total} from "../api/newsApi";
+import FilterBar from './FilterBar';
 export default class News extends Component{
     constructor(){
         super();
@@ -25,10 +26,18 @@ export default class News extends Component{
                     width:180
                 }
             ],
-            total:0
+            total:0,
+            form:{}
 
         };
     }
+
+    handleSearch=(form)=>{this.state.form=form;
+                            this.forceUpdate();
+                            console.log(this.state.form);
+    }
+
+
 
     async newsList(){
         let cur=this.refs.pagebar.state.cur;
@@ -72,6 +81,7 @@ export default class News extends Component{
         return (
             <div className="row">
                 <BreadcumbBar nav_arr={['News','News List']} />
+                <FilterBar handleSearch={this.handleSearch} />
                 <Layout.Row>
                     <Layout.Col span="18" offset="3">
                         <Table
@@ -83,6 +93,7 @@ export default class News extends Component{
                             <PageBar ref='pagebar' handleList={this.newsList.bind(this)} total={this.state.total} />
                         </div>
                     </Layout.Col>
+
                 </Layout.Row>
 
             </div>
