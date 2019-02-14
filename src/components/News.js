@@ -34,7 +34,15 @@ export default class News extends Component{
 
     handleSearch=(form)=>{this.state.form=form;
                             this.forceUpdate();
-                            console.log(this.state.form);
+                            this.newsList();
+                            this.newsTotal();
+    }
+
+    handleReset=()=>{this.state.form={};
+        this.refs.filterbar.state.form={};
+        this.forceUpdate();
+        this.newsList();
+        this.newsTotal();
     }
 
 
@@ -42,9 +50,17 @@ export default class News extends Component{
     async newsList(){
         let cur=this.refs.pagebar.state.cur;
         let psize=this.refs.pagebar.state.psize;
+
         let data={
             start:(cur-1)*psize,
             count:psize
+        }
+
+        if(Object.keys(this.state.form).length>0){
+            for (let index in this.state.form){
+                if(this.state.form[index]!=='')
+                data[index]=this.state.form[index];
+            }
         }
         const res=await _newsList(data);
         let news= res.data.data;
@@ -57,7 +73,14 @@ export default class News extends Component{
     }
 
     async newsTotal(){
-        const res_num=await _total();
+        let data={};
+        if(Object.keys(this.state.form).length>0){
+            for (let index in this.state.form){
+                if(this.state.form[index]!=='')
+                    data[index]=this.state.form[index];
+            }
+        }
+        const res_num=await _total(data);
         let num=res_num.data.data;
         this.setState({total:num});
     }
@@ -65,7 +88,6 @@ export default class News extends Component{
     componentDidMount(){
         this.newsList();
         this.newsTotal();
-        console.log(this.state.total);
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.map(item=>{
         //     let thedate=new Date(item.date);
@@ -81,9 +103,9 @@ export default class News extends Component{
         return (
             <div className="row">
                 <BreadcumbBar nav_arr={['News','News List']} />
-                <FilterBar handleSearch={this.handleSearch} />
+                <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} ref="filterbar" />
                 <Layout.Row>
-                    <Layout.Col span="18" offset="3">
+                    <Layout.Col span="24" >
                         <Table
                             style={{width:'100%'}}
                             columns={this.state.columns}
