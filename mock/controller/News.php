@@ -163,8 +163,19 @@ class News extends Common
     public  function newslist(){
         $this->datas=$this->params;
         $this->setPageParam();
+        $map=[];
+        if(isset($this->datas['author']) && !empty($this->datas['author'])){
+            $map['u.uname']=[ 'like', "%".$this->datas['author']."%"];
+        }
+        if(isset($this->datas['title']) && !empty($this->datas['title'])){
+            $map['n.title']=[ 'like', "%".$this->datas['title']."%"];
+        }
+        if(isset($this->datas['contents']) && !empty($this->datas['contents'])){
+            $map['n.contents']=[ 'like', "%".$this->datas['contents']."%"];
+        }
+        $map['n.deleted']=['=',0];
         $fields='n.id, n.title, n.create_time,u.uname';
-        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where(['n.deleted'=>0])->field($fields)->limit($this->pagestart,$this->pagecount)->select();
+        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->field($fields)->limit($this->pagestart,$this->pagecount)->select();
         if($res){
            $this->returnMsg(200,'succeed in searching records','succeed in searching records！',$res);
         }
@@ -173,7 +184,18 @@ class News extends Common
 
     public  function total(){
         $this->datas=$this->params;
-        $res=db('news')->where(['deleted'=>0])->count();
+        $map=[];
+        if(isset($this->datas['author']) && !empty($this->datas['author'])){
+            $map['u.uname']=[ 'like', "%".$this->datas['author']."%"];
+        }
+        if(isset($this->datas['title']) && !empty($this->datas['title'])){
+            $map['n.title']=[ 'like', "%".$this->datas['title']."%"];
+        }
+        if(isset($this->datas['contents']) && !empty($this->datas['contents'])){
+            $map['n.contents']=[ 'like', "%".$this->datas['contents']."%"];
+        }
+        $map['n.deleted']=['=',0];
+        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->count();
         if($res){
             $this->returnMsg(200,'succeed in getting records count','succeed in getting records count',$res);
         }
