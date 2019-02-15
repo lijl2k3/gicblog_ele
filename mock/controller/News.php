@@ -173,10 +173,31 @@ class News extends Common
         if(isset($this->datas['contents']) && !empty($this->datas['contents'])){
             $map['n.contents']=[ 'like', "%".$this->datas['contents']."%"];
         }
+        if(isset($this->datas['startDate']) && !empty($this->datas['startDate'])){
+            $start=1;
+        }else{
+            $start=0;
+        }
+        if(isset($this->datas['endDate']) && !empty($this->datas['endDate'])){
+            $end=2;
+        }else{
+            $end=0;
+        }
+        $timecase=$start+$end;
         $map['n.deleted']=['=',0];
         $fields='n.id, n.title, n.create_time,u.uname';
-        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->field($fields)->limit($this->pagestart,$this->pagecount)->select();
+        switch($timecase){
+            case 0:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->field($fields)->where($map)->limit($this->pagestart,$this->pagecount)->select();
+                break;
+            case 1:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->field($fields)->where($map)->where('n.create_time','>=',strtotime($this->datas['startDate']))->limit($this->pagestart,$this->pagecount)->select();
+                break;
+            case 2:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->field($fields)->where($map)->where('n.create_time','<=',strtotime($this->datas['endDate']))->limit($this->pagestart,$this->pagecount)->select();
+                break;
+            case 3:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->field($fields)->where($map)->where('n.create_time','>=',strtotime($this->datas['startDate']))->where('n.create_time','<=',strtotime($this->datas['endDate']))->limit($this->pagestart,$this->pagecount)->select();
+        }
+        //$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->field($fields)->limit($this->pagestart,$this->pagecount)->select();
         if($res){
+
            $this->returnMsg(200,'succeed in searching records','succeed in searching records！',$res);
         }
         $this->returnMsg(400,'fail to search record！','record not found！');
@@ -194,8 +215,28 @@ class News extends Common
         if(isset($this->datas['contents']) && !empty($this->datas['contents'])){
             $map['n.contents']=[ 'like', "%".$this->datas['contents']."%"];
         }
+        if(isset($this->datas['startDate']) && !empty($this->datas['startDate'])){
+           $start=1;
+        }else{
+            $start=0;
+        }
+        if(isset($this->datas['endDate']) && !empty($this->datas['endDate'])){
+            $end=2;
+        }else{
+            $end=0;
+        }
+        $timecase=$start+$end;
         $map['n.deleted']=['=',0];
-        $res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->count();
+        switch($timecase){
+            case 0:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->count();
+                break;
+            case 1:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->where('n.create_time','>=',strtotime($this->datas['startDate']))->count();
+                break;
+            case 2:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->where('n.create_time','<=',strtotime($this->datas['endDate']))->count();
+                break;
+            case 3:$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->where('n.create_time','>=',strtotime($this->datas['startDate']))->where('n.create_time','<=',strtotime($this->datas['endDate']))->count();
+        }
+
         if($res){
             $this->returnMsg(200,'succeed in getting records count','succeed in getting records count',$res);
         }

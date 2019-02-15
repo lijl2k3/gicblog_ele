@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Table, Layout,Breadcrumb} from 'element-react';
+import {Table, Layout,Breadcrumb,MessageBox,Button} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
 import PageBar from './PageBar';
 import {_newsList,_total} from "../api/newsApi";
@@ -25,8 +25,22 @@ export default class News extends Component{
                     prop: "date",
                     width:180
                 }
+
             ],
+            op:{
+                label: "Operation",
+
+                render: function(){
+                    return (
+                        <span>
+             <Button plain={true} type="info" size="small">编辑</Button>
+             <Button type="danger" size="small">删除</Button>
+            </span>
+                    )
+                }
+            },
             total:0,
+            editState:true,
             form:{}
 
         };
@@ -34,7 +48,7 @@ export default class News extends Component{
 
     handleSearch=(form)=>{this.state.form=form;
                             this.forceUpdate();
-                            this.newsList();
+        this.newsList();
                             this.newsTotal();
     }
 
@@ -63,13 +77,18 @@ export default class News extends Component{
             }
         }
         const res=await _newsList(data);
-        let news= res.data.data;
-        news.map(item=>{
-                let thedate=new Date(item.create_time*1000);
-            item.date=thedate.getFullYear()+'/'+parseInt(thedate.getMonth()+1)+'/'+thedate.getDate();
-                item.link=<Link to={"/news/detail/"+item.id}>{item.title}</Link>;
+        if(res.data.code==200) {
+            let news = res.data.data;
+            news.map(item => {
+                let thedate = new Date(item.create_time * 1000);
+                item.date = thedate.getFullYear() + '/' + parseInt(thedate.getMonth() + 1) + '/' + thedate.getDate();
+                item.link = <Link to={"/news/detail/" + item.id}>{item.title}</Link>;
             });
-        this.setState({news});
+            this.setState({news});
+        }else{
+            this.setState({news:[]});
+            MessageBox.alert( res.data.msg,res.data.title);
+        }
     }
 
     async newsTotal(){
@@ -88,6 +107,11 @@ export default class News extends Component{
     componentDidMount(){
         this.newsList();
         this.newsTotal();
+        if(this.state.editState===true){
+            this.state.columns.push(this.state.op);
+            this.forceUpdate();
+            console.log(this.state.columns);
+        }else console.log('aaa');
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.map(item=>{
         //     let thedate=new Date(item.date);
@@ -100,6 +124,7 @@ export default class News extends Component{
 
 
     render(){
+
         return (
             <div className="row">
                 <BreadcumbBar nav_arr={['News','News List']} />

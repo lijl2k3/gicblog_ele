@@ -7,7 +7,7 @@ export default class BreadcumbBar extends Component{
         return (
             <div className="col-sm-12 breadcrumb">
                 <Breadcrumb separator="/">
-                    {this.props.nav_arr.map(item=><Breadcrumb.Item>{item}</Breadcrumb.Item>
+                    {this.props.nav_arr.map((item,key)=><Breadcrumb.Item key={key}>{item}</Breadcrumb.Item>
                 )}
                 </Breadcrumb>
             </div>

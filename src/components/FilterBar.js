@@ -8,8 +8,8 @@ export default class FilterBar extends Component{
                 title: '',
                 contents: '',
                 author: '',
-                value1:'',
-                value2:''
+                startDate:'',
+                endDate:''
             }
         };
     }
@@ -18,7 +18,9 @@ export default class FilterBar extends Component{
         this.forceUpdate();
     }
     render(){
-        const {value1,value2}=this.state.form;
+        // const startDate=new Date(this.state.form.startDate);
+        // const endDate=new Date(this.state.form.endDate)
+        const{startDate,endDate}=this.state.form;
         return (
                 <Layout.Row >
                 <Layout.Col span="24"  className={"searchbar"}>
@@ -26,36 +28,36 @@ export default class FilterBar extends Component{
                     <Layout.Col span="2" >
                         <Input placeholder="title" onChange={this.onChange.bind(this,'title')} value={this.state.form.title}/>
                     </Layout.Col>
-                    <Layout.Col span="4" style={{"margin-left":"10px"}}>
+                    <Layout.Col span="4" style={{marginLeft:"10px"}}>
                         <Input placeholder="contents" onChange={this.onChange.bind(this,'contents')} value={this.state.form.contents}/>
                     </Layout.Col>
-                    <Layout.Col span="2" style={{"margin-left":"10px"}}>
+                    <Layout.Col span="2" style={{marginLeft:"10px"}}>
                         <Input placeholder="author" onChange={this.onChange.bind(this,'author')} value={this.state.form.author}/>
                     </Layout.Col>
 
 
 
-                    <Layout.Col span="6" style={{"margin-left":"10px"}} >
+                    <Layout.Col span="6" style={{marginLeft:"10px"}} >
 
                         <Layout.Col span={"10"}>
                                 <DatePicker
-                                    value={value1}
+                                    value={startDate}
                                     placeholder="Start Date"
 
                                     onChange={date=>{
-                                        console.log('DatePicker1 changed: ', date)
-                                        this.setState({value1: date})
+                                        this.state.form.startDate=date;
+                                        this.setState({form:this.state.form});
                                     }}
                                     //disabledDate={time=>time.getTime() < Date.now() - 8.64e7}
                                 />
                         </Layout.Col>
-                        <Layout.Col span={"10"} style={{"margin-left":"10px"}}>
+                        <Layout.Col span={"10"} style={{marginLeft:"10px"}}>
                                 <DatePicker
-                                    value={value2}
+                                    value={endDate}
                                     placeholder="End Date"
                                     onChange={date=>{
-                                        console.debug('DatePicker2 changed: ', date)
-                                        this.setState({value2: date})
+                                        this.state.form.endDate=date;
+                                        this.setState({form:this.state.form});
                                     }}
                                     //disabledDate={time=>time.getTime() < Date.now() - 8.64e7}
                                 />

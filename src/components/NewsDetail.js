@@ -15,6 +15,7 @@ export default class NewsDetail extends Component{
 
     async details(data){
         const res=await _details(data);
+
         if(res.data.code==200){
             let info=res.data.data;
             this.setState({info});
