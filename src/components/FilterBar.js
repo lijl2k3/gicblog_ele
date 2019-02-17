@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout,DatePicker} from 'element-react';
+import {Form,Input,Button,Layout,DatePicker,Switch} from 'element-react';
 export default class FilterBar extends Component{
     constructor(props) {
         super(props);
@@ -10,9 +10,11 @@ export default class FilterBar extends Component{
                 author: '',
                 startDate:'',
                 endDate:''
-            }
+            },
+            //editState:false
         };
     }
+
     onChange(key, value) {
         this.state.form[key] = value;
         this.forceUpdate();
@@ -39,7 +41,7 @@ export default class FilterBar extends Component{
 
                     <Layout.Col span="6" style={{marginLeft:"10px"}} >
 
-                        <Layout.Col span={"10"}>
+                        <Layout.Col span={"12"}>
                                 <DatePicker
                                     value={startDate}
                                     placeholder="Start Date"
@@ -67,12 +69,27 @@ export default class FilterBar extends Component{
 
                     </Layout.Col>
 
-                    <Layout.Col span="6" push={"3"}>
-                        <div style={{"display":"inline-block", float:"right"}}>
+                    <Layout.Col span="6" push={"1"}>
+                        <div style={{"display":"inline-block"}}>
                             <Button type="primary" icon="search" onClick={this.props.handleSearch.bind(this,this.state.form)}>Search</Button>
                             <Button type="primary" icon="close" onClick={this.props.handleReset.bind(this,this.state.form)}>Reset</Button>
                         </div>
                     </Layout.Col>
+                    {this.props.log_in == true &&
+                    <Layout.Col span="2">
+                        <div style={{marginTop:"-8px"}}>
+                            <span style={{fontSize:"12px",color:"#48576a",lineHeight:"12px"}}>Only Read My Doc  </span>
+                            <Switch
+                                value={this.props.editState}
+                                onColor="#13ce66"
+                                offColor="#ff4949"
+                                //onChange={value=>{this.props.handleSwitch.bind(this,value)}}
+                                onChange={this.props.handleSwitch.bind(this)}
+                            >
+                            </Switch>
+                        </div>
+                    </Layout.Col>
+                    }
 
                 </Layout.Col>
             </Layout.Row>

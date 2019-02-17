@@ -60,9 +60,16 @@ class User extends Common
         $this->matchUserAndPwd();
     }
 
-    public function test(){
-        $this->returnMsg(200, 'login succeed', 'login succeed',session_id());
+    public function identify(){
+        $id=Session::get('uid');
+        $user=$this->findExistOne('user',['id'=>$id]);
+        if($user){
+            $this->returnMsg(200,'user found','user found');
+        }else{
+            $this->returnMsg(400,'user not found','user not login');
+        }
     }
+
 
     private function matchUserAndPwd()
     {

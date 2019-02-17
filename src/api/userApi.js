@@ -5,3 +5,7 @@ export function _login(data){
 export function _test() {
     return myaxios.get('/user/test');
 }
+
+export function _identify() {
+    return myaxios.get('/user/identify');
+}

@@ -23,9 +23,12 @@ export default class  Login extends Component{
     async login(data){
         const res=await _login(qs.stringify(data));
         if(res.data.code==200){
-            console.log(res);
             sessionStorage.setItem('login','true');
-            this.props.history.push(this.props.location.state.from);
+            if(this.props.location.state && this.props.location.state.from) {
+                this.props.history.push(this.props.location.state.from);
+            }else{
+                this.props.history.push('/home');
+            }
         }
     }
 

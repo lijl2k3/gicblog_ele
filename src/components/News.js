@@ -4,12 +4,13 @@ import {Table, Layout,Breadcrumb,MessageBox,Button} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
 import PageBar from './PageBar';
 import {_newsList,_total} from "../api/newsApi";
+import {_identify} from "../api/userApi";
 import FilterBar from './FilterBar';
 export default class News extends Component{
     constructor(){
         super();
         this.state={news:[],
-            columns: [
+            columns1: [
                 {
                     label: "Title",
                     prop: "link",
@@ -27,10 +28,28 @@ export default class News extends Component{
                 }
 
             ],
-            op:{
-                label: "Operation",
 
-                render: function(){
+            columns2: [
+                {
+                    label: "Title",
+                    prop: "link",
+
+                },
+                {
+                    label: "Author",
+                    prop: "uname",
+                    width: 180
+                },
+                {
+                    label: "Publish Date",
+                    prop: "date",
+                    width:180
+                },
+
+                {
+                    label: "Operation",
+
+                        render: function(){
                     return (
                         <span>
              <Button plain={true} type="info" size="small">编辑</Button>
@@ -38,12 +57,22 @@ export default class News extends Component{
             </span>
                     )
                 }
-            },
+                }
+
+            ],
+            editState:false,
             total:0,
-            editState:true,
-            form:{}
+            form:{},
+            log_in:false
 
         };
+    }
+
+    handleSwitch=(value)=>{
+        this.state.editState=value;
+        this.setState({editState:this.state.editState});
+        console.log(this.state.editState);
+        //console.log(value);
     }
 
     handleSearch=(form)=>{this.state.form=form;
@@ -57,6 +86,17 @@ export default class News extends Component{
         this.forceUpdate();
         this.newsList();
         this.newsTotal();
+    }
+    async identify(){
+        const res=await _identify();
+        if(res.data.code==200){
+            this.setState({log_in: true});
+            console.log(this.state.log_in);
+
+        }else{
+            this.setState({log_in:false});
+            console.log(this.state.log_in);
+        }
     }
 
 
@@ -107,11 +147,8 @@ export default class News extends Component{
     componentDidMount(){
         this.newsList();
         this.newsTotal();
-        if(this.state.editState===true){
-            this.state.columns.push(this.state.op);
-            this.forceUpdate();
-            console.log(this.state.columns);
-        }else console.log('aaa');
+        this.identify();
+
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.map(item=>{
         //     let thedate=new Date(item.date);
@@ -128,12 +165,12 @@ export default class News extends Component{
         return (
             <div className="row">
                 <BreadcumbBar nav_arr={['News','News List']} />
-                <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} ref="filterbar" />
+                <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} handleSwitch={this.handleSwitch} editState={this.state.editState} log_in={this.state.log_in} ref="filterbar" />
                 <Layout.Row>
                     <Layout.Col span="24" >
                         <Table
                             style={{width:'100%'}}
-                            columns={this.state.columns}
+                            columns={this.state.editState===true?this.state.columns2:this.state.columns1}
                             data={this.state.news}
                         />
                         <div style={{'float':'right'}}>
