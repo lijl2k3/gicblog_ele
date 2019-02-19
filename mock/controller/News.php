@@ -160,12 +160,26 @@ class News extends Common
 //        $this->returnMsg(400,'查询失败！','未找到体验活动详情记录！');
 //    }
 
-    public  function newslist(){
+    public  function newslist($my=0){
         $this->datas=$this->params;
         $this->setPageParam();
         $map=[];
         if(isset($this->datas['author']) && !empty($this->datas['author'])){
             $map['u.uname']=[ 'like', "%".$this->datas['author']."%"];
+        }
+        if($my==1){
+            $uid=Session::get('uid');
+            if(!$uid){
+                $this->returnMsg(400,'Fail to find records!','No User Id');
+            }
+            if(!$this->findExistOne('user',['id'=>$uid])){
+                $this->returnMsg(400,'Fail to find records!','No User found');
+            }else{
+                $map['n.author_id']=['=',$uid];
+                if(isset($map['u.uname'])){
+                    unset($map['u.uname']);
+                }
+            }
         }
         if(isset($this->datas['title']) && !empty($this->datas['title'])){
             $map['n.title']=[ 'like', "%".$this->datas['title']."%"];
@@ -197,17 +211,30 @@ class News extends Common
         }
         //$res=db('news')->alias('n')->join('user u','n.author_id=u.id')->where($map)->field($fields)->limit($this->pagestart,$this->pagecount)->select();
         if($res){
-
            $this->returnMsg(200,'succeed in searching records','succeed in searching records！',$res);
         }
         $this->returnMsg(400,'fail to search record！','record not found！');
     }
 
-    public  function total(){
+    public  function total($my=0){
         $this->datas=$this->params;
         $map=[];
         if(isset($this->datas['author']) && !empty($this->datas['author'])){
             $map['u.uname']=[ 'like', "%".$this->datas['author']."%"];
+        }
+        if($my==1){
+            $uid=Session::get('uid');
+            if(!$uid){
+                $this->returnMsg(400,'Fail to find records!','No User Id');
+            }
+            if(!$this->findExistOne('user',['id'=>$uid])){
+                $this->returnMsg(400,'Fail to find records!','No User found');
+            }else{
+                $map['n.author_id']=['=',$uid];
+                if(isset($map['u.uname'])){
+                    unset($map['u.uname']);
+                }
+            }
         }
         if(isset($this->datas['title']) && !empty($this->datas['title'])){
             $map['n.title']=[ 'like', "%".$this->datas['title']."%"];

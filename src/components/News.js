@@ -69,9 +69,10 @@ export default class News extends Component{
     }
 
     handleSwitch=(value)=>{
-        this.state.editState=value;
+        this.state.editState=(value==true)?1:0;
         this.setState({editState:this.state.editState});
-        console.log(this.state.editState);
+        this.newsList();
+        this.newsTotal();
         //console.log(value);
     }
 
@@ -91,11 +92,9 @@ export default class News extends Component{
         const res=await _identify();
         if(res.data.code==200){
             this.setState({log_in: true});
-            console.log(this.state.log_in);
 
         }else{
             this.setState({log_in:false});
-            console.log(this.state.log_in);
         }
     }
 
@@ -107,7 +106,8 @@ export default class News extends Component{
 
         let data={
             start:(cur-1)*psize,
-            count:psize
+            count:psize,
+            my:this.state.editState
         }
 
         if(Object.keys(this.state.form).length>0){
@@ -119,6 +119,7 @@ export default class News extends Component{
         const res=await _newsList(data);
         if(res.data.code==200) {
             let news = res.data.data;
+            console.log(news);
             news.map(item => {
                 let thedate = new Date(item.create_time * 1000);
                 item.date = thedate.getFullYear() + '/' + parseInt(thedate.getMonth() + 1) + '/' + thedate.getDate();
@@ -132,7 +133,7 @@ export default class News extends Component{
     }
 
     async newsTotal(){
-        let data={};
+        let data={my:this.state.editState};
         if(Object.keys(this.state.form).length>0){
             for (let index in this.state.form){
                 if(this.state.form[index]!=='')
@@ -170,7 +171,7 @@ export default class News extends Component{
                     <Layout.Col span="24" >
                         <Table
                             style={{width:'100%'}}
-                            columns={this.state.editState===true?this.state.columns2:this.state.columns1}
+                            columns={this.state.editState===1?this.state.columns2:this.state.columns1}
                             data={this.state.news}
                         />
                         <div style={{'float':'right'}}>

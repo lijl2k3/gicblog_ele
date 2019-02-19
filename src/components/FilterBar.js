@@ -80,7 +80,7 @@ export default class FilterBar extends Component{
                         <div style={{marginTop:"-8px"}}>
                             <span style={{fontSize:"12px",color:"#48576a",lineHeight:"12px"}}>Only Read My Doc  </span>
                             <Switch
-                                value={this.props.editState}
+                                value={this.props.editState==1?true:false}
                                 onColor="#13ce66"
                                 offColor="#ff4949"
                                 //onChange={value=>{this.props.handleSwitch.bind(this,value)}}
