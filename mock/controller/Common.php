@@ -7,6 +7,7 @@ use think\Controller;
 use think\Db;
 use think\Image;
 use think\Request;
+use think\Session;
 use think\Validate;
 
 class Common extends Controller
@@ -367,6 +368,16 @@ class Common extends Controller
         }
         unset($this->datas['count']);
 
+    }
+
+    protected function checkUser($res){
+        $uid=Session::get('uid');
+        if(!$uid){
+            $this->returnMsg(400,'User identification fails','No user id');
+        }
+       if($res['author_id']!=$uid){
+           return false;
+       }else return true;
     }
 
 }

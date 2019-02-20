@@ -15,8 +15,9 @@ class News extends Common
      * [体验活动详情获取]
      * @return [json]       [返回获取成功或失败信息及数据]
      */
-    public function details(){
+    public function details($my=0){
         $this->datas=$this->params;
+
         if(!isset($this->datas['id'])){
             $this->returnMsg(400,'Fail to find the record!','No record id');
         }
@@ -24,6 +25,11 @@ class News extends Common
         $res = db('news')->where($this->datas)->find();
 
         if (!empty($res)) {
+            if($my==1){
+                if(!$this->checkUser($res)){
+                    $this->returnMsg(400,'User Identification Error','You have no right to edit this news!');
+                }
+            }
             if(!empty($res['pic_path'])){
                 $files=$this->listdir(ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS .$res['pic_path']);
                 if($files!=false){
@@ -48,6 +54,34 @@ class News extends Common
         $this->datas=$this->params;
         $this->datas['create_time']=$this->datas['update_time']=time();
         $this->datas['author_id']=Session::get('uid');
+        if(!empty($this->datas['pics'])) {
+            $pics = ($this->datas['pics']);
+            $path=Session::get('uid') . '_' . $this->datas['create_time'];
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $path;
+            mkdir($pic_path);
+            mkdir($pic_path.DS.'thumb');
+            $this->datas['pic_path']=$path;
+            foreach ($pics as $pic) {
+                $oldpic = ROOT_PATH . 'public' . DS . 'uploads' . DS . $pic['path'] . DS . $pic['name'];
+                $oldpic=iconv('UTF-8','GB2312',$oldpic);
+                $oldthumb = ROOT_PATH . 'public' . DS . 'thumbnail' . DS . $pic['path'] . DS . $pic['name'];
+                $oldthumb=iconv('UTF-8','GB2312',$oldthumb);
+                $newpic=$pic_path.DS.$pic['name'];
+                $newthumb=$pic_path.DS.'thumb'.DS.$pic['name'];
+                rename($oldpic,iconv("utf-8", "gb2312", $newpic));
+                rename($oldthumb,iconv("utf-8", "gb2312", $newthumb));
+            }
+        }
+        if($id=db('news')->insertGetId($this->datas)){
+            $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id,'contents'=>$this->datas['contents']]);
+        }else{
+            $this->returnMsg(400, 'fail to add news', 'fail to insert to database');
+        }
+    }
+
+    public function editnews(){
+        $this->datas=$this->params;
+        $this->datas['update_time']=time();
         if(!empty($this->datas['pics'])) {
             $pics = ($this->datas['pics']);
             $path=Session::get('uid') . '_' . $this->datas['create_time'];
@@ -268,6 +302,26 @@ class News extends Common
             $this->returnMsg(200,'succeed in getting records count','succeed in getting records count',$res);
         }
         $this->returnMsg(400,'fail to get record count！','records not found！');
+    }
+
+    public function delete(){
+        $this->datas=$this->params;
+        if(!isset($this->datas['id']) | empty($this->datas['id'])){
+            $this->returnMsg(400,'Delete fails','No Id found');
+        }
+        $id=$this->datas['id'];
+        $res=db('news')->where('id',$id)->where('deleted',0)->find();
+        if(!$res){
+            $this->returnMsg(400,'Delete fails','No Record found');
+        }
+        if($this->checkUser($res)){
+            if(db('news')->where('id',$id)->update(['deleted'=>1])) {
+                $this->returnMsg(200, 'Delete succeed', 'Record Deleted');
+            }
+            $this->returnMsg(400,'Delete fails','Record not deleted in database');
+        }else{
+            $this->returnMsg(400,'User Identification Error','You have no right to edit this news!');
+        }
     }
 
 

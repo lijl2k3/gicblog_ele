@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom';
 import {Table, Layout,Breadcrumb,MessageBox,Button} from 'element-react';
 import BreadcumbBar from './BreadcumbBar';
 import PageBar from './PageBar';
-import {_newsList,_total} from "../api/newsApi";
+import {_newsList,_total,_delete} from "../api/newsApi";
 import {_identify} from "../api/userApi";
 import FilterBar from './FilterBar';
+import qs from 'qs';
 export default class News extends Component{
     constructor(){
         super();
@@ -48,12 +49,11 @@ export default class News extends Component{
 
                 {
                     label: "Operation",
-
-                        render: function(){
+                        render: (row,column,index)=>{
                     return (
                         <span>
-             <Button plain={true} type="info" size="small">编辑</Button>
-             <Button type="danger" size="small">删除</Button>
+             <Button plain={true} type="info" size="small">Edit</Button>
+             <Button type="danger" size="small" onClick={this.deleteRow.bind(this,row)}>Delete</Button>
             </span>
                     )
                 }
@@ -71,8 +71,11 @@ export default class News extends Component{
     handleSwitch=(value)=>{
         this.state.editState=(value==true)?1:0;
         this.setState({editState:this.state.editState});
+        this.refs.pagebar.state.cur=1;
+        this.refs.pagebar.setState({cur:this.refs.pagebar.state.cur});
         this.newsList();
         this.newsTotal();
+
         //console.log(value);
     }
 
@@ -98,6 +101,14 @@ export default class News extends Component{
         }
     }
 
+    async deleteNews(data,index){
+        const res=await _delete(qs.stringify(data));
+        if(res.data.code==200){
+           this.newsTotal();
+           this.newsList();
+        }
+    }
+
 
 
     async newsList(){
@@ -119,13 +130,13 @@ export default class News extends Component{
         const res=await _newsList(data);
         if(res.data.code==200) {
             let news = res.data.data;
-            console.log(news);
             news.map(item => {
                 let thedate = new Date(item.create_time * 1000);
                 item.date = thedate.getFullYear() + '/' + parseInt(thedate.getMonth() + 1) + '/' + thedate.getDate();
                 item.link = <Link to={"/news/detail/" + item.id}>{item.title}</Link>;
             });
             this.setState({news});
+
         }else{
             this.setState({news:[]});
             MessageBox.alert( res.data.msg,res.data.title);
@@ -158,6 +169,11 @@ export default class News extends Component{
         // });
         // this.setState({news});
 
+    }
+
+    deleteRow(row,col,index){
+        let data={id:row.id};
+        this.deleteNews(data,index);
     }
 
 
