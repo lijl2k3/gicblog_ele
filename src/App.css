@@ -13,3 +13,23 @@
 .searchbar{
     margin-bottom:10px;
 }
+
+.close {
+    background: red;
+    color: white;
+    border-radius: 12px;
+    line-height: 16px;
+    text-align: center;
+    height: 16px;
+    width: 16px;
+    font-size: 12px;
+    padding: 1px;
+    top: -6px;
+    right: -6px;
+    position: absolute;
+    cursor:pointer;
+}
+
+.close:before {
+    content: "\2716";
+}

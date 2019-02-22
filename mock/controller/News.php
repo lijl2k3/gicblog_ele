@@ -21,8 +21,9 @@ class News extends Common
         if(!isset($this->datas['id'])){
             $this->returnMsg(400,'Fail to find the record!','No record id');
         }
-        $this->datas['deleted']=0;
-        $res = db('news')->where($this->datas)->find();
+        $map['id']=$this->datas['id'];
+        $map['deleted']=0;
+        $res = db('news')->where($map)->find();
 
         if (!empty($res)) {
             if($my==1){
@@ -61,6 +62,7 @@ class News extends Common
             mkdir($pic_path);
             mkdir($pic_path.DS.'thumb');
             $this->datas['pic_path']=$path;
+            unset($this->datas['pics']);
             foreach ($pics as $pic) {
                 $oldpic = ROOT_PATH . 'public' . DS . 'uploads' . DS . $pic['path'] . DS . $pic['name'];
                 $oldpic=iconv('UTF-8','GB2312',$oldpic);

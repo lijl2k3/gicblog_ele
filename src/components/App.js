@@ -14,6 +14,7 @@ import News from './News';
 import NewsAdd from './NewsAdd';
 import GalleryAdd from './GalleryAdd';
 import NewsDetail from './NewsDetail';
+import NewsEdit from './NewsEdit';
 import MyDoc from './MyDoc';
 import {Menu}  from 'element-react';
 import ProtectedRoute from './ProtectedRoute';
@@ -51,7 +52,7 @@ export default class App extends Component {
                             {/*<Route path='/galleryAdd' component={GalleryAdd}/>*/}
                             <ProtectedRoute exact path='/user' component={User}/>
                             <Route path='/news/detail/:id' component={NewsDetail}/>
-                            <ProtectedRoute path='/mydoc' component={MyDoc}/>
+                            <ProtectedRoute path='/news/edit' component={NewsEdit}/>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { EditorState ,convertToRaw} from 'draft-js';
+import { EditorState ,convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 class MyEditor extends Component {
@@ -7,7 +7,8 @@ class MyEditor extends Component {
         super(props);
         this.state = {
             editorContent: '',
-            editorState: EditorState.createEmpty(),
+            //editorState: this.props.contentState
+            editorState:this.props.contents
         };
     }
 
@@ -30,12 +31,16 @@ class MyEditor extends Component {
     };
 
 
+
+
     render() {
+
         const { editorContent,editorState } = this.state;
+        //let mystate=convertFromRaw(this.props.contents);
         return (
             <div>
             <Editor ref='myeditor'
-                editorState={editorState}
+                editorState={this.state.editorState}
                 wrapperClassName="demo-wrapper"
                 editorClassName="demo-editor"
                 onEditorStateChange={this.onEditorStateChange}

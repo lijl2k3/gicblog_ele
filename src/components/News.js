@@ -52,7 +52,7 @@ export default class News extends Component{
                         render: (row,column,index)=>{
                     return (
                         <span>
-             <Button plain={true} type="info" size="small">Edit</Button>
+             <Button plain={true} type="info" size="small" onClick={this.editRow.bind(this,row)}>Edit</Button>
              <Button type="danger" size="small" onClick={this.deleteRow.bind(this,row)}>Delete</Button>
             </span>
                     )
@@ -174,6 +174,10 @@ export default class News extends Component{
     deleteRow(row,col,index){
         let data={id:row.id};
         this.deleteNews(data,index);
+    }
+
+    editRow(row){
+        this.props.history.push({pathname:'/news/edit', state:{id:row.id}});
     }
 
 

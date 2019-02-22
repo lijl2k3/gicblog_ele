@@ -25,6 +25,14 @@ export default class GalleryAdd extends Component{
 
     }
 
+    handleClose=key=>{
+        let pics=this.state.fileList.filter((item,index)=>{
+            return index!==key;
+        });
+        this.setState({fileList:pics});
+
+    }
+
     render() {
         return (
             <div className='box'>
@@ -62,6 +70,25 @@ export default class GalleryAdd extends Component{
                         ) }
                     </Layout.Col>
                 </Layout.Row>) }
+
+                {this.props.oldpics.length>0 &&
+                (<Layout.Row>
+                    <Layout.Col span="24">
+                        <h2>{this.props.oldpics.length} Existing Pictures:</h2>
+                        <Layout.Row>
+                            {this.props.oldpics.map((item,key)=>{
+                                    return(
+                                        <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item} /></a> </div>
+
+                                        </Layout.Col>
+                                    )
+                                }
+                            ) }
+                        </Layout.Row>
+                    </Layout.Col>
+                </Layout.Row>) }
+
                 {this.state.fileList.length>0 &&
                     (<Layout.Row>
                         <Layout.Col span="24">
@@ -70,7 +97,7 @@ export default class GalleryAdd extends Component{
                             {this.state.fileList.map((item,key)=>{
                                  return(
                                      <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                         <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.path+'/'+item.name} /></a> </div>
+                                         <div  style={{width:'120px',}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.path+'/'+item.name} /></a> <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
                                      </Layout.Col>
                                     )
                                 }

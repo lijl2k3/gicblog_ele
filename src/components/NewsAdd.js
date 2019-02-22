@@ -18,7 +18,7 @@ export default class NewsAdd extends Component{
                 pics:[],
                 author: ''
             },
-            picAdd:false,
+            picAdd:false
         };
     }
 
@@ -118,7 +118,7 @@ export default class NewsAdd extends Component{
                 </Form.Item>
                 <Form.Item>
                     {this.state.picAdd == true &&
-                    <GalleryAdd ref='gallery'/>
+                    <GalleryAdd ref='gallery' oldpics={[]}/>
                     }
                 </Form.Item>
 

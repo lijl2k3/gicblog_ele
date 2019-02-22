@@ -1,24 +1,27 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import GalleryAdd from "./GalleryAdd";
-import { EditorState ,convertToRaw} from 'draft-js';
+import { EditorState ,convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
 import {_details, _editNews} from "../api/newsApi";
 import qs from 'qs';
 
-export default class NewsAdd extends Component{
+
+export default class NewsEdit extends Component{
     constructor(props) {
         super(props);
         this.state = {
             form: {
                 title: '',
                 contents: '',
-                pics:[],
+
                 author: ''
             },
-            picAdd:true
+            pics:[],
+            picAdd:true,
+            pic_path:''
         };
     }
 
@@ -34,14 +37,25 @@ export default class NewsAdd extends Component{
     async getNews(data){
         const res=await _details(data);
         if(res.data.code==200){
-            console.log(res.data);
-        }
+            console.log(res.data.data);
+            this.state.form.contents = res.data.data.contents;
+                this.state.form.title = res.data.data.title;
+                this.state.form.author=res.data.data.author;
+                let editContents=EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.data.contents)));
+                this.setState({form:this.state.form});
+                this.refs.myeditor.setState({editorState:editContents});
+                if(res.data.data.pics!==undefined && res.data.data.pics.length>0){
+                    this.setState({pics:res.data.data.pics, pic_path:res.data.data.pic_path});
+                    console.log(this.state.pics);
+                }
+                }
+
     }
     componentWillMount(){
-        let id=this.props.match.params.id;
+        let id=this.props.history.location.state.id;
         let data={id:id,my:1};
         this.getNews(data);
-
+        //console.log( this.state.form.contents);
     }
     onSubmit(e) {
         e.preventDefault();
@@ -101,6 +115,8 @@ export default class NewsAdd extends Component{
     }
 
     render(){
+
+
         return (
             <div>
                 <Layout.Row>
@@ -117,7 +133,7 @@ export default class NewsAdd extends Component{
                     <Input value={this.state.form.title}  placeholder='Add Title Here' onChange={this.onChange.bind(this, 'title')}></Input>
                 </Form.Item>
                 <Form.Item>
-                    <MyEditor ref='myeditor'/>
+                    <MyEditor ref='myeditor'  />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary"  onClick={this.addPic.bind(this)}>Add Pictures <i className="el-icon-upload el-icon-right"></i></Button>
@@ -125,7 +141,7 @@ export default class NewsAdd extends Component{
                 </Form.Item>
                 <Form.Item>
                     {this.state.picAdd == true &&
-                    <GalleryAdd ref='gallery'/>
+                    <GalleryAdd ref='gallery' oldpics={this.state.pics} pic_path={this.state.pic_path}/>
                     }
                 </Form.Item>
 
@@ -133,6 +149,8 @@ export default class NewsAdd extends Component{
             </Form>
                     </Layout.Col>
                 </Layout.Row>
+
+
             </div>
         )
 
