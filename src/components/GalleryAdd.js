@@ -6,6 +6,8 @@ export default class GalleryAdd extends Component{
         this.state={
             fileList:[],
             errMsg:[],
+            oldpics:[],
+            hidePics:[]
         }
 
     }
@@ -31,6 +33,15 @@ export default class GalleryAdd extends Component{
         });
         this.setState({fileList:pics});
 
+    }
+
+    handleHide=(item,key)=>{
+        let pics=this.state.oldpics.filter((item,index)=>{
+            return index!==key;
+        });
+        this.state.hidePics.push(item);
+        this.setState({oldpics:pics,hidePics:this.state.hidePics});
+        //console.log(this.state);
     }
 
     render() {
@@ -71,15 +82,15 @@ export default class GalleryAdd extends Component{
                     </Layout.Col>
                 </Layout.Row>) }
 
-                {this.props.oldpics.length>0 &&
+                {this.state.oldpics.length>0 &&
                 (<Layout.Row>
                     <Layout.Col span="24">
-                        <h2>{this.props.oldpics.length} Existing Pictures:</h2>
+                        <h2>{this.state.oldpics.length} Existing Pictures:</h2>
                         <Layout.Row>
-                            {this.props.oldpics.map((item,key)=>{
+                            {this.state.oldpics.map((item,key)=>{
                                     return(
                                         <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item} /></a> </div>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item} /></a> <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
 
                                         </Layout.Col>
                                     )

@@ -5,6 +5,7 @@ import { EditorState ,convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
+import BreadcumbBar from './BreadcumbBar';
 import {_details, _editNews} from "../api/newsApi";
 import qs from 'qs';
 
@@ -46,7 +47,7 @@ export default class NewsEdit extends Component{
                 this.refs.myeditor.setState({editorState:editContents});
                 if(res.data.data.pics!==undefined && res.data.data.pics.length>0){
                     this.setState({pics:res.data.data.pics, pic_path:res.data.data.pic_path});
-                    console.log(this.state.pics);
+                    this.refs.gallery.setState({oldpics:res.data.data.pics});
                 }
                 }
 
@@ -63,8 +64,9 @@ export default class NewsEdit extends Component{
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
         let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics};
-        this.addNews(data);
+        let hidePics=this.refs.gallery?this.refs.gallery.state.hidePics:[];
+        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'hidePics':hidePics,'id':this.props.history.location.state.id};
+        this.editNews(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
@@ -118,10 +120,11 @@ export default class NewsEdit extends Component{
 
 
         return (
-            <div>
+            <div className="row">
+                <BreadcumbBar nav_arr={[ {txt:'News',to:'/news'},{txt:'Edit'}]} />
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
-                        <h2> Add Document </h2>
+                        <h2> Edit Document </h2>
             <Form model={this.state.form} ref='form' labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
                 <Form.Item>
                 <div style={{'float':'right'}}>
@@ -141,7 +144,7 @@ export default class NewsEdit extends Component{
                 </Form.Item>
                 <Form.Item>
                     {this.state.picAdd == true &&
-                    <GalleryAdd ref='gallery' oldpics={this.state.pics} pic_path={this.state.pic_path}/>
+                    <GalleryAdd ref='gallery'  pic_path={this.state.pic_path}/>
                     }
                 </Form.Item>
 

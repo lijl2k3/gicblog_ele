@@ -83,7 +83,20 @@ class News extends Common
 
     public function editnews(){
         $this->datas=$this->params;
+        $id=$this->datas['id'];
+        unset($this->datas['id']);
+        $map['id']=$id;
+        $map['deleted']=0;
+        $news = db('news')->where($map)->find();
+        if (!empty($news)) {
+            if(!$this->checkUser($news)){
+                $this->returnMsg(400,'User Identification Error','You have no right to edit this news!');
+            }
+        }else{
+            $this->returnMsg(400,'fail to edit news','record not found!');
+        }
         $this->datas['update_time']=time();
+
         if(!empty($this->datas['pics'])) {
             $pics = ($this->datas['pics']);
             $path=Session::get('uid') . '_' . $this->datas['create_time'];
@@ -91,6 +104,7 @@ class News extends Common
             mkdir($pic_path);
             mkdir($pic_path.DS.'thumb');
             $this->datas['pic_path']=$path;
+            unset($this->datas['pics']);
             foreach ($pics as $pic) {
                 $oldpic = ROOT_PATH . 'public' . DS . 'uploads' . DS . $pic['path'] . DS . $pic['name'];
                 $oldpic=iconv('UTF-8','GB2312',$oldpic);
@@ -102,10 +116,20 @@ class News extends Common
                 rename($oldthumb,iconv("utf-8", "gb2312", $newthumb));
             }
         }
-        if($id=db('news')->insertGetId($this->datas)){
-            $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id,'contents'=>$this->datas['contents']]);
+        if(!empty($this->datas['hidePics'])){
+            $oldpics=$this->datas['hidePics'];
+            unset($this->datas['hidePics']);
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS.'/';
+            $thumb_path=ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS.'thumb/';
+            foreach($oldpics as $pic){
+                unlink($pic_path.$pic);
+                unlink($thumb_path.$pic);
+            }
+        }
+        if($id=db('news')->where($map)->update(($this->datas))){
+            $this->returnMsg(200, 'succeed in edit news', 'succeed in edit news');
         }else{
-            $this->returnMsg(400, 'fail to add news', 'fail to insert to database');
+            $this->returnMsg(400, 'fail to edit news', 'fail to insert to database');
         }
     }
 

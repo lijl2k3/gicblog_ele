@@ -60,7 +60,7 @@ export default class News extends Component{
                 }
 
             ],
-            editState:false,
+            editState:sessionStorage.getItem('editState')?sessionStorage.getItem('editState'):false,
             total:0,
             form:{},
             log_in:false
@@ -71,6 +71,7 @@ export default class News extends Component{
     handleSwitch=(value)=>{
         this.state.editState=(value==true)?1:0;
         this.setState({editState:this.state.editState});
+        sessionStorage.setItem('editState',this.state.editState);
         this.refs.pagebar.state.cur=1;
         this.refs.pagebar.setState({cur:this.refs.pagebar.state.cur});
         this.newsList();
@@ -177,21 +178,20 @@ export default class News extends Component{
     }
 
     editRow(row){
-        this.props.history.push({pathname:'/news/edit', state:{id:row.id}});
+        this.props.history.push({pathname:'/news/edit', state:{id:row.id, psize:this.refs.pagebar.state.psize,cur:this.refs.pagebar.state.cur}});
     }
 
 
     render(){
-
         return (
             <div className="row">
-                <BreadcumbBar nav_arr={['News','News List']} />
+                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} />
                 <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} handleSwitch={this.handleSwitch} editState={this.state.editState} log_in={this.state.log_in} ref="filterbar" />
                 <Layout.Row>
                     <Layout.Col span="24" >
                         <Table
                             style={{width:'100%'}}
-                            columns={this.state.editState===1?this.state.columns2:this.state.columns1}
+                            columns={this.state.editState==1?this.state.columns2:this.state.columns1}
                             data={this.state.news}
                         />
                         <div style={{'float':'right'}}>
