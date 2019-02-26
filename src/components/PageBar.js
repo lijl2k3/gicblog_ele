@@ -21,6 +21,11 @@ export default class PageBar extends Component{
         this.forceUpdate();
         this.props.handleList();
     }
+
+    componentWillMount(){
+        this.setState({cur:this.props.cur,psize:this.props.psize});
+    }
+
     render(){
         return (
             <div className="block">

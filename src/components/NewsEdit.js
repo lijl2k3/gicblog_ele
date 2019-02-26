@@ -85,6 +85,10 @@ export default class NewsEdit extends Component{
         this.setState({form:this.state.form});
     }
 
+    handleBack=()=>{
+        this.props.history.push({pathname:'/news', state:{psize:this.props.history.location.state.psize,cur:this.props.history.location.state.cur}});
+    }
+
 
     // handleSubmit=()=>{
     //     let title=this.title.value;
@@ -121,7 +125,7 @@ export default class NewsEdit extends Component{
 
         return (
             <div className="row">
-                <BreadcumbBar nav_arr={[ {txt:'News',to:'/news'},{txt:'Edit'}]} />
+                <BreadcumbBar nav_arr={[ {txt:'News',to:'/news'},{txt:'Edit'}]} back={true} handleBack={this.handleBack} />
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
                         <h2> Edit Document </h2>

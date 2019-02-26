@@ -63,7 +63,9 @@ export default class News extends Component{
             editState:sessionStorage.getItem('editState')?sessionStorage.getItem('editState'):false,
             total:0,
             form:{},
-            log_in:false
+            log_in:false,
+            cur:1,
+            psize:1
 
         };
     }
@@ -115,7 +117,6 @@ export default class News extends Component{
     async newsList(){
         let cur=this.refs.pagebar.state.cur;
         let psize=this.refs.pagebar.state.psize;
-
         let data={
             start:(cur-1)*psize,
             count:psize,
@@ -162,6 +163,16 @@ export default class News extends Component{
         this.newsTotal();
         this.identify();
 
+        // if(this.props.location.state && this.props.location.state.cur){
+        //     this.refs.pagebar.state.cur=this.props.location.state.cur;
+        //     this.forceUpdate();
+        // }
+        // if(this.props.location.state && this.props.location.state.psize){
+        //     this.refs.pagebar.state.psize=this.props.location.state.psize;
+        //     this.forceUpdate();
+        // }
+
+
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.map(item=>{
         //     let thedate=new Date(item.date);
@@ -181,11 +192,25 @@ export default class News extends Component{
         this.props.history.push({pathname:'/news/edit', state:{id:row.id, psize:this.refs.pagebar.state.psize,cur:this.refs.pagebar.state.cur}});
     }
 
+    componentWillMount(){
+        if(this.props.location.state!==undefined) {
+            let {cur, psize} = this.props.location.state;
+            if(cur && psize) {
+                this.setState({cur: cur, psize: psize});
+            }
+        }
+
+        else{
+            this.setState({cur:1,psize:1});
+        }
+    }
+
 
     render(){
+        console.log(this.state);
         return (
             <div className="row">
-                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} />
+                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} back={true} />
                 <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} handleSwitch={this.handleSwitch} editState={this.state.editState} log_in={this.state.log_in} ref="filterbar" />
                 <Layout.Row>
                     <Layout.Col span="24" >
@@ -195,7 +220,7 @@ export default class News extends Component{
                             data={this.state.news}
                         />
                         <div style={{'float':'right'}}>
-                            <PageBar ref='pagebar' handleList={this.newsList.bind(this)} total={this.state.total} />
+                            <PageBar ref='pagebar' handleList={this.newsList.bind(this)} total={this.state.total}  cur={this.state.cur} psize={this.state.psize} />
                         </div>
                     </Layout.Col>
 

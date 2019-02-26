@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Layout}from 'element-react';
 import 'element-theme-default';
+import BreadcumbBar from './BreadcumbBar';
 import { EditorState ,convertFromRaw} from 'draft-js';
 import draftjs from 'draftjs-to-html';
 import {_details} from "../api/newsApi";
@@ -28,6 +29,10 @@ export default class NewsDetail extends Component{
         this.details(data);
     }
 
+    handleBack=()=>{
+        this.props.history.goBack();
+    }
+
     render(){
 
         let item=this.state.info;
@@ -37,6 +42,7 @@ export default class NewsDetail extends Component{
        }
         return (
             <div>
+                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'Details'}]} back={true} handleBack={this.handleBack} />
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
                         <h2> {item.title} </h2>

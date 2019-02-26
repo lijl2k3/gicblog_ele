@@ -33,3 +33,7 @@
 .close:before {
     content: "\2716";
 }
+
+.rdw-editor-main{
+    border:solid #bfcbd9 1px;
+}
