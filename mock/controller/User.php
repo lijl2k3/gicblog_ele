@@ -60,6 +60,12 @@ class User extends Common
         $this->matchUserAndPwd();
     }
 
+    public function logout()
+    {
+        Session::clear();
+        $this->returnMsg(200,'Logout succeed','logout succeed');
+    }
+
     public function identify(){
         $id=Session::get('uid');
         $user=$this->findExistOne('user',['id'=>$id]);

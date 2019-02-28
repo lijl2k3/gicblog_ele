@@ -9,3 +9,7 @@ export function _test() {
 export function _identify() {
     return myaxios.get('/user/identify');
 }
+
+export function _logout() {
+    return myaxios.get('/user/logout');
+}

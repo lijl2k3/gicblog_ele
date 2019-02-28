@@ -15,6 +15,12 @@ export default class BreadcumbBar extends Component{
                             <span onClick={this.props.handleBack}><Icon name={'arrow-left'}></Icon></span>
                         </Breadcrumb.Item>
                     }
+
+                    {this.props.back==false &&
+                    <Breadcrumb.Item>
+                        <span onClick={this.props.history.goBack()}><Icon name={'arrow-left'}></Icon></span>
+                    </Breadcrumb.Item>
+                    }
                     {this.props.nav_arr.map((item,key)=><Breadcrumb.Item key={key}>
                         {item.to !== undefined &&
                         <Link to={item.to} style={{'textDecoration': 'none'}}>{item.txt}</Link>

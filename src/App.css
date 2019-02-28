@@ -37,3 +37,8 @@
 .rdw-editor-main{
     border:solid #bfcbd9 1px;
 }
+
+.loginout{
+    float:right;
+    padding:18px;
+}

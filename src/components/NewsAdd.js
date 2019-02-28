@@ -7,6 +7,7 @@ import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
 import {_addNews} from "../api/newsApi";
 import qs from 'qs';
+import HeadBar from "./HeadBar";
 
 export default class NewsAdd extends Component{
     constructor(props) {
@@ -96,6 +97,7 @@ export default class NewsAdd extends Component{
     render(){
         return (
             <div>
+                <HeadBar/>
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
                         <h2> Add Document </h2>

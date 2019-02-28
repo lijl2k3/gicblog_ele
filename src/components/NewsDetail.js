@@ -6,6 +6,7 @@ import { EditorState ,convertFromRaw} from 'draft-js';
 import draftjs from 'draftjs-to-html';
 import {_details} from "../api/newsApi";
 import qs from 'qs';
+import HeadBar from "./HeadBar";
 export default class NewsDetail extends Component{
 
     constructor(){
@@ -42,6 +43,7 @@ export default class NewsDetail extends Component{
        }
         return (
             <div>
+                <HeadBar/>
                 <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'Details'}]} back={true} handleBack={this.handleBack} />
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">

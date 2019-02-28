@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import {_login} from "../api/userApi";
 import qs from 'qs';
+import HeadBar from "./HeadBar";
 
 export default class  Login extends Component{
     // return(<Button type='primary' onClick={
@@ -23,9 +24,11 @@ export default class  Login extends Component{
     async login(data){
         const res=await _login(qs.stringify(data));
         if(res.data.code==200){
-            sessionStorage.setItem('login','true');
-            if(this.props.location.state && this.props.location.state.from) {
-                this.props.history.push(this.props.location.state.from);
+            sessionStorage.setItem('login',1);
+
+            if(this.props.history.location.state && this.props.history.location.state.from) {
+                console.log(this.props.history.location);
+                this.props.history.push(this.props.history.location.state.from);
             }else{
                 this.props.history.push('/home');
             }
@@ -47,6 +50,7 @@ export default class  Login extends Component{
     render(){
         return (
             <div>
+                <HeadBar/>
                 <Layout.Row>
                     <Layout.Col span="8" offset="6">
                         <h2> Member Login </h2>

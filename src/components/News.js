@@ -7,6 +7,7 @@ import {_newsList,_total,_delete} from "../api/newsApi";
 import {_identify} from "../api/userApi";
 import FilterBar from './FilterBar';
 import qs from 'qs';
+import HeadBar from "./HeadBar";
 export default class News extends Component{
     constructor(){
         super();
@@ -210,6 +211,7 @@ export default class News extends Component{
         console.log(this.state);
         return (
             <div className="row">
+                <HeadBar/>
                 <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} back={true} />
                 <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} handleSwitch={this.handleSwitch} editState={this.state.editState} log_in={this.state.log_in} ref="filterbar" />
                 <Layout.Row>

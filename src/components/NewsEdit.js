@@ -8,6 +8,7 @@ import MyEditor from './MyEditor';
 import BreadcumbBar from './BreadcumbBar';
 import {_details, _editNews} from "../api/newsApi";
 import qs from 'qs';
+import HeadBar from "./HeadBar";
 
 
 export default class NewsEdit extends Component{
@@ -125,6 +126,7 @@ export default class NewsEdit extends Component{
 
         return (
             <div className="row">
+                <HeadBar/>
                 <BreadcumbBar nav_arr={[ {txt:'News',to:'/news'},{txt:'Edit'}]} back={true} handleBack={this.handleBack} />
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
