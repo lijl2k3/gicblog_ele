@@ -40,7 +40,6 @@ export default class App extends Component {
                             <Route path='/home' component={Home}/>
                             <Route exact path='/news' component={News}/>
                             <ProtectedRoute path='/newsAdd' component={NewsAdd}/>
-                            {/*<Route path='/galleryAdd' component={GalleryAdd}/>*/}
                             <ProtectedRoute exact path='/user' component={User}/>
                             <Route path='/news/detail/:id' component={NewsDetail}/>
                             <ProtectedRoute path='/news/edit' component={NewsEdit}/>

@@ -136,7 +136,8 @@ export default class News extends Component{
             news.map(item => {
                 let thedate = new Date(item.create_time * 1000);
                 item.date = thedate.getFullYear() + '/' + parseInt(thedate.getMonth() + 1) + '/' + thedate.getDate();
-                item.link = <Link to={"/news/detail/" + item.id}>{item.title}</Link>;
+                //item.link = <Link to={"/news/detail/" + item.id}>{item.title}</Link>;
+                item.link = <a className='link' onClick={this.detailRow.bind(this, item.id)}>{item.title}</a>;
             });
             this.setState({news});
 
@@ -193,6 +194,11 @@ export default class News extends Component{
         this.props.history.push({pathname:'/news/edit', state:{id:row.id, psize:this.refs.pagebar.state.psize,cur:this.refs.pagebar.state.cur}});
     }
 
+    detailRow(id){
+        //console.log(id);
+        this.props.history.push({pathname:'/news/detail/'+id, state:{ psize:this.refs.pagebar.state.psize,cur:this.refs.pagebar.state.cur}});
+    }
+
     componentWillMount(){
         if(this.props.location.state!==undefined) {
             let {cur, psize} = this.props.location.state;
@@ -207,12 +213,14 @@ export default class News extends Component{
     }
 
 
+
+
     render(){
         console.log(this.state);
         return (
             <div className="row">
                 <HeadBar/>
-                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} back={true} />
+                <BreadcumbBar nav_arr={[{txt: 'News',to:'/news'},{txt:'List'}]} back={false} />
                 <FilterBar handleSearch={this.handleSearch} handleReset={this.handleReset} handleSwitch={this.handleSwitch} editState={this.state.editState} log_in={this.state.log_in} ref="filterbar" />
                 <Layout.Row>
                     <Layout.Col span="24" >

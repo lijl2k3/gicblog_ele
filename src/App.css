@@ -42,3 +42,8 @@
     float:right;
     padding:18px;
 }
+
+a.link{
+    text-decoration: underline;
+    cursor:pointer;
+}

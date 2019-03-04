@@ -26,12 +26,13 @@ export default class NewsDetail extends Component{
 
     componentWillMount(){
         let id=this.props.match.params.id;
+        console.log(id);
         let data={id:id};
         this.details(data);
     }
 
     handleBack=()=>{
-        this.props.history.goBack();
+        this.props.history.push({pathname:'/news', state:{psize:this.props.history.location.state.psize,cur:this.props.history.location.state.cur}});
     }
 
     render(){
