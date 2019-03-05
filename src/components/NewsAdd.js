@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import GalleryAdd from "./GalleryAdd";
+import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
@@ -19,7 +20,8 @@ export default class NewsAdd extends Component{
                 pics:[],
                 author: ''
             },
-            picAdd:false
+            picAdd:false,
+            fileAdd:false
         };
     }
 
@@ -43,7 +45,8 @@ export default class NewsAdd extends Component{
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
         let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics};
+        let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
+        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'files':files};
         this.addNews(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
@@ -81,13 +84,13 @@ export default class NewsAdd extends Component{
         // if(this.refs.form)
         //     console.log(this.refs.form);
         this.refs.form.resetFields();
-        this.setState({form:{title:'',contents:'',pics:[]},picAdd:false});
+        this.setState({form:{title:'',contents:'',pics:[]},picAdd:false,fileAdd:false});
 
     }
 
     addFile(){
 
-        console.log(this.refs.gallery);
+        this.setState({fileAdd:true});
     }
 
     addPic(){
@@ -121,6 +124,11 @@ export default class NewsAdd extends Component{
                 <Form.Item>
                     {this.state.picAdd == true &&
                     <GalleryAdd ref='gallery' oldpics={[]}/>
+                    }
+                </Form.Item>
+                <Form.Item>
+                    {this.state.fileAdd == true &&
+                    <FilesAdd ref='fileslib' oldfiles={[]}/>
                     }
                 </Form.Item>
 

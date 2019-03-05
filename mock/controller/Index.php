@@ -20,8 +20,16 @@ class Index extends Common
 //
 //    }
 
+    public function uploadPics(){
+        $this->upload(true);
+    }
 
-    public function upload(){
+    public function uploadMyFile(){
+        $this->upload(false);
+    }
+
+
+    protected function upload($pic=false){
 // 获取表单上传文件
         $file = request()->file('file');
         if($file){
@@ -36,10 +44,12 @@ class Index extends Common
             //$thumbpath=ROOT_PATH.'public'.DS.'thumbnail'.DS.$mypath;
             $info = $file->move(ROOT_PATH.'public'.DS.'uploads'.DS.$mypath, '');
             if($info){
-                    $path=$mypath;
-                    $type='thumb';
-                    $file=$info->getSaveName();
-                    $this->imageEdit($path, $type,$file);
+                if($pic==true) {
+                    $path = $mypath;
+                    $type = 'thumb';
+                    $file = $info->getSaveName();
+                    $this->imageEdit($path, $type, $file);
+                }
 // 成功上传后 获取上传信息
 // 输出 jpg
                 //echo $info->getExtension();

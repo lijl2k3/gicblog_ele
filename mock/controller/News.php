@@ -74,6 +74,21 @@ class News extends Common
                 rename($oldthumb,iconv("utf-8", "gb2312", $newthumb));
             }
         }
+        if(!empty($this->datas['files'])) {
+            $files = ($this->datas['files']);
+            $path=Session::get('uid') . '_' . $this->datas['create_time'];
+            $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $path;
+            mkdir($file_path);
+            mkdir($file_path.DS.'thumb');
+            $this->datas['file_path']=$path;
+            unset($this->datas['files']);
+            foreach ($files as $file) {
+                $oldfile = ROOT_PATH . 'public' . DS . 'uploads' . DS . $file['path'] . DS . $file['name'];
+                $oldfile=iconv('UTF-8','GB2312',$oldfile);
+                $newfile=$file_path.DS.$file['name'];
+                rename($oldfile,iconv("utf-8", "gb2312", $newfile));
+            }
+        }
         if($id=db('news')->insertGetId($this->datas)){
             $this->returnMsg(200, 'succeed in add news', 'succeed in add news',['id'=>$id,'contents'=>$this->datas['contents']]);
         }else{

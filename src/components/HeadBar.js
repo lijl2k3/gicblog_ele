@@ -9,7 +9,7 @@ export default class HeadBar extends Component{
     }
 
     componentWillMount(){
-        let login=sessionStorage.getItem('login')!==undefined?sessionStorage.getItem('login'):0;
+        let login=sessionStorage.getItem('login')?sessionStorage.getItem('login'):0;
         this.setState({login:login});
 
     }

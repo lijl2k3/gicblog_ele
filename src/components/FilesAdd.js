@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
 import {Upload,Button,Layout, Alert} from 'element-react';
-export default class GalleryAdd extends Component{
+export default class FilesAdd extends Component{
     constructor(props) {
         super(props);
         this.state={
             fileList:[],
             errMsg:[],
-            oldpics:[],
-            hidePics:[]
+            oldfiles:[],
+            hidefiles:[]
         }
 
     }
@@ -28,19 +28,19 @@ export default class GalleryAdd extends Component{
     }
 
     handleClose=key=>{
-        let pics=this.state.fileList.filter((item,index)=>{
+        let files=this.state.fileList.filter((item,index)=>{
             return index!==key;
         });
-        this.setState({fileList:pics});
+        this.setState({fileList:files});
 
     }
 
     handleHide=(item,key)=>{
-        let pics=this.state.oldpics.filter((item,index)=>{
+        let files=this.state.oldfiles.filter((item,index)=>{
             return index!==key;
         });
-        this.state.hidePics.push(item);
-        this.setState({oldpics:pics,hidePics:this.state.hidePics});
+        this.state.hideFiles.push(item);
+        this.setState({oldfiles:files,hideFiles:this.state.hideFiles});
         //console.log(this.state);
     }
 
@@ -70,22 +70,22 @@ export default class GalleryAdd extends Component{
             <div className='box'>
                 <Layout.Row>
                     <Layout.Col span="24">
-                        <h2> Add Pictures Here </h2>
+                        <h2> Add Files Here </h2>
             <Upload
                 className="upload-demo"
                 ref="upload"
-                action={"http://gicapi.io/index.php/index/index/uploadPics"}
+                action={"http://gicapi.io/index.php/index/index/uploadMyFile"}
                 withCredentials={true}
                 // action="//jsonplaceholder.typicode.com/posts/"
                 //onPreview={file => this.handlePreview(file)}
                 //onRemove={(file, fileList) => this.handleRemove(file, fileList)}
                 onSuccess={(response,file,fileList)=>this.handleSuccess(response,file,fileList)}
-                accept='image/jpeg,image/gif, image/png,image/jpg'
+                //accept='image/jpeg,image/gif, image/png,image/jpg'
                 fileList={this.fileList}
                 autoUpload={false}
-                tip={<div className="el-upload__tip">Allowed file type: jpg/jpeg/gif/png</div>}
+                //tip={<div className="el-upload__tip">Allowed file type: jpg/jpeg/gif/png</div>}
                 trigger={<Button size="small" type="primary">Choose File</Button>}
-                beforeUpload={(file)=>this.checkFileType(file)}
+                //beforeUpload={(file)=>this.checkFileType(file)}
 
             >
                 <Button style={{ marginLeft: '10px'}} size="small" type="success" onClick={() => this.submitUpload()}>Upload</Button>
@@ -105,12 +105,12 @@ export default class GalleryAdd extends Component{
                     </Layout.Col>
                 </Layout.Row>) }
 
-                {this.state.oldpics.length>0 &&
+                {this.state.oldfiles.length>0 &&
                 (<Layout.Row>
                     <Layout.Col span="24">
-                        <h2>{this.state.oldpics.length} Existing Pictures:</h2>
+                        <h2>{this.state.oldfiles.length} Existing Files:</h2>
                         <Layout.Row>
-                            {this.state.oldpics.map((item,key)=>{
+                            {this.state.oldfiles.map((item,key)=>{
                                     return(
                                         <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
                                             <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item} /></a> <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
@@ -126,12 +126,13 @@ export default class GalleryAdd extends Component{
                 {this.state.fileList.length>0 &&
                     (<Layout.Row>
                         <Layout.Col span="24">
-                            <h2>{this.state.fileList.length} Pictures loaded:</h2>
+                            <h2>{this.state.fileList.length} Files loaded:</h2>
                             <Layout.Row>
                             {this.state.fileList.map((item,key)=>{
                                  return(
                                      <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                         <div  style={{width:'120px',}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.path+'/'+item.name} /></a> <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
+                                         <div style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img title={item.name} style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/icons/icon_file.png"} /></a> <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
+                                         <div>{item.name}</div>
                                      </Layout.Col>
                                     )
                                 }
