@@ -113,7 +113,7 @@ export default class FilesAdd extends Component{
                             {this.state.oldfiles.map((item,key)=>{
                                     return(
                                         <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/"+this.props.pic_path+'/'+item} /></a> <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
+                                            <div style={{border: 'solid #333 1px',padding:'20px',position:'relative', width:'48px'}}><a target='_blank' href={"http://localhost/gicapi/public/static/files/"+this.props.file_path+'/'+item}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/icons/icon_file.png"} /></a> <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
 
                                         </Layout.Col>
                                     )
@@ -131,7 +131,7 @@ export default class FilesAdd extends Component{
                             {this.state.fileList.map((item,key)=>{
                                  return(
                                      <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                         <div style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img title={item.name} style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/icons/icon_file.png"} /></a> <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
+                                         <div style={{border: 'solid #333 1px',padding:'20px',position:'relative',width:'48px'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.path+'/'+item.name}><img title={item.name} style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/icons/icon_file.png"} /></a> <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
                                          <div>{item.name}</div>
                                      </Layout.Col>
                                     )

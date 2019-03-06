@@ -74,6 +74,24 @@ export default class NewsDetail extends Component{
                             </Layout.Row>
                         </Layout.Col>
                     </Layout.Row>) }
+
+                {(item.files!==undefined) &&
+                (<Layout.Row>
+                    <Layout.Col span="12" offset="4">
+                        <h2>Related Files:</h2>
+                        <Layout.Row>
+                            {item.files.map((file,key)=>{
+                                return(
+                                    <Layout.Col span="4" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
+                                        <div style={{border: 'solid #333 1px',padding:'20px',position:'relative',width:'48px'}}><a target='_blank' href={"http://localhost/gicapi/public/static/files/"+item.file_path+'/'+file} rel="noopener noreferrer"><img title={item.name} style={{'width':'95%'}} src={"http://localhost/gicapi/public/static/images/icons/icon_file.png"} /></a> </div>
+                                        <div>{file}</div>
+                                    </Layout.Col>
+                                )
+                                }
+                            ) }
+                        </Layout.Row>
+                    </Layout.Col>
+                </Layout.Row>) }
             </div>
 
         )

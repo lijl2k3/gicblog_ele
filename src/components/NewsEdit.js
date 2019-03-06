@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout} from 'element-react';
 import GalleryAdd from "./GalleryAdd";
+import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
@@ -23,6 +24,7 @@ export default class NewsEdit extends Component{
             },
             pics:[],
             picAdd:true,
+            fileAdd:true,
             pic_path:''
         };
     }
@@ -39,7 +41,7 @@ export default class NewsEdit extends Component{
     async getNews(data){
         const res=await _details(data);
         if(res.data.code==200){
-            console.log(res.data.data);
+            console.log(this.refs);
             this.state.form.contents = res.data.data.contents;
                 this.state.form.title = res.data.data.title;
                 this.state.form.author=res.data.data.author;
@@ -50,7 +52,11 @@ export default class NewsEdit extends Component{
                     this.setState({pics:res.data.data.pics, pic_path:res.data.data.pic_path});
                     this.refs.gallery.setState({oldpics:res.data.data.pics});
                 }
+                if(res.data.data.files!==undefined && res.data.data.files.length>0){
+                    this.setState({files:res.data.data.files, file_path:res.data.data.file_path});
+                    this.refs.fileslib.setState({oldfiles:res.data.data.files});
                 }
+        }
 
     }
     componentWillMount(){
@@ -151,6 +157,12 @@ export default class NewsEdit extends Component{
                 <Form.Item>
                     {this.state.picAdd == true &&
                     <GalleryAdd ref='gallery'  pic_path={this.state.pic_path}/>
+                    }
+                </Form.Item>
+
+                <Form.Item>
+                    {this.state.fileAdd == true &&
+                    <FilesAdd ref='fileslib'  file_path={this.state.file_path}/>
                     }
                 </Form.Item>
 
