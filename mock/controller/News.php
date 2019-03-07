@@ -118,13 +118,17 @@ class News extends Common
             $this->returnMsg(400,'fail to edit news','record not found!');
         }
         $this->datas['update_time']=time();
-
         if(!empty($this->datas['pics'])) {
             $pics = ($this->datas['pics']);
-            $path=Session::get('uid') . '_' . $this->datas['create_time'];
-            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $path;
-            mkdir($pic_path);
-            mkdir($pic_path.DS.'thumb');
+            if($news['pic_path']!=null) {
+                $path = $news['pic_path'];
+                $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $path;
+            }else{
+                $path=Session::get('uid') . '_' .time();
+                $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $path;
+                mkdir($pic_path);
+                mkdir($pic_path.DS.'thumb');
+                }
             $this->datas['pic_path']=$path;
             unset($this->datas['pics']);
             foreach ($pics as $pic) {
@@ -146,6 +150,35 @@ class News extends Common
             foreach($oldpics as $pic){
                 unlink($pic_path.$pic);
                 unlink($thumb_path.$pic);
+            }
+        }
+
+        if(!empty($this->datas['files'])) {
+            $files = ($this->datas['files']);
+            if($news['file_path']!=null) {
+                $path = $news['file_path'];
+                $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $path;
+            }else{
+                $path=Session::get('uid') . '_' .time();
+                $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $path;
+                mkdir($file_path);
+            }
+            $this->datas['file_path']=$path;
+            unset($this->datas['files']);
+            foreach ($files as $file) {
+                $oldfile = ROOT_PATH . 'public' . DS . 'uploads' . DS . $file['path'] . DS . $file['name'];
+                $oldfile=iconv('UTF-8','GB2312',$oldfile);
+                $newfile=$pic_path.DS.$file['name'];
+                rename($oldfile,iconv("utf-8", "gb2312", $newfile));
+            }
+        }
+        if(!empty($this->datas['hideFiles'])){
+            $oldfiles=$this->datas['hideFiles'];
+            unset($this->datas['hideFiles']);
+            $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $news['file_path'].DS.'/';
+            foreach($oldfiles as $file){
+                unlink($file_path.$file);
+
             }
         }
         if($id=db('news')->where($map)->update(($this->datas))){
