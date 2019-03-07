@@ -32,9 +32,16 @@ class News extends Common
                 }
             }
             if(!empty($res['pic_path'])){
-                $files=$this->listdir(ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS .$res['pic_path']);
+                $pics=$this->listdir(ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS .$res['pic_path']);
+                if($pics!=false){
+                    $res['pics']=$pics;
+                }
+            }
+
+            if(!empty($res['file_path'])){
+                $files=$this->listdir(ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS .$res['file_path']);
                 if($files!=false){
-                    $res['pics']=$files;
+                    $res['files']=$files;
                 }
             }
             $res['contents']=htmlspecialchars_decode($res['contents']);

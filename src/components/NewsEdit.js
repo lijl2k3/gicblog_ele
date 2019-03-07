@@ -34,7 +34,7 @@ export default class NewsEdit extends Component{
         const res=await _editNews(qs.stringify(data));
         if(res.data.code==200){
             //sessionStorage.setItem('login','true');
-            this.props.history.push('/news');
+            this.handleBack();
         }
     }
 
@@ -72,7 +72,9 @@ export default class NewsEdit extends Component{
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
         let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
         let hidePics=this.refs.gallery?this.refs.gallery.state.hidePics:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'hidePics':hidePics,'id':this.props.history.location.state.id};
+        let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
+        let hideFiles=this.refs.fileslib?this.refs.fileslib.state.hideFiles:[];
+        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'hidePics':hidePics,'files':files,'hideFiles':hideFiles,'id':this.props.history.location.state.id};
         this.editNews(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
@@ -119,8 +121,7 @@ export default class NewsEdit extends Component{
     }
 
     addFile(){
-
-        console.log(this.refs.gallery);
+        this.setState({fileAdd:true});
     }
 
     addPic(){
