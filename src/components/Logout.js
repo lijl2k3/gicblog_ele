@@ -8,6 +8,7 @@ export default class  Login extends Component{
             const res=await _logout();
             if(res.data.code==200){
             sessionStorage.setItem('login',0);
+            sessionStorage.setItem('editState',0);
             this.props.history.push('/login');
                 }
             }

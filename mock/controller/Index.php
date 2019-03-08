@@ -54,7 +54,8 @@ class Index extends Common
 // 输出 jpg
                 //echo $info->getExtension();
 // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-                $this->returnMsg(200,'upload succeed','upload succeed',['path'=>$mypath,'name'=>iconv("GB2312","UTF-8",$info->getSaveName())]);
+                $this->returnMsg(200,'upload succeed','upload succeed',['path'=>$mypath,'name'=>iconv("gb2312","utf-8",$info->getSaveName())]);
+                //$this->returnMsg(200,'upload succeed','upload succeed',['path'=>$mypath,'name'=>$info->getSaveName()]);
 // 输出 42a79759f284b767dfcb2a0197904287.jpg
                 //echo $info->getFilename();
             }else{

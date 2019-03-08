@@ -145,11 +145,12 @@ class News extends Common
         if(!empty($this->datas['hidePics'])){
             $oldpics=$this->datas['hidePics'];
             unset($this->datas['hidePics']);
-            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS.'/';
-            $thumb_path=ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS.'thumb/';
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS;
+            $thumb_path=ROOT_PATH . 'public' . DS . 'static' . DS . 'images' . DS . $news['pic_path'].DS.'thumb'.DS;
             foreach($oldpics as $pic){
-                unlink($pic_path.$pic);
-                unlink($thumb_path.$pic);
+                $oldpic=iconv('UTF-8','GB2312',$pic);
+                unlink($pic_path.$oldpic);
+                unlink($thumb_path.$oldpic);
             }
         }
 
@@ -168,16 +169,17 @@ class News extends Common
             foreach ($files as $file) {
                 $oldfile = ROOT_PATH . 'public' . DS . 'uploads' . DS . $file['path'] . DS . $file['name'];
                 $oldfile=iconv('UTF-8','GB2312',$oldfile);
-                $newfile=$pic_path.DS.$file['name'];
+                $newfile=$file_path.DS.$file['name'];
                 rename($oldfile,iconv("utf-8", "gb2312", $newfile));
             }
         }
         if(!empty($this->datas['hideFiles'])){
             $oldfiles=$this->datas['hideFiles'];
             unset($this->datas['hideFiles']);
-            $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $news['file_path'].DS.'/';
+            $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $news['file_path'].DS;
             foreach($oldfiles as $file){
-                unlink($file_path.$file);
+                $oldfile=iconv('UTF-8','GB2312',$file);
+                unlink($file_path.$oldfile);
 
             }
         }

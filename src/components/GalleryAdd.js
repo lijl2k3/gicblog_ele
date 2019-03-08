@@ -13,6 +13,7 @@ export default class GalleryAdd extends Component{
     }
     handleSuccess(response,file,fileList){
         if(response.code==200) {
+            console.log(response.data.data);
             let list = this.state.fileList;
             list.push(response.data);
             this.setState({fileList: list});

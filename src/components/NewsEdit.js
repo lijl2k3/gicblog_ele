@@ -41,10 +41,10 @@ export default class NewsEdit extends Component{
     async getNews(data){
         const res=await _details(data);
         if(res.data.code==200){
-            console.log(this.refs);
             this.state.form.contents = res.data.data.contents;
                 this.state.form.title = res.data.data.title;
                 this.state.form.author=res.data.data.author;
+                this.state.form.id=res.data.data.id;
                 let editContents=EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.data.contents)));
                 this.setState({form:this.state.form});
                 this.refs.myeditor.setState({editorState:editContents});
@@ -67,14 +67,15 @@ export default class NewsEdit extends Component{
     }
     onSubmit(e) {
         e.preventDefault();
-        let {title}=this.state.form;
+        let {title,id}=this.state.form;
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
         let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
         let hidePics=this.refs.gallery?this.refs.gallery.state.hidePics:[];
         let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
         let hideFiles=this.refs.fileslib?this.refs.fileslib.state.hideFiles:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'hidePics':hidePics,'files':files,'hideFiles':hideFiles,'id':this.props.history.location.state.id};
+        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'hidePics':hidePics,'files':files,'hideFiles':hideFiles,'id':id};
+        console.log(data);
         this.editNews(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
