@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2019 at 05:07 AM
+-- Generation Time: Mar 29, 2019 at 10:08 AM
 -- Server version: 5.5.53
 -- PHP Version: 5.6.27
 
@@ -32,19 +32,40 @@ CREATE TABLE IF NOT EXISTS `gic_news` (
   `contents` text COLLATE utf8_bin NOT NULL,
   `author_id` int(11) NOT NULL,
   `pic_path` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `file_path` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `create_time` int(11) NOT NULL,
   `update_time` int(11) NOT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `gic_news`
 --
 
-INSERT INTO `gic_news` (`id`, `title`, `contents`, `author_id`, `pic_path`, `create_time`, `update_time`, `deleted`) VALUES
-(1, 'test1', 'test1test1test1test1test1test1test1test1', 1, NULL, 0, 0, 0),
-(2, 'test2', 'tst2222', 1, NULL, 1548669191, 1548669191, 0);
+INSERT INTO `gic_news` (`id`, `title`, `contents`, `author_id`, `pic_path`, `file_path`, `create_time`, `update_time`, `deleted`) VALUES
+(1, 'test1', 'test1test1test1test1test1test1test1test1', 1, NULL, NULL, 0, 0, 1),
+(2, 'test2', 'tst2222', 1, NULL, NULL, 1548669191, 1548669191, 1),
+(3, 'test3', '{"blocks":[{"key":"95duu","text":"test3","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, NULL, NULL, 1550222084, 1550222084, 0),
+(4, 'aaa', '{"blocks":[{"key":"69k9v","text":"aaa","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642466, 1550642466, 1),
+(5, 'aaa', '{"blocks":[{"key":"e5p3e","text":"aaa","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642629, 1550642629, 1),
+(6, 'bbb', '{"blocks":[{"key":"dn78r","text":"bbb","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642638, 1550642638, 1),
+(7, 'ccc', '{"blocks":[{"key":"g1sf","text":"ccc","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642646, 1550642646, 1),
+(8, 'bbb', '{"blocks":[{"key":"42sum","text":"bbb","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642838, 1550642838, 1),
+(9, 'hhh', '{"blocks":[{"key":"fhds5","text":"hhh","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550642905, 1550642905, 1),
+(10, 'ggg', '{"blocks":[{"key":"5qvsl","text":"ggg","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550646179, 1550646179, 1),
+(11, 'fff', '{"blocks":[{"key":"fbkm2","text":"fff","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550646243, 1550646243, 1),
+(12, 'ttt', '{"blocks":[{"key":"e1n5m","text":"tttt","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550646359, 1550646359, 1),
+(13, 'rrr', '{"blocks":[{"key":"2icvo","text":"rrr","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550646614, 1550646614, 1),
+(14, 'ggg', '{"blocks":[{"key":"9ovc4","text":"gggg","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 1, NULL, NULL, 1550646830, 1550646830, 0),
+(15, 'teststs', '{"blocks":[{"key":"2c14j","text":"teess","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, NULL, NULL, 1550817147, 1550817147, 0),
+(16, 'tester', '{"blocks":[{"key":"3jook","text":"trrere","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1550817448', NULL, 1550817448, 1550817448, 0),
+(17, 'rewe', '{"blocks":[{"key":"c2oo4","text":"ewerere","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":7,"style":"BOLD"}],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1550828176', NULL, 1550828176, 1551079399, 0),
+(18, 'testf', '{"blocks":[{"key":"bjo7k","text":"eeweettrt","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, NULL, '4_1551780453', 1551780453, 1552385338, 0),
+(19, 'testaaa', '{"blocks":[{"key":"ebskd","text":"testaaa","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1552022783', '4_1552022783', 1552022783, 1552022783, 0),
+(20, 'dsds', '{"blocks":[{"key":"7ec80","text":"dsdf","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1552028361', NULL, 1552028361, 1552028361, 0),
+(21, 'trere', '{"blocks":[{"key":"9dgek","text":"trer","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1552028668', '4_1552028668', 1552028668, 1552031733, 0),
+(22, 'Matchmaking Luftfahrt', '{"blocks":[{"key":"d6mf7","text":" Liebe Kollegen, ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"2dsbv","text":"  ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"74b0i","text":"die Profile von\\n16 Firmen zur matchmakings fuer die Markterschliessungsreise im Bereich\\nLuftfahrt von FED sind gespeichert unter: ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"5p6bd","text":"I:\\\\MEBD\\\\1_Markteintritt\\\\4_Matchmaking\\\\201903\\nMarkterschliessungsreise Luftfahrt ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"eli2h","text":"  ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1od02","text":"  ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"9l8dc","text":"Liebe Gruesse, ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"8f8l8","text":"Siyuan  ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 4, '4_1552032183', '4_1552032183', 1552032183, 1552032183, 0);
 
 -- --------------------------------------------------------
 
@@ -67,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `gic_user` (
 --
 
 INSERT INTO `gic_user` (`id`, `uname`, `deleted`, `create_time`, `update_time`, `pwd`) VALUES
-(1, 'lijl', 0, 0, 0, ''),
+(1, 'lijl', 0, 0, 0, '7d9bea7897107df1a06dd096dac353d8'),
 (4, 'testuser', 0, 1548759836, 1548759836, 'e10adc3949ba59abbe56e057f20f883e');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -5,7 +5,7 @@ export default class PageBar extends Component{
     constructor(){
         super();
         this.state={
-            psize:1,
+            psize:5,
             cur:1
         }
     }
@@ -29,7 +29,7 @@ export default class PageBar extends Component{
     render(){
         return (
             <div className="block">
-                <Pagination layout="total, sizes, prev, pager, next" total={this.props.total} pageSizes={[1,2]} pageSize={this.state.psize} currentPage={this.state.cur}
+                <Pagination layout="total, sizes, prev, pager, next" total={this.props.total} pageSizes={[5,10]} pageSize={this.state.psize} currentPage={this.state.cur}
                             onCurrentChange={this.handleCurrentChange.bind(this)}
                             onSizeChange={this.handleSizeChange.bind(this)}
                 />

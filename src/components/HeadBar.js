@@ -25,6 +25,10 @@ export default class HeadBar extends Component{
                     <Menu.Item index="2-1"><Link to='/news' style={{'textDecoration':'none'}}>News List</Link></Menu.Item>
                     <Menu.Item index="2-2"><Link to='/newsAdd' style={{'textDecoration':'none'}}>Add News</Link></Menu.Item>
                 </Menu.SubMenu>
+                <Menu.SubMenu index="3" title="Events">
+                    <Menu.Item index="3-1"><Link to='/events' style={{'textDecoration':'none'}}>Events List</Link></Menu.Item>
+                    <Menu.Item index="3-2"><Link to='/eventsAdd' style={{'textDecoration':'none'}}>Add Events</Link></Menu.Item>
+                </Menu.SubMenu>
                 {/*<Menu.SubMenu index="3" title="My Account">*/}
                     {/*<Menu.Item index="3-1">My Favorite</Menu.Item>*/}
                     {/*<Menu.Item index="3-2"><Link to='/mydoc' style={{'textDecoration':'none'}}>My Documents</Link></Menu.Item>*/}

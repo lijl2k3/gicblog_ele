@@ -66,7 +66,7 @@ export default class News extends Component{
             form:{},
             log_in:false,
             cur:1,
-            psize:1
+            psize:5
 
         };
     }
@@ -208,7 +208,7 @@ export default class News extends Component{
         }
 
         else{
-            this.setState({cur:1,psize:1});
+            this.setState({cur:1,psize:5});
         }
     }
 
