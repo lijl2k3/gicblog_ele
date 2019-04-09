@@ -47,3 +47,14 @@ a.link{
     text-decoration: underline;
     cursor:pointer;
 }
+
+.avatar-uploader-icon{
+    font-size: 18px;
+    color: #8c939d;
+    text-align: center;
+}
+
+.avatar{
+    width:120px;
+    height:120px;
+}

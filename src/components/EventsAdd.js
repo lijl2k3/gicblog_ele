@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout, DatePicker} from 'element-react';
-import GalleryAdd from "./GalleryAdd";
+import ResumeAdd from "./ResumeAdd";
 import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
@@ -13,17 +13,16 @@ import HeadBar from "./HeadBar";
 export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
+        this.submitIntro=this.submitIntro.bind(this);
         this.state = {
             form: {
                 title: '',
                 contents: '',
-                pics:[],
-                author: '',
                 e_startDate:'',
                 e_endDate:''
             },
-            picAdd:false,
-            fileAdd:false
+            resumes:[],
+            ResumeAdd:false,
         };
     }
 
@@ -68,6 +67,19 @@ export default class NewsAdd extends Component{
         this.setState({form:this.state.form});
     }
 
+    submitIntro(){
+        let resume={pic:this.refs.resume.state.pic, intro:this.refs.resume.state.intro};
+        //this.setState({...resumes,resume});
+        this.state.resumes.push(resume);
+        this.setState({resumes:this.state.resumes});
+        //this.setState({resumes: [...this.state.resumes, resume]});
+        this.refs.resume.state.pic={};
+        this.refs.resume.state.intro='';
+        this.state.resumeAdd=false;
+        console.log(this.refs.resume.state.intro);
+    }
+
+
 
     // handleSubmit=()=>{
     //     let title=this.title.value;
@@ -87,12 +99,11 @@ export default class NewsAdd extends Component{
         //     console.log(this.refs.form);
         this.refs.form.resetFields();
         this.setState({form:{title:'',contents:'',pics:[]},picAdd:false,fileAdd:false});
-
     }
 
-    addFile(){
+    addResume(){
 
-        this.setState({fileAdd:true});
+        this.setState({resumeAdd:true});
     }
 
     addPic(){
@@ -145,11 +156,11 @@ export default class NewsAdd extends Component{
                 <Form.Item>
                     <Button type="primary"  onClick={this.addResume.bind(this)}>Add Resume <i className="el-icon-upload el-icon-right"></i></Button>
                 </Form.Item>
-                {/*<Form.Item>*/}
-                    {/*{this.state.picAdd == true &&*/}
-                    {/*<GalleryAdd ref='gallery' oldpics={[]}/>*/}
-                    {/*}*/}
-                {/*</Form.Item>*/}
+                <Form.Item>
+                    {this.state.resumeAdd == true &&
+                    <ResumeAdd ref='resume' submitIntro={this.submitIntro}/>
+                    }
+                </Form.Item>
                 {/*<Form.Item>*/}
                     {/*{this.state.fileAdd == true &&*/}
                     {/*<FilesAdd ref='fileslib' oldfiles={[]}/>*/}
