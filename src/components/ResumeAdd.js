@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
-import {Upload,Button,Layout, Alert, Message} from 'element-react';
+import {Upload,Button,Layout, Alert, Message, Input} from 'element-react';
 export default class ResumeAdd extends Component{
     constructor(props) {
         super(props);
         this.state={
             imageUrl:'',
             pic:{},
-            intro:''
+            intro:'',
+            name:'',
         }
 
     }
@@ -16,6 +17,11 @@ export default class ResumeAdd extends Component{
     }
     handleIntro=(e)=> {
         this.setState({intro:e.target.value});
+        console.log(this.state.intro);
+    }
+    handleName=(e)=> {
+        this.setState({name:e.target.value});
+        console.log(this.state.name);
     }
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -74,7 +80,7 @@ export default class ResumeAdd extends Component{
             <div className='box'>
                 <Layout.Row>
                     <Layout.Col span="24">
-                        <h2> Add Resume Here </h2>
+                        <h2> Add Attendee Here </h2>
                         <Upload
                             className="avatar-uploader"
                             action="http://gicapi.io/index.php/index/index/uploadPics"
@@ -83,11 +89,13 @@ export default class ResumeAdd extends Component{
                             onSuccess={(res, file) => this.handleAvatarScucess(res, file)}
                             beforeUpload={file => this.beforeAvatarUpload(file)}
                         >
-                            <span> Avatar:&nbsp;&nbsp;&nbsp;</span>{ imageUrl ? <img src={imageUrl} className="avatar" /> : <i className="el-icon-plus avatar-uploader-icon"></i> }
+                            <span> <b>Avatar:&nbsp;&nbsp;&nbsp;</b></span>{ imageUrl ? <img src={imageUrl} className="avatar" /> : <i className="el-icon-plus avatar-uploader-icon"></i> }
                         </Upload>
-                        <h3>Resume</h3>
+                        <h3>Name</h3>
+                        <input size='large'onChange={this.handleName.bind(this)} />
+                        <h3>Intro</h3>
                         <textarea style={{width:'100%',rows:"20", height:"60px"}} onChange={this.handleIntro.bind(this)}></textarea>
-                        <Button style={{float:'right'}} size="small" type="success" onClick={this.props.submitIntro}>Upload</Button>
+                        <Button style={{float:'right',marginTop:'20px'}} onChange={this.handleIntro.bind(this)} size="small" type="success" onClick={this.props.submitIntro}>Upload</Button>
                     </Layout.Col>
                 </Layout.Row>
 

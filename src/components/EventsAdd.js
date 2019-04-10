@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout, DatePicker} from 'element-react';
+import {Form,Input,Button,Layout, DatePicker, Popover} from 'element-react';
 import ResumeAdd from "./ResumeAdd";
 import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
@@ -68,15 +68,16 @@ export default class NewsAdd extends Component{
     }
 
     submitIntro(){
-        let resume={pic:this.refs.resume.state.pic, intro:this.refs.resume.state.intro};
+        let resume={pic:this.refs.resume.state.pic, intro:this.refs.resume.state.intro, name:this.refs.resume.state.name};
         //this.setState({...resumes,resume});
         this.state.resumes.push(resume);
         this.setState({resumes:this.state.resumes});
         //this.setState({resumes: [...this.state.resumes, resume]});
         this.refs.resume.state.pic={};
         this.refs.resume.state.intro='';
+        this.refs.resume.state.name='';
         this.state.resumeAdd=false;
-        console.log(this.refs.resume.state.intro);
+        console.log(this.state.resumes);
     }
 
 
@@ -108,6 +109,10 @@ export default class NewsAdd extends Component{
 
     addPic(){
         this.setState({picAdd:true});
+    }
+
+    handleHide(){
+
     }
 
     render(){
@@ -153,6 +158,32 @@ export default class NewsAdd extends Component{
                     />
                 </Layout.Col>
                 </Form.Item>
+                {this.state.resumes.length > 0 &&
+                <Form.Item>
+                    <Layout.Row>
+                        <Layout.Col span="24">
+                            <h2>{this.state.resumes.length} Speaker(s) added:</h2>
+
+                            {this.state.resumes.map((item,key)=>{
+                                    return(
+
+                                        <Layout.Col span="8" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.pic.path+'/'+item.pic.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.pic.path+'/'+item.pic.name} /></a>
+                                                <Popover placement="top-start" title={item.name} width="400" trigger="click" content={item.intro}>
+                                                    <Button style={{width:'95%'}}>More</Button>
+                                                </Popover>
+                                                <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
+
+                                        </Layout.Col>
+
+                                    )
+                                }
+                            ) }
+
+                    </Layout.Col>
+                    </Layout.Row>
+                </Form.Item>
+                }
                 <Form.Item>
                     <Button type="primary"  onClick={this.addResume.bind(this)}>Add Resume <i className="el-icon-upload el-icon-right"></i></Button>
                 </Form.Item>
