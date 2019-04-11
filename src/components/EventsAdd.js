@@ -6,7 +6,7 @@ import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
-import {_addNews} from "../api/newsApi";
+import {_addEvents} from "../api/eventsApi";
 import qs from 'qs';
 import HeadBar from "./HeadBar";
 
@@ -27,11 +27,11 @@ export default class NewsAdd extends Component{
     }
 
 
-    async addNews(data){
-        const res=await _addNews(qs.stringify(data));
+    async addEvents(data){
+        const res=await _addEvents(qs.stringify(data));
         if(res.data.code==200){
             //sessionStorage.setItem('login','true');
-            this.props.history.push('/news');
+            this.props.history.push('/events');
         }
     }
     componentWillMount(){
@@ -42,13 +42,13 @@ export default class NewsAdd extends Component{
     }
     onSubmit(e) {
         e.preventDefault();
-        let {title}=this.state.form;
+        let {title, e_startDate,e_endDate}=this.state.form;
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
-        let pics=this.refs.gallery?this.refs.gallery.state.fileList:[];
-        let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'pics':pics,'files':files};
-        this.addNews(data);
+        let resumes=this.state.resumes;
+        //let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
+        let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate,'end_date':e_endDate,'attendees':resumes};
+        this.addEvents(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
@@ -111,8 +111,12 @@ export default class NewsAdd extends Component{
         this.setState({picAdd:true});
     }
 
-    handleHide(){
-
+    handleClose=key=>{
+        let resumes=this.state.resumes.filter((item,index)=>{
+            return index!==key;
+        });
+        console.log(key);
+        this.setState({resumes:resumes});
     }
 
     render(){
@@ -162,7 +166,7 @@ export default class NewsAdd extends Component{
                 <Form.Item>
                     <Layout.Row>
                         <Layout.Col span="24">
-                            <h2>{this.state.resumes.length} Speaker(s) added:</h2>
+                            <h2>{this.state.resumes.length} Attendee(s) added:</h2>
 
                             {this.state.resumes.map((item,key)=>{
                                     return(
@@ -172,7 +176,7 @@ export default class NewsAdd extends Component{
                                                 <Popover placement="top-start" title={item.name} width="400" trigger="click" content={item.intro}>
                                                     <Button style={{width:'95%'}}>More</Button>
                                                 </Popover>
-                                                <div className='close' onClick={this.handleHide.bind(this,item,key)} ></div></div>
+                                                <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
 
                                         </Layout.Col>
 
@@ -185,7 +189,7 @@ export default class NewsAdd extends Component{
                 </Form.Item>
                 }
                 <Form.Item>
-                    <Button type="primary"  onClick={this.addResume.bind(this)}>Add Resume <i className="el-icon-upload el-icon-right"></i></Button>
+                    <Button type="primary"  onClick={this.addResume.bind(this)}>Add Attendee <i className="el-icon-upload el-icon-right"></i></Button>
                 </Form.Item>
                 <Form.Item>
                     {this.state.resumeAdd == true &&
