@@ -116,7 +116,6 @@ class Common extends Controller
         //$this->checkToken($this->req->param());
         //3. 验证参数,返回成功过滤后的参数数组
         $this->params = $this->checkParams($this->req->param(true));
-
         //print_r($this->params);
     }
 

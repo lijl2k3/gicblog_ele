@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2019 at 10:08 AM
+-- Generation Time: Apr 16, 2019 at 10:18 AM
 -- Server version: 5.5.53
 -- PHP Version: 5.6.27
 
@@ -19,6 +19,36 @@ SET time_zone = "+00:00";
 --
 -- Database: `gicblog`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gic_events`
+--
+
+CREATE TABLE IF NOT EXISTS `gic_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `start_date` int(11) NOT NULL,
+  `end_date` int(11) NOT NULL,
+  `attendees` text NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `pic_path` varchar(100) NOT NULL,
+  `contents` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `gic_events`
+--
+
+INSERT INTO `gic_events` (`id`, `title`, `start_date`, `end_date`, `attendees`, `author_id`, `create_time`, `update_time`, `pic_path`, `contents`) VALUES
+(1, 'rew', 1555257600, 1555430400, '[{"pic":{"path":"4","name":"1067313141.jpg"},"intro":"wew","name":"ewe"}]', 4, 1555314474, 1555314474, '4_1555314474', '{"blocks":[{"key":"845h8","text":"eewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
+(2, 'few', 1555344000, 1555430400, '', 4, 1555314521, 1555314521, '', '{"blocks":[{"key":"9rrli","text":"ewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
+(3, 'aaa', 1555344000, 1555516800, '', 4, 1555409526, 1555409526, '', '{"blocks":[{"key":"boa69","text":"ewe","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
+(4, 'ewe', 1555430400, 1555516800, '', 4, 1555409589, 1555409589, '', '{"blocks":[{"key":"3kn6f","text":"eeww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}');
 
 -- --------------------------------------------------------
 

@@ -1,14 +1,14 @@
 import myaxios from './myaxios';
 export function _addEvents(data){
-    return myaxios.post('/news/addevents',data);
+    return myaxios.post('/events/addevents',data);
 }
 
 export function _editEvents(data){
-    return myaxios.post('/news/editevents',data);
+    return myaxios.post('/events/editevents',data);
 }
 
 export function _eventsList(data){
-    return myaxios.get('/news/eventslist',{params:data});
+    return myaxios.get('/events/eventslist',{params:data});
 }
 
 export function _details(data){

@@ -14,14 +14,15 @@ export default class ResumeAdd extends Component{
     handleAvatarScucess(res, file) {
         this.setState({ imageUrl: URL.createObjectURL(file.raw) });
         this.setState({pic:res.data});
+
     }
     handleIntro=(e)=> {
         this.setState({intro:e.target.value});
-        console.log(this.state.intro);
+
     }
     handleName=(e)=> {
         this.setState({name:e.target.value});
-        console.log(this.state.name);
+        
     }
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

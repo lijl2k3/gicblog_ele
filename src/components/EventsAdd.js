@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout, DatePicker, Popover} from 'element-react';
+import {Form,Input,Button,Layout, DatePicker, Popover,MessageBox} from 'element-react';
 import ResumeAdd from "./ResumeAdd";
 import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
@@ -31,7 +31,9 @@ export default class NewsAdd extends Component{
         const res=await _addEvents(qs.stringify(data));
         if(res.data.code==200){
             //sessionStorage.setItem('login','true');
+            MessageBox.alert('Succeed in saving records!')
             this.props.history.push('/events');
+            //console.log(res.data);
         }
     }
     componentWillMount(){
@@ -43,8 +45,25 @@ export default class NewsAdd extends Component{
     onSubmit(e) {
         e.preventDefault();
         let {title, e_startDate,e_endDate}=this.state.form;
+        if(e_startDate==''){
+            MessageBox.alert('Please select stat date for the event!');
+            return;
+        }
+        if(e_endDate==''){
+            MessageBox.alert('Please select end date for the event!');
+            return;
+        }
+        if(title==''){
+            MessageBox.alert('Please input title for the event!');
+            return;
+        }
         // let contents=draftjs(convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent()));
+        if(this.refs.myeditor.state.editorState==undefined){
+            MessageBox.alert('Please input description for the event!');
+            return;
+        }
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
+
         let resumes=this.state.resumes;
         //let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
         let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate,'end_date':e_endDate,'attendees':resumes};
@@ -54,7 +73,7 @@ export default class NewsAdd extends Component{
         // news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
         // localStorage.setItem('news',JSON.stringify(news));
         //this.props.history.push('/news');
-        //console.log(this.props);
+
     }
 
     onChange(key, value) {
@@ -77,7 +96,7 @@ export default class NewsAdd extends Component{
         this.refs.resume.state.intro='';
         this.refs.resume.state.name='';
         this.state.resumeAdd=false;
-        console.log(this.state.resumes);
+        console.log(this.refs.resume.state);
     }
 
 
@@ -169,10 +188,16 @@ export default class NewsAdd extends Component{
                             <h2>{this.state.resumes.length} Attendee(s) added:</h2>
 
                             {this.state.resumes.map((item,key)=>{
+                                let imgsrc="http://localhost/gicapi/public/static/attendees/avatar_noname.png";
+                                console.log(item.pic);
+                                if(Object.keys(item.pic).length>0){
+                                    imgsrc="http://localhost/gicapi/public/thumbnail/"+item.pic.path+'/'+item.pic.name;
+                                }
                                     return(
 
                                         <Layout.Col span="8" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}><a target='_blank' href={"http://localhost/gicapi/public/uploads/"+item.pic.path+'/'+item.pic.name}><img style={{'width':'95%'}} src={"http://localhost/gicapi/public/thumbnail/"+item.pic.path+'/'+item.pic.name} /></a>
+                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}>
+                                                <img style={{'width':'95%'}} src={imgsrc} />
                                                 <Popover placement="top-start" title={item.name} width="400" trigger="click" content={item.intro}>
                                                     <Button style={{width:'95%'}}>More</Button>
                                                 </Popover>
