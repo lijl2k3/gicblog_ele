@@ -13,7 +13,9 @@ import Blog from './Blog';
 import User from './User';
 import News from './News';
 import NewsAdd from './NewsAdd';
+import Events from './Events';
 import EventsAdd from './EventsAdd';
+import EventsDetail from './EventsDetail';
 import GalleryAdd from './GalleryAdd';
 import NewsDetail from './NewsDetail';
 import NewsEdit from './NewsEdit';
@@ -40,10 +42,12 @@ export default class App extends Component {
                             <Route exact path='/' component={Home}/>
                             <Route path='/home' component={Home}/>
                             <Route exact path='/news' component={News}/>
+                            <Route exact path='/events' component={Events}/>
                             <ProtectedRoute path='/newsAdd' component={NewsAdd}/>
                             <ProtectedRoute path='/eventsAdd' component={EventsAdd}/>
                             <ProtectedRoute exact path='/user' component={User}/>
                             <Route path='/news/detail/:id' component={NewsDetail}/>
+                            <Route path='/events/detail/:id' component={EventsDetail}/>
                             <ProtectedRoute path='/news/edit' component={NewsEdit}/>
                         </div>
                     </div>

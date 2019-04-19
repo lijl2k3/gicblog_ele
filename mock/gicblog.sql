@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2019 at 10:18 AM
+-- Generation Time: Apr 19, 2019 at 10:22 AM
 -- Server version: 5.5.53
 -- PHP Version: 5.6.27
 
@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `gic_events` (
   `update_time` int(11) NOT NULL,
   `pic_path` varchar(100) NOT NULL,
   `contents` text NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
@@ -44,11 +45,11 @@ CREATE TABLE IF NOT EXISTS `gic_events` (
 -- Dumping data for table `gic_events`
 --
 
-INSERT INTO `gic_events` (`id`, `title`, `start_date`, `end_date`, `attendees`, `author_id`, `create_time`, `update_time`, `pic_path`, `contents`) VALUES
-(1, 'rew', 1555257600, 1555430400, '[{"pic":{"path":"4","name":"1067313141.jpg"},"intro":"wew","name":"ewe"}]', 4, 1555314474, 1555314474, '4_1555314474', '{"blocks":[{"key":"845h8","text":"eewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
-(2, 'few', 1555344000, 1555430400, '', 4, 1555314521, 1555314521, '', '{"blocks":[{"key":"9rrli","text":"ewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
-(3, 'aaa', 1555344000, 1555516800, '', 4, 1555409526, 1555409526, '', '{"blocks":[{"key":"boa69","text":"ewe","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'),
-(4, 'ewe', 1555430400, 1555516800, '', 4, 1555409589, 1555409589, '', '{"blocks":[{"key":"3kn6f","text":"eeww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}');
+INSERT INTO `gic_events` (`id`, `title`, `start_date`, `end_date`, `attendees`, `author_id`, `create_time`, `update_time`, `pic_path`, `contents`, `deleted`) VALUES
+(1, 'rew', 1555257600, 1555430400, '[{"pic":{"path":"4","name":"1067313141.jpg"},"intro":"wew","name":"ewe"}]', 4, 1555314474, 1555314474, '4_1555314474', '{"blocks":[{"key":"845h8","text":"eewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
+(2, 'few', 1555344000, 1555430400, '', 4, 1555314521, 1555314521, '', '{"blocks":[{"key":"9rrli","text":"ewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
+(3, 'aaa', 1555344000, 1555516800, '', 4, 1555409526, 1555409526, '', '{"blocks":[{"key":"boa69","text":"ewe","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
+(4, 'ewe', 1555430400, 1555516800, '', 4, 1555409589, 1555409589, '', '{"blocks":[{"key":"3kn6f","text":"eeww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0);
 
 -- --------------------------------------------------------
 
