@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Form,Input,Button,Layout, DatePicker, Popover,MessageBox} from 'element-react';
 import ResumeAdd from "./ResumeAdd";
+import Schedule from "./Schedule";
 import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
@@ -14,6 +15,7 @@ export default class NewsAdd extends Component{
     constructor(props) {
         super(props);
         this.submitIntro=this.submitIntro.bind(this);
+        this.submitSchedule=this.submitSchedule.bind(this);
         this.state = {
             form: {
                 title: '',
@@ -23,6 +25,7 @@ export default class NewsAdd extends Component{
             },
             resumes:[],
             ResumeAdd:false,
+            ScheduleAdd:false
         };
     }
 
@@ -99,6 +102,10 @@ export default class NewsAdd extends Component{
         console.log(this.refs.resume.state);
     }
 
+    submitSchedule(){
+
+    }
+
 
 
     // handleSubmit=()=>{
@@ -124,6 +131,13 @@ export default class NewsAdd extends Component{
     addResume(){
 
         this.setState({resumeAdd:true});
+        this.setState({scheduleAdd:false});
+    }
+
+    addSchedule(){
+
+        this.setState({scheduleAdd:true});
+        this.setState({resumeAdd:false});
     }
 
     addPic(){
@@ -215,10 +229,17 @@ export default class NewsAdd extends Component{
                 }
                 <Form.Item>
                     <Button type="primary"  onClick={this.addResume.bind(this)}>Add Attendee <i className="el-icon-upload el-icon-right"></i></Button>
+                    <Button type="primary"  onClick={this.addSchedule.bind(this)}>Add Schedule <i className="el-icon-upload el-icon-right"></i></Button>
                 </Form.Item>
                 <Form.Item>
                     {this.state.resumeAdd == true &&
                     <ResumeAdd ref='resume' submitIntro={this.submitIntro}/>
+                    }
+                </Form.Item>
+
+                <Form.Item>
+                    {this.state.scheduleAdd == true &&
+                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
                     }
                 </Form.Item>
                 {/*<Form.Item>*/}
