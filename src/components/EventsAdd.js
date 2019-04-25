@@ -24,6 +24,7 @@ export default class NewsAdd extends Component{
                 e_endDate:''
             },
             resumes:[],
+            schedules:[],
             ResumeAdd:false,
             ScheduleAdd:false
         };
@@ -103,6 +104,18 @@ export default class NewsAdd extends Component{
     }
 
     submitSchedule(){
+        if(this.refs.schedule.state.value1==null){
+            MessageBox.alert('Please input Date!');
+            return;
+        }
+        if(this.refs.schedule.state.todos.length==0){
+            MessageBox.alert('Please add at least one plan!');
+            return;
+        }
+        let schedule={date:this.refs.schedule.state.value1, todos: this.refs.schedule.state.todos};
+        this.state.schedules.push(schedule);
+        this.setState({schedules:this.state.schedules});
+
 
     }
 

@@ -27,7 +27,7 @@ export default class Todos extends Component{
 
     render() {
         return (
-            <Layout.Row gutter={60} style={{marginTop:'20px'}}>
+            <Layout.Row gutter="20" style={{marginTop:'20px'}}>
                 <Layout.Col span={4}>
                     <TimeSelect
                         start="08:30"
