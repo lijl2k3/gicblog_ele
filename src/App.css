@@ -58,3 +58,13 @@ a.link{
     width:120px;
     height:120px;
 }
+
+.iconlink{
+    font-size:16px;
+    color:#8c939d;
+    padding:5px;
+    border:solid 1px white;
+}
+a.iconlink:hover{
+    border:solid 1px #333333;
+}

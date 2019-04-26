@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout, DatePicker, Popover,MessageBox} from 'element-react';
+import {Form,Input,Button,Layout, DatePicker, Popover,MessageBox, Badge,Icon} from 'element-react';
 import ResumeAdd from "./ResumeAdd";
 import Schedule from "./Schedule";
 import FilesAdd from "./FilesAdd";
@@ -26,7 +26,7 @@ export default class NewsAdd extends Component{
             resumes:[],
             schedules:[],
             ResumeAdd:false,
-            ScheduleAdd:false
+            ScheduleAdd:false,
         };
     }
 
@@ -114,7 +114,7 @@ export default class NewsAdd extends Component{
         }
         let schedule={date:this.refs.schedule.state.value1, todos: this.refs.schedule.state.todos};
         this.state.schedules.push(schedule);
-        this.setState({schedules:this.state.schedules});
+        this.setState({schedules:this.state.schedules,scheduleAdd:false});
 
 
     }
@@ -164,6 +164,11 @@ export default class NewsAdd extends Component{
         console.log(key);
         this.setState({resumes:resumes});
     }
+    editSchedule=(key)=>{
+        let {scheduleMark}=this.state;
+        this.setState({scheduleMark:key});
+
+    }
 
     render(){
         const {e_startDate, e_endDate}=this.state.form;
@@ -208,6 +213,21 @@ export default class NewsAdd extends Component{
                     />
                 </Layout.Col>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary"  onClick={this.addResume.bind(this)}>Add Attendee <i className="el-icon-upload el-icon-right"></i></Button>
+                    <Button type="primary"  onClick={this.addSchedule.bind(this)}>Add Schedule <i className="el-icon-upload el-icon-right"></i></Button>
+                </Form.Item>
+                <Form.Item>
+                    {this.state.resumeAdd == true &&
+                    <ResumeAdd ref='resume' submitIntro={this.submitIntro}/>
+                    }
+                </Form.Item>
+
+                <Form.Item>
+                    {this.state.scheduleAdd == true &&
+                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
+                    }
+                </Form.Item>
                 {this.state.resumes.length > 0 &&
                 <Form.Item>
                     <Layout.Row>
@@ -240,21 +260,37 @@ export default class NewsAdd extends Component{
                     </Layout.Row>
                 </Form.Item>
                 }
-                <Form.Item>
-                    <Button type="primary"  onClick={this.addResume.bind(this)}>Add Attendee <i className="el-icon-upload el-icon-right"></i></Button>
-                    <Button type="primary"  onClick={this.addSchedule.bind(this)}>Add Schedule <i className="el-icon-upload el-icon-right"></i></Button>
-                </Form.Item>
-                <Form.Item>
-                    {this.state.resumeAdd == true &&
-                    <ResumeAdd ref='resume' submitIntro={this.submitIntro}/>
-                    }
-                </Form.Item>
+                {this.state.schedules.length>0  &&
+                    <Form.Item>
+                        <Layout.Row>
+                            <h2>{this.state.schedules.length} Schedule(s) added:</h2>
+                            {this.state.schedules.map((item,key)=>{
+                                return(
+                                <Layout.Col span={24}key={key} style={{borderBottom:'solid 1px #777',marginTop:'16px',padding:'10px'}}>
+                                    <Layout.Row>
+                                    <Layout.Col span={16}>
+                                        <Badge value={ item.todos.length }>
+                                            <Button size="large">{item.date.toLocaleDateString()}</Button>
+                                        </Badge>
+                                    </Layout.Col>
+                                    <Layout.Col span={8}>
+                                        <div style={{margin:'0 20px',display:'inline-block'}}> <a className='iconlink' href='#' onClick={this.editSchedule.bind(this,key)}><Icon name='edit'></Icon></a></div>
+                                        <div style={{margin:'0 20px',display:'inline-block'}}> <a className='iconlink' href='#'><Icon name='delete'></Icon></a></div>
+                                    </Layout.Col>
+                                    </Layout.Row>
+                                    {this.state.scheduleMark == key &&
+                                        <Layout.Row>
+                                            <Schedule/>
+                                        </Layout.Row>
+                                    }
+                                </Layout.Col>
 
-                <Form.Item>
-                    {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
-                    }
-                </Form.Item>
+                                )
+                            })}
+                        </Layout.Row>
+                    </Form.Item>
+                }
+
                 {/*<Form.Item>*/}
                     {/*{this.state.fileAdd == true &&*/}
                     {/*<FilesAdd ref='fileslib' oldfiles={[]}/>*/}
