@@ -68,3 +68,18 @@ a.link{
 a.iconlink:hover{
     border:solid 1px #333333;
 }
+
+div.listblock{
+    border:dashed 1px #bfcbd9;
+}
+
+ul.list{
+    margin:0;
+    padding:0;
+}
+ul.list li{
+    list-style: none;
+    float:right;
+
+}
+

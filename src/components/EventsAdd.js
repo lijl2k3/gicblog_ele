@@ -119,6 +119,12 @@ export default class NewsAdd extends Component{
 
     }
 
+    modifySchedule=key=>{
+        let schedule={date:this.refs.editschedule.state.value1, todos: this.refs.editschedule.state.todos};
+        this.state.schedules[key]=schedule;
+        this.setState({schedules:this.state.schedules,scheduleMark:null, scheduleAdd:false});
+    }
+
 
 
     // handleSubmit=()=>{
@@ -161,12 +167,17 @@ export default class NewsAdd extends Component{
         let resumes=this.state.resumes.filter((item,index)=>{
             return index!==key;
         });
-        console.log(key);
         this.setState({resumes:resumes});
     }
     editSchedule=(key)=>{
         let {scheduleMark}=this.state;
         this.setState({scheduleMark:key});
+
+    }
+    cancelSchedule=(key)=>{
+        this.setState({scheduleMark:null});
+    }
+    deleteSchedule=(key)=>{
 
     }
 
@@ -223,11 +234,7 @@ export default class NewsAdd extends Component{
                     }
                 </Form.Item>
 
-                <Form.Item>
-                    {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
-                    }
-                </Form.Item>
+
                 {this.state.resumes.length > 0 &&
                 <Form.Item>
                     <Layout.Row>
@@ -266,21 +273,32 @@ export default class NewsAdd extends Component{
                             <h2>{this.state.schedules.length} Schedule(s) added:</h2>
                             {this.state.schedules.map((item,key)=>{
                                 return(
-                                <Layout.Col span={24}key={key} style={{borderBottom:'solid 1px #777',marginTop:'16px',padding:'10px'}}>
-                                    <Layout.Row>
-                                    <Layout.Col span={16}>
-                                        <Badge value={ item.todos.length }>
-                                            <Button size="large">{item.date.toLocaleDateString()}</Button>
-                                        </Badge>
-                                    </Layout.Col>
-                                    <Layout.Col span={8}>
-                                        <div style={{margin:'0 20px',display:'inline-block'}}> <a className='iconlink' href='#' onClick={this.editSchedule.bind(this,key)}><Icon name='edit'></Icon></a></div>
-                                        <div style={{margin:'0 20px',display:'inline-block'}}> <a className='iconlink' href='#'><Icon name='delete'></Icon></a></div>
-                                    </Layout.Col>
+                                <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
+                                    {this.state.scheduleMark !== key &&
+                                    <Layout.Row style={{borderBottom: 'solid 1px #bfcbd9',
+                                        backgroundColor: '#f4e9c1',padding: '10px',
+                                        }}>
+                                        <Layout.Col span={4} offset={1}>
+                                            <Badge value={item.todos.length}>
+                                                <Button size="large">{item.date.toLocaleDateString()}</Button>
+                                            </Badge>
+                                        </Layout.Col>
+                                        <Layout.Col span={2}>
+                                            <Button type="success" icon="edit" size={'mini'}
+                                                    onClick={this.editSchedule.bind(this, key)}>Edit
+                                            </Button>
+                                        </Layout.Col>
+
+                                        <Layout.Col span={2}>
+                                            <Button type="danger" icon="delete" size={'mini'}
+                                                    onClick={this.deleteSchedule.bind(this, key)}>Delete
+                                            </Button>
+                                        </Layout.Col>
                                     </Layout.Row>
+                                    }
                                     {this.state.scheduleMark == key &&
                                         <Layout.Row>
-                                            <Schedule/>
+                                            <Schedule ref='editschedule' submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this)} item={item}/>
                                         </Layout.Row>
                                     }
                                 </Layout.Col>
@@ -291,12 +309,11 @@ export default class NewsAdd extends Component{
                     </Form.Item>
                 }
 
-                {/*<Form.Item>*/}
-                    {/*{this.state.fileAdd == true &&*/}
-                    {/*<FilesAdd ref='fileslib' oldfiles={[]}/>*/}
-                    {/*}*/}
-                {/*</Form.Item>*/}
-
+                <Form.Item>
+                    {this.state.scheduleAdd == true &&
+                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
+                    }
+                </Form.Item>
 
             </Form>
                     </Layout.Col>
