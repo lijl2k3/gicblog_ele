@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 19, 2019 at 10:22 AM
+-- Generation Time: Apr 29, 2019 at 10:11 AM
 -- Server version: 5.5.53
 -- PHP Version: 5.6.27
 
@@ -38,18 +38,25 @@ CREATE TABLE IF NOT EXISTS `gic_events` (
   `pic_path` varchar(100) NOT NULL,
   `contents` text NOT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `schedules` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `gic_events`
 --
 
-INSERT INTO `gic_events` (`id`, `title`, `start_date`, `end_date`, `attendees`, `author_id`, `create_time`, `update_time`, `pic_path`, `contents`, `deleted`) VALUES
-(1, 'rew', 1555257600, 1555430400, '[{"pic":{"path":"4","name":"1067313141.jpg"},"intro":"wew","name":"ewe"}]', 4, 1555314474, 1555314474, '4_1555314474', '{"blocks":[{"key":"845h8","text":"eewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
-(2, 'few', 1555344000, 1555430400, '', 4, 1555314521, 1555314521, '', '{"blocks":[{"key":"9rrli","text":"ewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
-(3, 'aaa', 1555344000, 1555516800, '', 4, 1555409526, 1555409526, '', '{"blocks":[{"key":"boa69","text":"ewe","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0),
-(4, 'ewe', 1555430400, 1555516800, '', 4, 1555409589, 1555409589, '', '{"blocks":[{"key":"3kn6f","text":"eeww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0);
+INSERT INTO `gic_events` (`id`, `title`, `start_date`, `end_date`, `attendees`, `author_id`, `create_time`, `update_time`, `pic_path`, `contents`, `deleted`, `schedules`) VALUES
+(1, 'rew', 1555257600, 1555430400, '[{"pic":{"path":"4","name":"1067313141.jpg"},"intro":"wew","name":"ewe"}]', 4, 1555314474, 1555314474, '4_1555314474', '{"blocks":[{"key":"845h8","text":"eewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(2, 'few', 1555344000, 1555430400, '', 4, 1555314521, 1555314521, '', '{"blocks":[{"key":"9rrli","text":"ewew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(3, 'aaa', 1555344000, 1555516800, '', 4, 1555409526, 1555409526, '', '{"blocks":[{"key":"boa69","text":"ewe","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(4, 'ewe', 1555430400, 1555516800, '', 4, 1555409589, 1555409589, '', '{"blocks":[{"key":"3kn6f","text":"eeww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(5, 'fewew', 1555948800, 1556121600, '[{"pic":{"path":"4","name":"N55G1347.jpg"},"intro":"testtest\\nteset\\ntest","name":"test"}]', 4, 1555920736, 1555920736, '4_1555920736', '{"blocks":[{"key":"ephlm","text":"errwwwww","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(6, 'tewr', 1556035200, 1556208000, '[{"pic":{"path":"4","name":"N55G1347.jpg"},"intro":"\\u4e94\\u6708\\u4f0a\\u59cb\\uff0c\\u6211\\u4eec\\u5373\\u5c06\\u8fce\\u6765\\u4e0a\\u534a\\u5e74\\u7684\\u5c0f\\u957f\\u5047\\uff0c\\u4e58\\u7740\\u8fd9\\u4e2a\\u95f4\\u9699\\u53ef\\u4ee5\\u603b\\u7ed3\\u56de\\u987e\\u4e0a\\u534a\\u5e74\\u7684\\u4e1a\\u52a1\\u72b6\\u51b5\\uff0c\\u53ca\\u65f6\\u8c03\\u6574\\u4e0b\\u534a\\u5e74\\u7684\\u89c4\\u5212\\u53ca\\u53d1\\u5c55\\u65b9\\u5411\\u3002\\u4e94\\u6708\\u95f4\\u5404\\u884c\\u5404\\u4e1a\\u7684\\u5c55\\u4f1a\\u4e91\\u96c6\\uff0c\\u82e5\\u60a8\\u9700\\u8981\\u67e5\\u8be2\\u5fb7\\u56fd\\u53ca\\u56fd\\u5185\\u7684\\u5c55\\u4f1a\\u65e5\\u7a0b\\uff0c\\u53ef\\u67e5\\u8be2\\u4e0b\\u65b9\\u6211\\u4eec\\u4e3a\\u60a8\\u6574\\u7406\\u7684\\u8868\\u683c\\u3002\\n\\n+\\u9644\\u4ef6\\u8868\\u683c\\u4e24\\u9875\\uff08\\u5fb7\\u56fd\\u53ca\\u4e2d\\u56fd\\uff09\\n\\n\\u66f4\\u591a\\u5c55\\u4f1a\\u8be6\\u60c5\\u8bf7\\u8bbf\\u95ee\\u5c55\\u4f1a\\u5b98\\u7f51\\u3002\\u5982\\u9700\\u5e2e\\u52a9\\u8bf7\\u8054\\u7cfb\\u6211\\u4eec\\n\\n\\u5fb7\\u56fd\\u5c55\\u89c8\\u4f1a\\n","name":"test"}]', 4, 1555921990, 1555921990, '4_1555921990', '{"blocks":[{"key":"2sp1d","text":"rererrre","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"7utql","text":"errrrrrrr","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"ab1v8","text":"reeeeeeeef","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(7, 'tdrff', 1555430400, 1556208000, '[{"pic":{"path":"4","name":"0001.jpg"},"intro":"\\u4e94\\u6708\\u4f0a\\u59cb\\uff0c\\u6211\\u4eec\\u5373\\u5c06\\u8fce\\u6765\\u4e0a\\u534a\\u5e74\\u7684\\u5c0f\\u957f\\u5047\\uff0c\\u4e58\\u7740\\u8fd9\\u4e2a\\u95f4\\u9699\\u53ef\\u4ee5\\u603b\\u7ed3\\u56de\\u987e\\u4e0a\\u534a\\u5e74\\u7684\\u4e1a\\u52a1\\u72b6\\u51b5\\uff0c\\u53ca\\u65f6\\u8c03\\u6574\\u4e0b\\u534a\\u5e74\\u7684\\u89c4\\u5212\\u53ca\\u53d1\\u5c55\\u65b9\\u5411\\u3002\\u4e94\\u6708\\u95f4\\u5404\\u884c\\u5404\\u4e1a\\u7684\\u5c55\\u4f1a\\u4e91\\u96c6\\uff0c\\u82e5\\u60a8\\u9700\\u8981\\u67e5\\u8be2\\u5fb7\\u56fd\\u53ca\\u56fd\\u5185\\u7684\\u5c55\\u4f1a\\u65e5\\u7a0b\\uff0c\\u53ef\\u67e5\\u8be2\\u4e0b\\u65b9\\u6211\\u4eec\\u4e3a\\u60a8\\u6574\\u7406\\u7684\\u8868\\u683c\\u3002\\n\\n+\\u9644\\u4ef6\\u8868\\u683c\\u4e24\\u9875\\uff08\\u5fb7\\u56fd\\u53ca\\u4e2d\\u56fd\\uff09\\n\\n\\u66f4\\u591a\\u5c55\\u4f1a\\u8be6\\u60c5\\u8bf7\\u8bbf\\u95ee\\u5c55\\u4f1a\\u5b98\\u7f51\\u3002\\u5982\\u9700\\u5e2e\\u52a9\\u8bf7\\u8054\\u7cfb\\u6211\\u4eec\\n\\n\\u5fb7\\u56fd\\u5c55\\u89c8\\u4f1a\\n","name":"rerff"},{"pic":{"path":"4","name":"N55G1347.jpg"},"intro":"\\u4e94\\u6708\\u4f0a\\u59cb\\uff0c\\u6211\\u4eec\\u5373\\u5c06\\u8fce\\u6765\\u4e0a\\u534a\\u5e74\\u7684\\u5c0f\\u957f\\u5047\\uff0c\\u4e58\\u7740\\u8fd9\\u4e2a\\u95f4\\u9699\\u53ef\\u4ee5\\u603b\\u7ed3\\u56de\\u987e\\u4e0a\\u534a\\u5e74\\u7684\\u4e1a\\u52a1\\u72b6\\u51b5\\uff0c\\u53ca\\u65f6\\u8c03\\u6574\\u4e0b\\u534a\\u5e74\\u7684\\u89c4\\u5212\\u53ca\\u53d1\\u5c55\\u65b9\\u5411\\u3002\\u4e94\\u6708\\u95f4\\u5404\\u884c\\u5404\\u4e1a\\u7684\\u5c55\\u4f1a\\u4e91\\u96c6\\uff0c\\u82e5\\u60a8\\u9700\\u8981\\u67e5\\u8be2\\u5fb7\\u56fd\\u53ca\\u56fd\\u5185\\u7684\\u5c55\\u4f1a\\u65e5\\u7a0b\\uff0c\\u53ef\\u67e5\\u8be2\\u4e0b\\u65b9\\u6211\\u4eec\\u4e3a\\u60a8\\u6574\\u7406\\u7684\\u8868\\u683c\\u3002\\n\\n+\\u9644\\u4ef6\\u8868\\u683c\\u4e24\\u9875\\uff08\\u5fb7\\u56fd\\u53ca\\u4e2d\\u56fd\\uff09\\n\\n\\u66f4\\u591a\\u5c55\\u4f1a\\u8be6\\u60c5\\u8bf7\\u8bbf\\u95ee\\u5c55\\u4f1a\\u5b98\\u7f51\\u3002\\u5982\\u9700\\u5e2e\\u52a9\\u8bf7\\u8054\\u7cfb\\u6211\\u4eec\\n\\n\\u5fb7\\u56fd\\u5c55\\u89c8\\u4f1a\\n","name":"grefds"}]', 4, 1555923125, 1555923125, '4_1555923125', '{"blocks":[{"key":"38d47","text":"wewrew","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(8, 'test1', 1554739200, 1554825600, '', 4, 1556515955, 1556515955, '', '{"blocks":[{"key":"fto67","text":"test1","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(9, 'testa', 1555344000, 1555430400, '', 4, 1556516078, 1556516078, '', '{"blocks":[{"key":"5u407","text":"test","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, ''),
+(10, 'test1', 1554825600, 1554912000, '', 4, 1556520678, 1556520678, '', '{"blocks":[{"key":"4bfs","text":"test","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}', 0, '[{"date":"2019-04-22T16:00:00.000Z","todos":[{"startDate":"2016-10-10T06:30:00.000Z","endDate":"2016-10-10T07:30:00.000Z","plan":"test"},{"startDate":"2016-10-10T06:30:00.000Z","endDate":"2016-10-10T07:30:00.000Z","plan":"test2"}]}]');
 
 -- --------------------------------------------------------
 

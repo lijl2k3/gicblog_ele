@@ -57,6 +57,9 @@ class Events extends Common
 //                rename($oldfile,iconv("utf-8", "gb2312", $newfile));
 //            }
 //        }
+        if(!empty($this->datas['schedules']) && count($this->datas['schedules'])>0){
+            $this->datas['schedules']=json_encode($this->datas['schedules']);
+        }
         if($id=db('events')->insertGetId($this->datas)){
             $this->returnMsg(200, 'succeed in add events', 'succeed in add events',['id'=>$id,'contents'=>$this->datas['contents']]);
         }else{

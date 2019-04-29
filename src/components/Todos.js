@@ -23,7 +23,6 @@ export default class Todos extends Component{
 
     handlePlan=(value)=>{
         this.setState({plan:value});
-        console.log(this.state.plan);
     }
 
     render() {

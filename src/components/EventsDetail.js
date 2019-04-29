@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Layout}from 'element-react';
+import {Layout,Button,Tabs}from 'element-react';
 import 'element-theme-default';
 import BreadcumbBar from './BreadcumbBar';
+import Schedule from './Schedule';
 import { EditorState ,convertFromRaw} from 'draft-js';
 import draftjs from 'draftjs-to-html';
 import {_details} from "../api/eventsApi";
@@ -11,7 +12,7 @@ export default class EventsDetail extends Component{
 
     constructor(){
         super();
-        this.state={info:{},attendees:[]
+        this.state={info:{},attendees:[],schedules:[]
         };
     }
 
@@ -19,9 +20,19 @@ export default class EventsDetail extends Component{
         const res=await _details(data);
 
         if(res.data.code==200){
+
             let info=res.data.data;
-            let attendees=JSON.parse(info.attendees);
-            this.setState({info,attendees});
+            let attendees,schedules;
+            if(info.attendees){
+               attendees=JSON.parse(info.attendees);
+                this.setState({attendees});
+            }
+            if(info.schedules){
+                schedules=JSON.parse(info.schedules);
+                this.setState({schedules});
+            }
+            this.setState({info});
+
         }
     }
 
@@ -83,6 +94,27 @@ export default class EventsDetail extends Component{
                         </Layout.Col>
                     </Layout.Row>) }
 
+                {this.state.schedules.length>0 &&
+                <Layout.Row>
+                    <Layout.Col span={12} offset={4}>
+                    <h2>{this.state.schedules.length} Schedule(s) added:</h2>
+                        <Tabs type="card" value="tab0">
+                        {this.state.schedules.map((item,key)=>{
+                            return(
+                                <Tabs.Pane label={new Date(item.date).toLocaleDateString()} name={'tab'+key} key={key}>
+                                    <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
+                                        <Layout.Row>
+                                            <Schedule ref={'viewschedule'+key} item={item} viewMark={true} />
+                                        </Layout.Row>
+                                    </Layout.Col>
+                                </Tabs.Pane>
+                            )
+                        })}
+                        </Tabs>
+                        </Layout.Col>
+                    </Layout.Row>
+
+                }
 
 
                     {/*<div>*/}

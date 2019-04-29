@@ -20,8 +20,8 @@ export default class NewsAdd extends Component{
             form: {
                 title: '',
                 contents: '',
-                e_startDate:'',
-                e_endDate:''
+                e_startDate:null,
+                e_endDate:null
             },
             resumes:[],
             schedules:[],
@@ -49,15 +49,15 @@ export default class NewsAdd extends Component{
     onSubmit(e) {
         e.preventDefault();
         let {title, e_startDate,e_endDate}=this.state.form;
-        if(e_startDate==''){
+        if(e_startDate==null){
             MessageBox.alert('Please select stat date for the event!');
             return;
         }
-        if(e_endDate==''){
+        if(e_endDate==null){
             MessageBox.alert('Please select end date for the event!');
             return;
         }
-        if(title==''){
+        if(title.trim()==''){
             MessageBox.alert('Please input title for the event!');
             return;
         }
@@ -69,8 +69,9 @@ export default class NewsAdd extends Component{
         let contents=convertToRaw(this.refs.myeditor.state.editorState.getCurrentContent());
 
         let resumes=this.state.resumes;
+        let schedules=this.state.schedules;
         //let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate,'end_date':e_endDate,'attendees':resumes};
+        let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate.toLocaleDateString(),'end_date':e_endDate.toLocaleDateString(),'attendees':resumes, 'schedules':schedules};
         this.addEvents(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
@@ -174,11 +175,15 @@ export default class NewsAdd extends Component{
         this.setState({scheduleMark:key});
 
     }
-    cancelSchedule=(key)=>{
-        this.setState({scheduleMark:null});
+    cancelSchedule=()=>{
+        this.setState({scheduleMark:null, scheduleAdd:false});
     }
     deleteSchedule=(key)=>{
-
+        this.setState({
+            schedules:this.state.schedules.filter((item,index)=>{
+                return index!==key;
+            })
+        })
     }
 
     render(){
@@ -273,35 +278,40 @@ export default class NewsAdd extends Component{
                             <h2>{this.state.schedules.length} Schedule(s) added:</h2>
                             {this.state.schedules.map((item,key)=>{
                                 return(
-                                <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
+                                //<Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
+                                    <div>
                                     {this.state.scheduleMark !== key &&
+                                    <Layout.Col span={8}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                     <Layout.Row style={{borderBottom: 'solid 1px #bfcbd9',
                                         backgroundColor: '#f4e9c1',padding: '10px',
                                         }}>
-                                        <Layout.Col span={4} offset={1}>
+                                        <Layout.Col span={12} >
                                             <Badge value={item.todos.length}>
                                                 <Button size="large">{item.date.toLocaleDateString()}</Button>
                                             </Badge>
                                         </Layout.Col>
-                                        <Layout.Col span={2}>
+                                        <Layout.Col span={6}>
                                             <Button type="success" icon="edit" size={'mini'}
                                                     onClick={this.editSchedule.bind(this, key)}>Edit
                                             </Button>
                                         </Layout.Col>
 
-                                        <Layout.Col span={2}>
+                                        <Layout.Col span={6}>
                                             <Button type="danger" icon="delete" size={'mini'}
                                                     onClick={this.deleteSchedule.bind(this, key)}>Delete
                                             </Button>
                                         </Layout.Col>
                                     </Layout.Row>
+                                    </Layout.Col>
                                     }
                                     {this.state.scheduleMark == key &&
+                                    <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                         <Layout.Row>
                                             <Schedule ref='editschedule' submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this)} item={item}/>
                                         </Layout.Row>
+                                    </Layout.Col>
                                     }
-                                </Layout.Col>
+                                    </div>
 
                                 )
                             })}
@@ -311,7 +321,7 @@ export default class NewsAdd extends Component{
 
                 <Form.Item>
                     {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule' submitSchedule={this.submitSchedule}/>
+                    <Schedule ref='schedule' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
                     }
                 </Form.Item>
 
