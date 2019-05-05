@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Button,Layout, Alert, Message, Input,DatePicker} from 'element-react';
+import {Button,Layout, Alert, Message, Input,DatePicker,Badge} from 'element-react';
 import Todos from "./Todos";
 export default class Schedule extends Component{
 
@@ -46,106 +46,129 @@ export default class Schedule extends Component{
 
     render() {
         const {value1} = this.state
+        switch (this.props.mode) {
+            case 'edit':
+                return (
+                    <div>
+                        {this.props.viewMark == null &&
+                        <div className="block">
+                            <Layout.Row>
+                                <Layout.Col span={12}>
+                                    <DatePicker
+                                        value={value1}
+                                        placeholder="Choose Date"
+                                        onChange={date => {
+                                            this.setState({value1: date})
+                                        }}
+                                    />
+                                </Layout.Col>
+                            </Layout.Row>
 
-        return (
-            <div>
-                {this.props.viewMark == null &&
-                <div className="block">
-                    <Layout.Row>
-                        <Layout.Col span={12}>
-                            <DatePicker
-                                value={value1}
-                                placeholder="Choose Date"
-                                onChange={date => {
-                                    this.setState({value1: date})
-                                }}
-                            />
-                        </Layout.Col>
-                    </Layout.Row>
+                            <div className="listblock">
+                                {this.state.todos.length > 0 &&
 
-                    <div className="listblock">
-                        {this.state.todos.length > 0 &&
+                                this.state.todos.map((item, key) => {
+                                    return (
+                                        <div>
+                                            {this.state.todoMark !== key &&
+                                            <Todos item={item} mode={'view'} editTodo={this.editTodo.bind(this, key)}
+                                                   deleteTodo={this.deleteTodo.bind(this, key)} key={key}/>
+                                            }
+                                            {this.state.todoMark == key &&
+                                            <Layout.Row>
+                                                <Todos ref='edittodo' submitTodo={this.modifyTodo.bind(this, key)}
+                                                       item={item}
+                                                       mode={'edit'} cancelTodo={this.cancelTodo.bind(this)}/>
+                                            </Layout.Row>
+                                            }
+                                        </div>
+                                    )
+                                })
+                                }
 
-                        this.state.todos.map((item, key) => {
-                            let e_startDate, e_endDate;
-                            if ((typeof item.startDate) == 'string') {
-                                e_startDate = new Date(item.startDate);
-                            } else {
-                                e_startDate = item.startDate;
-                            }
-                            if ((typeof item.endDate) == 'string') {
-                                e_endDate = new Date(item.endDate);
-                            } else {
-                                e_endDate = item.endDate;
-                            }
-                            let startMin = e_startDate.getMinutes() <= 9 ? '0' + e_startDate.getMinutes().toString() : e_startDate.getMinutes().toString();
-                            let endMin = e_endDate.getMinutes() <= 9 ? '0' + e_endDate.getMinutes().toString() : e_endDate.getMinutes().toString();
-                            return (
-                                <div>
-                                    {this.state.todoMark !== key &&
-                                    <Layout.Row gutter={"60"} style={{
-                                        marginTop: '20px',
-                                        marginLeft: '0',
-                                        marginRight: '0',
-                                        borderBottom: 'solid 1px #bfcbd9',
-                                        backgroundColor: '#f4e9c1'
-                                    }} key={key}>
-                                        <Layout.Col
-                                            span={6}>{e_startDate.getHours() + ':' + startMin + ' - ' + e_endDate.getHours() + ':' + endMin}</Layout.Col>
-                                        <Layout.Col span={8}>{item.plan}</Layout.Col>
-                                        <Layout.Col span={2} offset={3}>
-                                            <Button type="success" icon="edit" size={'mini'}
-                                                    onClick={this.editTodo.bind(this, key)}>Edit</Button>
-                                        </Layout.Col>
+                                {this.state.TodoAdd == true &&
 
-                                        <Layout.Col span={2}>
-                                            <Button type="danger" icon="delete" size={'mini'}
-                                                    onClick={this.deleteTodo.bind(this, key)}>Delete</Button>
-                                        </Layout.Col>
-                                    </Layout.Row>
-                                    }
-                                    {this.state.todoMark == key &&
-                                    <Layout.Row>
-                                        <Todos ref='edittodo' submitTodo={this.modifyTodo.bind(this, key)} item={item}
-                                               editMark={true} cancelTodo={this.cancelTodo.bind(this)}/>
-                                    </Layout.Row>
-                                    }
-                                </div>
-                            )
-                        })
+                                <Todos ref='todo' submitTodo={this.submitTodo} mode={'add'}/>
+
+                                }
+                                <Layout.Row>
+                                    <Layout.Col span={24} style={{paddingLeft: '30px', paddingTop: '8px'}}>
+                                        <Button type="text" onClick={this.addTodo.bind(this)}>Add A New Plan</Button>
+                                    </Layout.Col>
+                                </Layout.Row>
+
+                                {this.state.todos.length > 0 &&
+
+                                (<Layout.Row>
+                                    <Layout.Col span={8} offset={16}>
+                                        <Button type='success' onClick={this.props.submitSchedule}
+                                                style={{'float': 'right', margin: '10px'}}>Save All Plans</Button>
+                                        <Button type='danger' onClick={this.props.cancelSchedule}
+                                                style={{'float': 'right', margin: '10px'}}>Cancel</Button>
+                                    </Layout.Col>
+                                </Layout.Row>)
+
+                                }
+                            </div>
+                        </div>
                         }
 
-                        {this.state.TodoAdd == true &&
-
-                        <Todos ref='todo' submitTodo={this.submitTodo}/>
-
-                        }
-                        <Layout.Row>
-                            <Layout.Col span={24} style={{paddingLeft: '30px', paddingTop: '8px'}}>
-                                <Button type="text" onClick={this.addTodo.bind(this)}>Add A New Plan</Button>
-                            </Layout.Col>
-                        </Layout.Row>
-
-                        {this.state.todos.length > 0 &&
-
-                        (<Layout.Row>
-                            <Layout.Col span={8} offset={16}>
-                                <Button type='success' onClick={this.props.submitSchedule}
-                                        style={{'float': 'right', margin: '10px'}}>Save All Plans</Button>
-                                <Button type='danger' onClick={this.props.cancelSchedule}
-                                        style={{'float': 'right', margin: '10px'}}>Cancel</Button>
-                            </Layout.Col>
-                        </Layout.Row>)
-
-                        }
                     </div>
-                </div>
-                }
-                {this.props.viewMark==true &&
-                <div>aa</div>
-                }
-            </div>
-                )
+                );
+                break;
+
+            case 'view': {
+                let item=this.props.item;
+                return (
+                    <Layout.Row style={{
+                        borderBottom: 'solid 1px #bfcbd9',
+                        backgroundColor: '#f4e9c1', padding: '10px',
+                    }}>
+                        <Layout.Col span={12}>
+                            <Badge value={item.todos.length}>
+                                <Button size="large">{new Date(item.date).toLocaleDateString()}</Button>
+                            </Badge>
+                        </Layout.Col>
+                        {this.props.editSchedule &&
+                        <Layout.Col span={6}>
+                            <Button type="success" icon="edit" size={'mini'}
+                                    onClick={this.props.editSchedule}>Edit
+                            </Button>
+                        </Layout.Col>
+                        }
+                        {this.props.deleteSchedule &&
+                        <Layout.Col span={6}>
+                            <Button type="danger" icon="delete" size={'mini'}
+                                    onClick={this.props.deleteSchedule}>Delete
+                            </Button>
+                        </Layout.Col>
+                        }
+                    </Layout.Row>
+                );
+                break;
+            }
+
+            case 'paneview':{
+                let item=this.props.item;
+                return(
+                    <Layout.Col span={24} style={{marginTop:'16px',padding:'10px'}}>
+                        <Layout.Row>
+                            <h3>{new Date(item.date).toLocaleDateString()}</h3>
+                            {item.todos.length > 0 &&
+                                item.todos.map((todo,key)=>{
+                                   return(
+                                       <Todos mode={'view'} item={todo} />
+                                   )
+                                })
+
+                            }
+                        </Layout.Row>
+                    </Layout.Col>
+                );
+                break;
+            }
+
+        }
     }
 
 

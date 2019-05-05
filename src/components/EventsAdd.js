@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout, DatePicker, Popover,MessageBox, Badge,Icon} from 'element-react';
-import ResumeAdd from "./ResumeAdd";
+import {Form,Input,Button,Layout, DatePicker,MessageBox, Badge,Icon} from 'element-react';
+import Resume from "./Resume";
 import Schedule from "./Schedule";
 import FilesAdd from "./FilesAdd";
 import { EditorState ,convertToRaw} from 'draft-js';
@@ -235,7 +235,7 @@ export default class NewsAdd extends Component{
                 </Form.Item>
                 <Form.Item>
                     {this.state.resumeAdd == true &&
-                    <ResumeAdd ref='resume' submitIntro={this.submitIntro}/>
+                    <Resume ref='resume' submitIntro={this.submitIntro} mode={'add'}/>
                     }
                 </Form.Item>
 
@@ -247,24 +247,9 @@ export default class NewsAdd extends Component{
                             <h2>{this.state.resumes.length} Attendee(s) added:</h2>
 
                             {this.state.resumes.map((item,key)=>{
-                                let imgsrc="http://localhost/gicapi/public/static/attendees/avatar_noname.png";
-                                console.log(item.pic);
-                                if(Object.keys(item.pic).length>0){
-                                    imgsrc="http://localhost/gicapi/public/thumbnail/"+item.pic.path+'/'+item.pic.name;
-                                }
-                                    return(
-
-                                        <Layout.Col span="8" style={{'marginBottom':'30px','marginRight':'20px'}} key={key}>
-                                            <div  style={{width:'120px'}} style={{'border': 'solid #333 1px','padding':'20px',position:'relative'}}>
-                                                <img style={{'width':'95%'}} src={imgsrc} />
-                                                <Popover placement="top-start" title={item.name} width="400" trigger="click" content={item.intro}>
-                                                    <Button style={{width:'95%'}}>More</Button>
-                                                </Popover>
-                                                <div className='close' onClick={this.handleClose.bind(this,key)} ></div></div>
-
-                                        </Layout.Col>
-
-                                    )
+                                return(
+                                <Resume ref='resumeview'item={item} mode={'view'} handleClose={this.handleClose.bind(this,key)} key={key}/>
+                                )
                                 }
                             ) }
 
@@ -282,32 +267,13 @@ export default class NewsAdd extends Component{
                                     <div>
                                     {this.state.scheduleMark !== key &&
                                     <Layout.Col span={8}key={key} style={{marginTop:'16px',padding:'10px'}}>
-                                    <Layout.Row style={{borderBottom: 'solid 1px #bfcbd9',
-                                        backgroundColor: '#f4e9c1',padding: '10px',
-                                        }}>
-                                        <Layout.Col span={12} >
-                                            <Badge value={item.todos.length}>
-                                                <Button size="large">{item.date.toLocaleDateString()}</Button>
-                                            </Badge>
-                                        </Layout.Col>
-                                        <Layout.Col span={6}>
-                                            <Button type="success" icon="edit" size={'mini'}
-                                                    onClick={this.editSchedule.bind(this, key)}>Edit
-                                            </Button>
-                                        </Layout.Col>
-
-                                        <Layout.Col span={6}>
-                                            <Button type="danger" icon="delete" size={'mini'}
-                                                    onClick={this.deleteSchedule.bind(this, key)}>Delete
-                                            </Button>
-                                        </Layout.Col>
-                                    </Layout.Row>
+                                        <Schedule mode={'view'} editSchedule={this.editSchedule.bind(this,key)} deleteSchedule={this.deleteSchedule.bind(this,key)} item={item}/>
                                     </Layout.Col>
                                     }
                                     {this.state.scheduleMark == key &&
                                     <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                         <Layout.Row>
-                                            <Schedule ref='editschedule' submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this)} item={item}/>
+                                            <Schedule ref='editschedule' mode='edit'submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this)} item={item}/>
                                         </Layout.Row>
                                     </Layout.Col>
                                     }
@@ -321,7 +287,7 @@ export default class NewsAdd extends Component{
 
                 <Form.Item>
                     {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
+                    <Schedule ref='schedule'  mode='edit' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
                     }
                 </Form.Item>
 

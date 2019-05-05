@@ -31,6 +31,10 @@ export default class EventsDetail extends Component{
                 schedules=JSON.parse(info.schedules);
                 this.setState({schedules});
             }
+            // if(info.schedules){
+            //     this.state.schedules=JSON.parse(info.schedules);
+            //     console.log(this.state.schedules);
+            // }
             this.setState({info});
 
         }
@@ -47,7 +51,7 @@ export default class EventsDetail extends Component{
     }
 
     render(){
-
+        console.log(this.state.schedules);
         let item=this.state.info;
         let contents=(item.contents);
         let startDate=new Date(this.state.info.start_date*1000);
@@ -94,6 +98,10 @@ export default class EventsDetail extends Component{
                         </Layout.Col>
                     </Layout.Row>) }
 
+                {/*{this.state.schedules.length>0 &&*/}
+                {/*<div></div>*/}
+                {/*}*/}
+
                 {this.state.schedules.length>0 &&
                 <Layout.Row>
                     <Layout.Col span={12} offset={4}>
@@ -101,12 +109,8 @@ export default class EventsDetail extends Component{
                         <Tabs type="card" value="tab0">
                         {this.state.schedules.map((item,key)=>{
                             return(
-                                <Tabs.Pane label={new Date(item.date).toLocaleDateString()} name={'tab'+key} key={key}>
-                                    <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
-                                        <Layout.Row>
-                                            <Schedule ref={'viewschedule'+key} item={item} viewMark={true} />
-                                        </Layout.Row>
-                                    </Layout.Col>
+                                <Tabs.Pane label={(new Date(item.date)).toLocaleDateString()} name={'tab'+key} key={key}>
+                                    <Schedule mode={'paneview'} item={item}/>
                                 </Tabs.Pane>
                             )
                         })}
