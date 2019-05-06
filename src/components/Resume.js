@@ -16,12 +16,12 @@ export default class ResumeAdd extends Component{
         this.setState({pic:res.data});
 
     }
-    handleIntro=(e)=> {
-        this.setState({intro:e.target.value});
+    handleIntro=(value)=> {
+        this.setState({intro:value});
 
     }
-    handleName=(e)=> {
-        this.setState({name:e.target.value});
+    handleName=(value)=> {
+        this.setState({name:value});
         
     }
     beforeAvatarUpload(file) {
@@ -97,10 +97,14 @@ export default class ResumeAdd extends Component{
                                     <i className="el-icon-plus avatar-uploader-icon"></i>}
                                 </Upload>
                                 <h3>Name</h3>
-                                <input size='large' onChange={this.handleName.bind(this)}/>
+                                <Input placeholder="Attendee's name" onChange={this.handleName} value={this.state.name} />
                                 <h3>Intro</h3>
-                                <textarea style={{width: '100%', rows: "20", height: "60px"}}
-                                          onChange={this.handleIntro.bind(this)}></textarea>
+                                <Input
+                                    type="textarea"
+                                    autosize={{ minRows: 2, maxRows: 4}}
+                                    placeholder="Introduction"
+                                    onChange={this.handleIntro}
+                                />
                                 <Button style={{float: 'right', marginTop: '20px'}}
                                         onChange={this.handleIntro.bind(this)} size="small" type="success"
                                         onClick={this.props.submitIntro}>Upload</Button>
@@ -111,7 +115,7 @@ export default class ResumeAdd extends Component{
                 );
             break;
 
-            case 'view': {
+            case 'viewpop': {
                 let item = this.props.item;
                 let imgsrc = "http://localhost/gicapi/public/static/attendees/avatar_noname.png";
                 if (Object.keys(item.pic).length > 0) {
@@ -119,7 +123,7 @@ export default class ResumeAdd extends Component{
                 }
                 return (
 
-                    <Layout.Col span="8" style={{'marginBottom': '30px', 'marginRight': '20px'}}>
+                    <Layout.Col span="4" style={{'marginBottom': '30px', 'marginRight': '20px'}}>
                         <div style={{width: '120px'}}
                              style={{'border': 'solid #333 1px', 'padding': '20px', position: 'relative'}}>
                             <img style={{'width': '95%'}} src={imgsrc}/>
@@ -130,6 +134,30 @@ export default class ResumeAdd extends Component{
                             <div className='close' onClick={this.props.handleClose}></div>
                         </div>
 
+                    </Layout.Col>
+
+                );
+                break;
+
+            }
+
+            case 'view': {
+                let item = this.props.item;
+                let imgsrc = "http://localhost/gicapi/public/static/attendees/avatar_noname.png";
+                if (Object.keys(item.pic).length > 0) {
+                    imgsrc = "http://localhost/gicapi/public/static/attendees/" + this.props.path + '/thumb/' + item.pic.name;
+                }
+                return (
+
+                    <Layout.Col span="24" >
+                        <Layout.Col span={4}>
+
+                        <div className='avatordiv'><img src={imgsrc} /></div>
+                        </Layout.Col>
+                        <Layout.Col span={13}>
+                            <h4 style={{marginTop:0}}>{item.name}</h4>
+                            <div style={{wordWrap:'break-word',marginBottom:'20px'}}>{item.intro}</div>
+                        </Layout.Col>
                     </Layout.Col>
 
                 );

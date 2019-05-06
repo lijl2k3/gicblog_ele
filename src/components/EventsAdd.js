@@ -27,6 +27,7 @@ export default class NewsAdd extends Component{
             schedules:[],
             ResumeAdd:false,
             ScheduleAdd:false,
+            oldSchedule:{}
         };
     }
 
@@ -173,10 +174,15 @@ export default class NewsAdd extends Component{
     editSchedule=(key)=>{
         let {scheduleMark}=this.state;
         this.setState({scheduleMark:key});
+        this.setState({oldSchedule:JSON.parse(JSON.stringify(this.state.schedules[key]))});
+
 
     }
-    cancelSchedule=()=>{
+    cancelSchedule=(key)=>{
         this.setState({scheduleMark:null, scheduleAdd:false});
+        this.state.schedules[key]=this.state.oldSchedule;
+        this.setState({schedules:this.state.schedules});
+        this.setState({oldSchedule:{}});
     }
     deleteSchedule=(key)=>{
         this.setState({
@@ -238,9 +244,14 @@ export default class NewsAdd extends Component{
                     <Resume ref='resume' submitIntro={this.submitIntro} mode={'add'}/>
                     }
                 </Form.Item>
+                <Form.Item>
+                    {this.state.scheduleAdd == true &&
+                    <Schedule ref='schedule'  mode='edit' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
+                    }
+                </Form.Item>
 
 
-                {this.state.resumes.length > 0 &&
+                {(this.state.resumes.length > 0) &&
                 <Form.Item>
                     <Layout.Row>
                         <Layout.Col span="24">
@@ -248,7 +259,7 @@ export default class NewsAdd extends Component{
 
                             {this.state.resumes.map((item,key)=>{
                                 return(
-                                <Resume ref='resumeview'item={item} mode={'view'} handleClose={this.handleClose.bind(this,key)} key={key}/>
+                                <Resume ref='resumeview'item={item} mode={'viewpop'} handleClose={this.handleClose.bind(this,key)} key={key}/>
                                 )
                                 }
                             ) }
@@ -273,7 +284,7 @@ export default class NewsAdd extends Component{
                                     {this.state.scheduleMark == key &&
                                     <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                         <Layout.Row>
-                                            <Schedule ref='editschedule' mode='edit'submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this)} item={item}/>
+                                            <Schedule ref='editschedule' mode='edit'submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this,key)} item={item}/>
                                         </Layout.Row>
                                     </Layout.Col>
                                     }
@@ -285,11 +296,7 @@ export default class NewsAdd extends Component{
                     </Form.Item>
                 }
 
-                <Form.Item>
-                    {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule'  mode='edit' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
-                    }
-                </Form.Item>
+
 
             </Form>
                     </Layout.Col>

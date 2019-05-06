@@ -8,6 +8,7 @@ import draftjs from 'draftjs-to-html';
 import {_details} from "../api/eventsApi";
 import qs from 'qs';
 import HeadBar from "./HeadBar";
+import Resume from './Resume';
 export default class EventsDetail extends Component{
 
     constructor(){
@@ -72,7 +73,7 @@ export default class EventsDetail extends Component{
                        <div dangerouslySetInnerHTML={ {__html:draftjs(contents)} }></div>
                 </Layout.Col>
                     <Layout.Col span="12" offset="4">
-                        <span><b>Time:</b>{startDate.getFullYear() + '/' + parseInt(startDate.getMonth() + 1) + '/' + startDate.getDate()} - {endDate.getFullYear() + '/' + parseInt(endDate.getMonth() + 1) + '/' + endDate.getDate()}</span>
+                        <span><b>Time: </b>{startDate.getFullYear() + '/' + parseInt(startDate.getMonth() + 1) + '/' + startDate.getDate()} - {endDate.getFullYear() + '/' + parseInt(endDate.getMonth() + 1) + '/' + endDate.getDate()}</span>
                     </Layout.Col>
 
                 </Layout.Row>
@@ -80,21 +81,18 @@ export default class EventsDetail extends Component{
 
                 {(this.state.attendees.length>0) &&
                     (<Layout.Row>
-                        <Layout.Col span="12" offset="4">
+                        <Layout.Col span="16" offset="4">
                             <h2>Attendees:</h2>
-                            <Layout.Row>
+
                             {this.state.attendees.map((item,key)=>{
                                     return(
-                                        <div key={key}>
-                                        <Layout.Col span="24" >
-                                            <div><b>{item.title}</b></div>
-                                            <div><img src={"http://localhost/gicapi/public/static/attendees/"+this.state.info.pic_path+'/thumb/'+item.pic.name} style={{float:"left", width:"120px"}} /><span>{item.intro}</span></div>
-                                        </Layout.Col>
-                                        </div>
+                                        <Layout.Row key={key} style={{borderBottom:'solid 1px #bfcbd9',marginTop:'20px'}}>
+                                        <Resume item={item} mode={'view'} path={this.state.info.pic_path}/>
+                                        </Layout.Row>
                                     )
                                 }
                             ) }
-                            </Layout.Row>
+
                         </Layout.Col>
                     </Layout.Row>) }
 
@@ -103,7 +101,7 @@ export default class EventsDetail extends Component{
                 {/*}*/}
 
                 {this.state.schedules.length>0 &&
-                <Layout.Row>
+                <Layout.Row style={{marginBottom:'60px'}}>
                     <Layout.Col span={12} offset={4}>
                     <h2>{this.state.schedules.length} Schedule(s) added:</h2>
                         <Tabs type="card" value="tab0">

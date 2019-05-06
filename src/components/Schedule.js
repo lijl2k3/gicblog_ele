@@ -45,7 +45,7 @@ export default class Schedule extends Component{
 
 
     render() {
-        const {value1} = this.state
+        let value1=this.state.value1;
         switch (this.props.mode) {
             case 'edit':
                 return (
