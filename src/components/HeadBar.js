@@ -38,10 +38,10 @@ export default class HeadBar extends Component{
 
                 <div className="loginout">
                     {this.state.login==0 &&
-                    <Link to='/login' style={{textDecoration: 'none',color:'#bfcbd9' }}>Login</Link>
+                    <Link to='/login' style={{textDecoration: 'none',color:'#003366' }}>Login</Link>
                     }
                     {this.state.login==1 &&
-                    <Link to='/logout' style={{textDecoration: 'none',color:'#bfcbd9' }}>Logout</Link>
+                    <Link to='/logout' style={{textDecoration: 'none',color:'#003366' }}>Logout</Link>
                     }
                 </div>
 

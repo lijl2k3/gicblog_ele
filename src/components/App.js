@@ -25,6 +25,7 @@ import {Menu, Button}  from 'element-react';
 import ProtectedRoute from './ProtectedRoute';
 import 'element-theme-default';
 import HeadBar from './HeadBar';
+import ('../theme/index.css');
 require('../App.css');
 export default class App extends Component {
 

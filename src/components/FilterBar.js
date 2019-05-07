@@ -77,12 +77,14 @@ export default class FilterBar extends Component{
                     </Layout.Col>
                     {this.props.log_in == true &&
                     <Layout.Col span="2">
-                        <div style={{marginTop:"-8px"}}>
-                            <span style={{fontSize:"12px",color:"#48576a",lineHeight:"12px"}}>Only Read My Doc  </span>
+                        <div style={{marginTop:"12px"}}>
                             <Switch
                                 value={this.props.editState==1?true:false}
-                                onColor="#13ce66"
-                                offColor="#ff4949"
+                                width={110}
+                                onColor="#003366"
+                                offColor="#eef1f6"
+                                onText=" MY DOCS "
+                                offText='ALL DOCS '
                                 //onChange={value=>{this.props.handleSwitch.bind(this,value)}}
                                 onChange={this.props.handleSwitch.bind(this)}
                             >
