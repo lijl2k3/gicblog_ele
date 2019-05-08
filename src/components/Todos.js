@@ -57,8 +57,8 @@ export default class Todos extends Component{
                     <Layout.Col span={6}>
 
                         <div style={{float:'right',marginRight:'20px'}}>
-                            <Button type="text" onClick={this.props.cancelTodo} style={{color:'red'}}><i className="el-icon-close el-icon-right"></i></Button>
-                            <Button type="text" onClick={this.props.submitTodo} style={{color:'green'}}><i className="el-icon-check el-icon-right"></i></Button>
+                            <Button type="text" onClick={this.props.cancelTodo} style={{color:'red'}}><i className="el-icon-close"></i></Button>
+                            <Button type="text" onClick={this.props.submitTodo} style={{color:'green'}}><i className="el-icon-check"></i></Button>
                         </div>
 
                         {/*{this.props.editMark == undefined &&*/}
@@ -77,7 +77,7 @@ export default class Todos extends Component{
                             end="21:30"
                             onChange={this.handleStartUpdate.bind(this)}
                             value={this.state.startDate}
-                            placeholder="选择时间"
+                            placeholder="Choose Time"
                         />
                     </Layout.Col>
 
@@ -89,14 +89,14 @@ export default class Todos extends Component{
                             onChange={this.handleEndUpdate.bind(this)}
                             value={this.state.endDate}
                             minTime={this.state.startDate}
-                            placeholder="选择时间"
+                            placeholder="Choose Time"
                         />
                     </Layout.Col>
                     <Layout.Col span={10}>
                         <Input placeholder="Plan" onChange={this.handlePlan} value={this.state.plan} />
                     </Layout.Col>
                     <Layout.Col span={6}>
-                        <Button type="text" onClick={this.props.submitTodo}><i className="el-icon-plus el-icon-right"></i></Button>
+                        <Button type="text" onClick={this.props.submitTodo}><i className="el-icon-plus"></i></Button>
                     </Layout.Col>
                 </Layout.Row>
             );
@@ -119,16 +119,16 @@ export default class Todos extends Component{
                 return (
                     <Layout.Row gutter={"60"} style={{
                         marginTop: '20px',
+                        padding:'12px',
                         marginLeft: '0',
                         marginRight: '0',
                         borderBottom: 'solid 1px #bfcbd9',
-                        backgroundColor: '#f4e9c1'
                     }} >
                         <Layout.Col
-                            span={6}>{e_startDate.getHours() + ':' + startMin + ' - ' + e_endDate.getHours() + ':' + endMin}</Layout.Col>
+                            span={8}>{e_startDate.getHours() + ':' + startMin + ' - ' + e_endDate.getHours() + ':' + endMin}</Layout.Col>
                         <Layout.Col span={8}>{item.plan}</Layout.Col>
                         {this.props.editTodo &&
-                        <Layout.Col span={2} offset={3}>
+                        <Layout.Col span={2} offset={2}>
                             <Button type="success" icon="edit" size={'mini'}
                                     onClick={this.props.editTodo}>Edit</Button>
                         </Layout.Col>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Button,Layout, Alert, Message, Input,DatePicker,Badge} from 'element-react';
+import {Button,Layout, Alert, MessageBox, Input,DatePicker,Badge} from 'element-react';
 import Todos from "./Todos";
 export default class Schedule extends Component{
 
@@ -17,6 +17,10 @@ export default class Schedule extends Component{
     }
 
     submitTodo(){
+        if(this.refs.todo.state.plan==''){
+            MessageBox.alert('Please input your plan!');
+            return;
+        }
         this.state.todos.push(this.refs.todo.state);
         this.setState({todos:this.state.todos,TodoAdd:false});
     }
@@ -97,18 +101,18 @@ export default class Schedule extends Component{
                                     </Layout.Col>
                                 </Layout.Row>
 
-                                {this.state.todos.length > 0 &&
+                                {/*{this.state.todos.length > 0 &&*/}
 
-                                (<Layout.Row>
-                                    <Layout.Col span={8} offset={16}>
-                                        <Button type='success' onClick={this.props.submitSchedule}
-                                                style={{'float': 'right', margin: '10px'}}>Save All Plans</Button>
-                                        <Button type='danger' onClick={this.props.cancelSchedule}
-                                                style={{'float': 'right', margin: '10px'}}>Cancel</Button>
-                                    </Layout.Col>
-                                </Layout.Row>)
+                                {/*(<Layout.Row>*/}
+                                    {/*<Layout.Col span={8} offset={16}>*/}
+                                        {/*<Button type='success' onClick={this.props.submitSchedule}*/}
+                                                {/*style={{'float': 'right', margin: '10px'}}>Save All Plans</Button>*/}
+                                        {/*<Button type='danger' onClick={this.props.cancelSchedule}*/}
+                                                {/*style={{'float': 'right', margin: '10px'}}>Cancel</Button>*/}
+                                    {/*</Layout.Col>*/}
+                                {/*</Layout.Row>)*/}
 
-                                }
+                                {/*}*/}
                             </div>
                         </div>
                         }
@@ -122,9 +126,9 @@ export default class Schedule extends Component{
                 return (
                     <Layout.Row style={{
                         borderBottom: 'solid 1px #bfcbd9',
-                        backgroundColor: '#f4e9c1', padding: '10px',
+                        // backgroundColor: '#fff', padding: '10px',
                     }}>
-                        <Layout.Col span={12}>
+                        <Layout.Col span={9}>
                             <Badge value={item.todos.length}>
                                 <Button size="large">{new Date(item.date).toLocaleDateString()}</Button>
                             </Badge>

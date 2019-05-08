@@ -4672,6 +4672,9 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 50%; }
+.el-dialog.center{
+    position:absolute;
+}
   .el-dialog.is-fullscreen {
     width: 100%;
     margin-top: 0;
@@ -11707,7 +11710,7 @@
     transition: .2s;
     height: 20px;
     display: inline-block;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 500;
     cursor: pointer;
     vertical-align: middle;
@@ -11720,7 +11723,7 @@
       margin-left: 6px; }
     .el-switch__label * {
       line-height: 1;
-      font-size: 14px;
+      font-size: 1px;
       display: inline-block; }
   .el-switch__input {
     position: absolute;
@@ -22954,7 +22957,7 @@
   .el-date-picker.has-time .el-picker-panel__body-wrapper {
     position: relative; }
   .el-date-picker .el-picker-panel__content {
-    width: 292px; }
+    width: 200px; }
   .el-date-picker table {
     table-layout: fixed;
     width: 100%; }

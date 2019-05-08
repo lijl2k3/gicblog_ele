@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form,Input,Button,Layout, DatePicker,MessageBox, Badge,Icon} from 'element-react';
+import {Form,Input,Button,Layout, DatePicker,MessageBox, Badge,Icon,Dialog} from 'element-react';
 import Resume from "./Resume";
 import Schedule from "./Schedule";
 import FilesAdd from "./FilesAdd";
@@ -102,6 +102,7 @@ export default class NewsAdd extends Component{
         this.refs.resume.state.intro='';
         this.refs.resume.state.name='';
         this.state.resumeAdd=false;
+        this.refs.resume.state.imageUrl='';
         console.log(this.refs.resume.state);
     }
 
@@ -117,6 +118,7 @@ export default class NewsAdd extends Component{
         let schedule={date:this.refs.schedule.state.value1, todos: this.refs.schedule.state.todos};
         this.state.schedules.push(schedule);
         this.setState({schedules:this.state.schedules,scheduleAdd:false});
+        this.refs.schedule.setState({todos:[],value1:null});
 
 
     }
@@ -125,6 +127,7 @@ export default class NewsAdd extends Component{
         let schedule={date:this.refs.editschedule.state.value1, todos: this.refs.editschedule.state.todos};
         this.state.schedules[key]=schedule;
         this.setState({schedules:this.state.schedules,scheduleMark:null, scheduleAdd:false});
+        console.log(this.state.schedules[key].todos.length);
     }
 
 
@@ -152,7 +155,14 @@ export default class NewsAdd extends Component{
     addResume(){
 
         this.setState({resumeAdd:true});
-        this.setState({scheduleAdd:false});
+    }
+
+    cancelIntro(){
+        this.setState({resumeAdd:false});
+        this.refs.resume.state.pic={};
+        this.refs.resume.state.intro='';
+        this.refs.resume.state.name='';
+        this.refs.resume.state.imageUrl='';
     }
 
     addSchedule(){
@@ -183,6 +193,7 @@ export default class NewsAdd extends Component{
         this.state.schedules[key]=this.state.oldSchedule;
         this.setState({schedules:this.state.schedules});
         this.setState({oldSchedule:{}});
+        this.refs.schedule.setState({todos:[],value1:null});
     }
     deleteSchedule=(key)=>{
         this.setState({
@@ -196,7 +207,9 @@ export default class NewsAdd extends Component{
         const {e_startDate, e_endDate}=this.state.form;
         return (
             <div>
+
                 <HeadBar/>
+
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
                         <h2> Add Event </h2>
@@ -238,18 +251,53 @@ export default class NewsAdd extends Component{
                 <Form.Item>
                     <Button type="primary"  onClick={this.addResume.bind(this)}>Add Attendee <i className="el-icon-upload el-icon-right"></i></Button>
                     <Button type="primary"  onClick={this.addSchedule.bind(this)}>Add Schedule <i className="el-icon-upload el-icon-right"></i></Button>
-                </Form.Item>
-                <Form.Item>
-                    {this.state.resumeAdd == true &&
-                    <Resume ref='resume' submitIntro={this.submitIntro} mode={'add'}/>
-                    }
-                </Form.Item>
-                <Form.Item>
-                    {this.state.scheduleAdd == true &&
-                    <Schedule ref='schedule'  mode='edit' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>
-                    }
-                </Form.Item>
 
+                </Form.Item>
+                {/*<Form.Item>*/}
+                    {/*{this.state.resumeAdd == true &&*/}
+                    {/*<Resume ref='resume' submitIntro={this.submitIntro} mode={'add'}/>*/}
+
+                    {/*}*/}
+                {/*</Form.Item>*/}
+                {/*<Form.Item>*/}
+                    {/*{this.state.scheduleAdd == true &&*/}
+                    {/*<Schedule ref='schedule'  mode='edit' submitSchedule={this.submitSchedule} cancelSchedule={this.cancelSchedule.bind(this)}/>*/}
+                    {/*}*/}
+                {/*</Form.Item>*/}
+
+                <Dialog
+                    className={'center'}
+                    title="Add Attendee"
+                    size="full"
+                    visible={ this.state.resumeAdd }
+                    onCancel={ this.cancelIntro.bind(this) }
+                    lockScroll={ false }
+                >
+                    <Dialog.Body>
+                        <Resume ref='resume' submitIntro={this.submitIntro} mode={'add'}/>
+                    </Dialog.Body>
+                    <Dialog.Footer className="dialog-footer">
+                        <Button onClick= {this.cancelIntro.bind(this)} >Cancel</Button>
+                        <Button type="primary" onClick={ this.submitIntro }>Submit</Button>
+                    </Dialog.Footer>
+                </Dialog>
+
+                <Dialog
+                    className={'center'}
+                    title="Add Schedule"
+                    size="full"
+                    visible={ this.state.scheduleAdd }
+                    onCancel={ this.cancelSchedule.bind(this) }
+                    lockScroll={ false }
+                >
+                    <Dialog.Body>
+                        <Schedule ref='schedule' submitIntro={this.submitSchedule} mode={'edit'}/>
+                    </Dialog.Body>
+                    <Dialog.Footer className="dialog-footer">
+                        <Button onClick= {this.cancelSchedule.bind(this)} >Cancel</Button>
+                        <Button type="primary" onClick={ this.submitSchedule }>Submit</Button>
+                    </Dialog.Footer>
+                </Dialog>
 
                 {(this.state.resumes.length > 0) &&
                 <Form.Item>
@@ -277,17 +325,36 @@ export default class NewsAdd extends Component{
                                 //<Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                     <div>
                                     {this.state.scheduleMark !== key &&
-                                    <Layout.Col span={8}key={key} style={{marginTop:'16px',padding:'10px'}}>
+                                    <Layout.Col span={12}key={key} style={{marginTop:'16px',padding:'10px'}}>
                                         <Schedule mode={'view'} editSchedule={this.editSchedule.bind(this,key)} deleteSchedule={this.deleteSchedule.bind(this,key)} item={item}/>
                                     </Layout.Col>
                                     }
-                                    {this.state.scheduleMark == key &&
-                                    <Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>
-                                        <Layout.Row>
-                                            <Schedule ref='editschedule' mode='edit'submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this,key)} item={item}/>
-                                        </Layout.Row>
-                                    </Layout.Col>
-                                    }
+                                    {/*{this.state.scheduleMark == key &&*/}
+                                    {/*<Layout.Col span={24}key={key} style={{marginTop:'16px',padding:'10px'}}>*/}
+                                        {/*<Layout.Row>*/}
+                                            {/*<Schedule ref='editschedule' mode='edit'submitSchedule={this.modifySchedule.bind(this,key)} cancelSchedule={this.cancelSchedule.bind(this,key)} item={item}/>*/}
+                                        {/*</Layout.Row>*/}
+                                    {/*</Layout.Col>*/}
+                                    {/*}*/}
+
+                                        <Dialog
+                                            className={'center'}
+                                            title="Edit Schedule"
+                                            size="full"
+                                            visible={ this.state.scheduleMark==key }
+                                            onCancel={ this.cancelSchedule.bind(this,key) }
+                                            lockScroll={ false }
+                                        >
+                                            <Dialog.Body>
+                                                <Layout.Row>
+                                                    <Schedule ref='editschedule' mode='edit' item={item}/>
+                                                </Layout.Row>
+                                            </Dialog.Body>
+                                            <Dialog.Footer className="dialog-footer">
+                                                <Button onClick= {this.cancelSchedule.bind(this,key)} >Cancel</Button>
+                                                <Button type="primary" onClick={ this.modifySchedule.bind(this,key) }>Submit</Button>
+                                            </Dialog.Footer>
+                                        </Dialog>
                                     </div>
 
                                 )
@@ -297,11 +364,16 @@ export default class NewsAdd extends Component{
                 }
 
 
-
             </Form>
+
                     </Layout.Col>
                 </Layout.Row>
+
+
+
             </div>
+
+
         )
 
     }

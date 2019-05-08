@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Upload,Button,Layout, Alert, Message, Input, Popover} from 'element-react';
+import {Upload,Button,Layout, Alert, MessageBox, Input, Popover} from 'element-react';
 export default class ResumeAdd extends Component{
     constructor(props) {
         super(props);
@@ -26,15 +26,18 @@ export default class ResumeAdd extends Component{
     }
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
+        const isGIF = file.type === 'image/gif';
+        const isPNG = file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-            Message('Avator must be jpeg format!');
+        if (!isJPG && !isGIF && !isPNG) {
+            MessageBox.alert('Avator must be jpeg/png/gif format!');
+            return false;
         }
         if (!isLt2M) {
-            Message('Avator size must not larger than 2MB!');
+            MessageBox('Avator size must not larger than 2MB!');
+            return false;
         }
-        return isJPG && isLt2M;
     }
 
     handleClose=key=>{
@@ -83,7 +86,6 @@ export default class ResumeAdd extends Component{
                     <div className='box'>
                         <Layout.Row>
                             <Layout.Col span="24">
-                                <h2> Add Attendee Here </h2>
                                 <Upload
                                     className="avatar-uploader"
                                     action="http://gicapi.io/index.php/index/index/uploadPics"
@@ -92,9 +94,9 @@ export default class ResumeAdd extends Component{
                                     onSuccess={(res, file) => this.handleAvatarScucess(res, file)}
                                     beforeUpload={file => this.beforeAvatarUpload(file)}
                                 >
-                                    <span> <b>Avatar:&nbsp;&nbsp;&nbsp;</b></span>{imageUrl ?
-                                    <img src={imageUrl} className="avatar"/> :
-                                    <i className="el-icon-plus avatar-uploader-icon"></i>}
+                                    {imageUrl ?
+                                    <img src={imageUrl} className="avatar"/> :<img src={"http://localhost/gicapi/public/static/attendees/avatar_upload.jpg"} className="avatar"/>}
+
                                 </Upload>
                                 <h3>Name</h3>
                                 <Input placeholder="Attendee's name" onChange={this.handleName} value={this.state.name} />
@@ -104,10 +106,8 @@ export default class ResumeAdd extends Component{
                                     autosize={{ minRows: 2, maxRows: 4}}
                                     placeholder="Introduction"
                                     onChange={this.handleIntro}
+                                    value={this.state.intro}
                                 />
-                                <Button style={{float: 'right', marginTop: '20px'}}
-                                        onChange={this.handleIntro.bind(this)} size="small" type="success"
-                                        onClick={this.props.submitIntro}>Upload</Button>
                             </Layout.Col>
                         </Layout.Row>
 
