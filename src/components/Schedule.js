@@ -155,9 +155,9 @@ export default class Schedule extends Component{
             case 'paneview':{
                 let item=this.props.item;
                 return(
-                    <Layout.Col span={24} style={{marginTop:'16px',padding:'10px'}}>
+                    <Layout.Col span={24} style={{marginTop:'16px',padding:'10px',fontSize:'10.5pt'}}>
                         <Layout.Row>
-                            <h3>{new Date(item.date).toLocaleDateString()}</h3>
+                            <h4>{new Date(item.date).toLocaleDateString()}</h4>
                             {item.todos.length > 0 &&
                                 item.todos.map((todo,key)=>{
                                    return(

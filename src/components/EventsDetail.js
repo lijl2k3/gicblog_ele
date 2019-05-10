@@ -70,7 +70,7 @@ export default class EventsDetail extends Component{
                         <h2> {item.title} </h2>
                     </Layout.Col>
                     <Layout.Col span="12" offset="4">
-                       <div dangerouslySetInnerHTML={ {__html:draftjs(contents)} }></div>
+                       <div dangerouslySetInnerHTML={ {__html:draftjs(contents)}}></div>
                 </Layout.Col>
                     <Layout.Col span="12" offset="4">
                         <span><b>Time: </b>{startDate.getFullYear() + '/' + parseInt(startDate.getMonth() + 1) + '/' + startDate.getDate()} - {endDate.getFullYear() + '/' + parseInt(endDate.getMonth() + 1) + '/' + endDate.getDate()}</span>

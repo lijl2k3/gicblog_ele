@@ -51,8 +51,9 @@ export default class NewsDetail extends Component{
                         <h2> {item.title} </h2>
                     </Layout.Col>
                     <Layout.Col span="12" offset="4">
-                       <div dangerouslySetInnerHTML={ {__html:draftjs(contents)} }></div>
-                </Layout.Col>
+                        <div dangerouslySetInnerHTML={ {__html:draftjs(contents)} } style={{fontSize:'10.5pt'}}></div>
+                    </Layout.Col>
+
                 </Layout.Row>
                 {/*{item.pics!=undefined & (item.pics.length>0)&&*/}
                 {/*(<div>aa</div>)*/}

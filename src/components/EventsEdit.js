@@ -3,11 +3,11 @@ import {Form,Input,Button,Layout, DatePicker,MessageBox, Badge,Icon,Dialog} from
 import Resume from "./Resume";
 import Schedule from "./Schedule";
 import FilesAdd from "./FilesAdd";
-import { EditorState ,convertToRaw} from 'draft-js';
+import {EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
-import {_addEvents} from "../api/eventsApi";
+import {_addEvents, _details} from "../api/eventsApi";
 import qs from 'qs';
 import HeadBar from "./HeadBar";
 
@@ -17,12 +17,7 @@ export default class NewsAdd extends Component{
         this.submitIntro=this.submitIntro.bind(this);
         this.submitSchedule=this.submitSchedule.bind(this);
         this.state = {
-            form: {
-                title: '',
-                contents: '',
-                e_startDate:null,
-                e_endDate:null
-            },
+            info:'',
             resumes:[],
             schedules:[],
             ResumeAdd:false,
@@ -41,12 +36,41 @@ export default class NewsAdd extends Component{
             //console.log(res.data);
         }
     }
-    componentWillMount(){
-        // let author=JSON.parse(localStorage.getItem('login')).name;
-        // this.state.form.author=author;
-        // this.setState(this.state);
 
+    async details(data){
+        const res=await _details(data);
+
+        if(res.data.code==200){
+
+            let info=res.data.data;
+            let attendees,schedules;
+            if(info.attendees){
+                attendees=JSON.parse(info.attendees);
+                this.setState({resumes:attendees});
+            }
+            if(info.schedules){
+                schedules=JSON.parse(info.schedules);
+                this.setState({schedules});
+            }
+            // if(info.schedules){
+            //     this.state.schedules=JSON.parse(info.schedules);
+            //     console.log(this.state.schedules);
+            // }
+            this.setState({info});
+            let editContents=EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.data.contents)));
+            this.refs.myeditor.setState({editorState:editContents});
+        }
     }
+    componentWillMount(){
+        let id=this.props.history.location.state.id;
+        let data={id:id,my:1};
+        this.details(data);
+    }
+
+    handleBack=()=>{
+        this.props.history.push({pathname:'/events', state:{psize:this.props.history.location.state.psize,cur:this.props.history.location.state.cur}});
+    }
+
     onSubmit(e) {
         e.preventDefault();
         let {title, e_startDate,e_endDate}=this.state.form;
@@ -127,7 +151,7 @@ export default class NewsAdd extends Component{
         let schedule={date:this.refs.editschedule.state.value1, todos: this.refs.editschedule.state.todos};
         this.state.schedules[key]=schedule;
         this.setState({schedules:this.state.schedules,scheduleMark:null, scheduleAdd:false});
-        console.log(this.state.schedules[key].todos.length);
+
     }
 
 
@@ -160,13 +184,20 @@ export default class NewsAdd extends Component{
     editResume(key){
         let {attendeeMark}=this.state;
         this.setState({attendeeMark:key});
-        this.setState({oldAttendee:JSON.parse(JSON.stringify(this.state.resumes[key]))});
+
     }
 
     modifyResume=key=>{
-        let resume=this.refs.editattendee.state;
-        this.state.resumes[key]=resume;
+        let num='editattendee'+key;
+        let resume=this.refs[num].state;
+        let oldPic=this.state.resumes[key].pic;
+        if(oldPic!==resume.pic){
+            this.state.resumes[key]=resume;
+            this.state.resumes[key].changed=true;
+        }
+
         this.setState({resumes:this.state.resumes,attendeeMark:null});
+        console.log(this.state.resumes[key]);
     }
 
     cancelAttendee=(key)=>{
@@ -221,7 +252,13 @@ export default class NewsAdd extends Component{
     }
 
     render(){
-        const {e_startDate, e_endDate}=this.state.form;
+        let item=this.state.info;
+        let contents=(item.contents);
+        let e_startDate=new Date(this.state.info.start_date*1000);
+        let e_endDate=new Date(this.state.info.end_date*1000);
+        if(contents!==undefined){
+            contents=JSON.parse(contents);
+        }
         return (
             <div>
 
@@ -229,8 +266,8 @@ export default class NewsAdd extends Component{
 
                 <Layout.Row>
                     <Layout.Col span="12" offset="4">
-                        <h2> Add Event </h2>
-            <Form model={this.state.form} ref='form' labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
+                        <h2> Edit Event </h2>
+            <Form model={this.state.info} ref='form' labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
                 <Form.Item>
                 <div style={{'float':'right'}}>
                     <Button type="success" nativeType="submit">Save</Button>
@@ -238,7 +275,7 @@ export default class NewsAdd extends Component{
                 </div>
                 </Form.Item>
                 <Form.Item label="Title">
-                    <Input value={this.state.form.title}  placeholder='Add Title Here' onChange={this.onChange.bind(this, 'title')}></Input>
+                    <Input value={this.state.info.title}  placeholder='Add Title Here' onChange={this.onChange.bind(this, 'title')}></Input>
                 </Form.Item>
                 <Form.Item>
                     <MyEditor ref='myeditor'/>
@@ -328,7 +365,7 @@ export default class NewsAdd extends Component{
                             {this.state.resumes.map((item,key)=>{
                                 return(
                                     <div>
-                                <Resume ref='resumeview'item={item} mode={'viewpop'} handleClose={this.handleClose.bind(this,key)} editResume={this.editResume.bind(this,key)} key={key}/>
+                                <Resume ref='resumeview'item={item} mode={'viewpop'} handleClose={this.handleClose.bind(this,key)} editResume={this.editResume.bind(this,key)} key={key} path={this.state.info.pic_path}/>
 
                                         <Dialog
                                             className={'center'}
@@ -340,7 +377,7 @@ export default class NewsAdd extends Component{
                                             >
                                             <Dialog.Body>
                                                 <Layout.Row>
-                                                    <Resume ref='editattendee' mode='edit' item={item}/>
+                                                    <Resume ref={'editattendee'+key} mode='edit' item={item} path={this.state.info.pic_path}/>
                                                 </Layout.Row>
                                             </Dialog.Body>
                                             <Dialog.Footer className="dialog-footer">

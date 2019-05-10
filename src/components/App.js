@@ -16,6 +16,7 @@ import NewsAdd from './NewsAdd';
 import Events from './Events';
 import EventsAdd from './EventsAdd';
 import EventsDetail from './EventsDetail';
+import EventsEdit from './EventsEdit';
 import GalleryAdd from './GalleryAdd';
 import NewsDetail from './NewsDetail';
 import NewsEdit from './NewsEdit';
@@ -50,6 +51,7 @@ export default class App extends Component {
                             <Route path='/news/detail/:id' component={NewsDetail}/>
                             <Route path='/events/detail/:id' component={EventsDetail}/>
                             <ProtectedRoute path='/news/edit' component={NewsEdit}/>
+                            <ProtectedRoute path='/events/edit' component={EventsEdit}/>
                         </div>
                     </div>
                 </div>
