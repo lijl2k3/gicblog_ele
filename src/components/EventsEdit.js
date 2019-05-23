@@ -7,17 +7,17 @@ import {EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import { Editor} from 'react-draft-wysiwyg';
 import draftjs from 'draftjs-to-html';
 import MyEditor from './MyEditor';
-import {_addEvents, _details} from "../api/eventsApi";
+import {_editEvents, _details} from "../api/eventsApi";
 import qs from 'qs';
 import HeadBar from "./HeadBar";
 
-export default class NewsAdd extends Component{
+export default class EventsEdit extends Component{
     constructor(props) {
         super(props);
         this.submitIntro=this.submitIntro.bind(this);
         this.submitSchedule=this.submitSchedule.bind(this);
         this.state = {
-            info:'',
+            info:{},
             resumes:[],
             schedules:[],
             ResumeAdd:false,
@@ -27,8 +27,8 @@ export default class NewsAdd extends Component{
     }
 
 
-    async addEvents(data){
-        const res=await _addEvents(qs.stringify(data));
+    async editEvents(data){
+        const res=await _editEvents(qs.stringify(data));
         if(res.data.code==200){
             //sessionStorage.setItem('login','true');
             MessageBox.alert('Succeed in saving records!')
@@ -44,6 +44,8 @@ export default class NewsAdd extends Component{
 
             let info=res.data.data;
             let attendees,schedules;
+            info.e_startDate=new Date(info.start_date * 1000);
+            info.e_endDate=new Date(info.end_date * 1000);
             if(info.attendees){
                 attendees=JSON.parse(info.attendees);
                 this.setState({resumes:attendees});
@@ -73,9 +75,9 @@ export default class NewsAdd extends Component{
 
     onSubmit(e) {
         e.preventDefault();
-        let {title, e_startDate,e_endDate}=this.state.form;
+        let {title, e_startDate,e_endDate}=this.state.info;
         if(e_startDate==null){
-            MessageBox.alert('Please select stat date for the event!');
+            MessageBox.alert('Please select start date for the event!');
             return;
         }
         if(e_endDate==null){
@@ -96,8 +98,9 @@ export default class NewsAdd extends Component{
         let resumes=this.state.resumes;
         let schedules=this.state.schedules;
         //let files=this.refs.fileslib?this.refs.fileslib.state.fileList:[];
-        let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate.toLocaleDateString(),'end_date':e_endDate.toLocaleDateString(),'attendees':resumes, 'schedules':schedules};
-        this.addEvents(data);
+        let data={'title':title, 'contents': JSON.stringify(contents),'start_date':e_startDate.toLocaleDateString(),'end_date':e_endDate.toLocaleDateString(),'attendees':resumes, 'schedules':schedules,'id':this.state.info.id};
+        console.log(data);
+        this.editEvents(data);
         // let newsStr=localStorage.getItem('news');
         // let news=newsStr?JSON.parse(newsStr):[];
         // news.push({id:Date.now(),title, contents,author,pics, date:Date.now()});
@@ -117,7 +120,7 @@ export default class NewsAdd extends Component{
     }
 
     submitIntro(){
-        let resume={pic:this.refs.resume.state.pic, intro:this.refs.resume.state.intro, name:this.refs.resume.state.name};
+        let resume={pic:this.refs.resume.state.pic, intro:this.refs.resume.state.intro, name:this.refs.resume.state.name, replaced:true,};
         //this.setState({...resumes,resume});
         this.state.resumes.push(resume);
         this.setState({resumes:this.state.resumes});
@@ -184,25 +187,26 @@ export default class NewsAdd extends Component{
     editResume(key){
         let {attendeeMark}=this.state;
         this.setState({attendeeMark:key});
-
+        this.setState({oldAttendee:JSON.parse(JSON.stringify(this.state.resumes[key]))});
     }
 
     modifyResume=key=>{
         let num='editattendee'+key;
         let resume=this.refs[num].state;
-        let oldPic=this.state.resumes[key].pic;
-        if(oldPic!==resume.pic){
-            this.state.resumes[key]=resume;
-            this.state.resumes[key].changed=true;
+        if(!resume.replaced && resume.pic!==this.state.oldAttendee.pic){
+            Object.assign(resume, {replaced:true, old:this.state.oldAttendee.pic});
         }
+        this.state.resumes[key]=resume;
+        this.setState({resumes:this.state.resumes,oldAttendee:null,attendeeMark:null});
 
-        this.setState({resumes:this.state.resumes,attendeeMark:null});
-        console.log(this.state.resumes[key]);
     }
 
     cancelAttendee=(key)=>{
         this.setState({attendeeMark:null});
-        //this.refs.editattendee.setState({imageUrl:'', pic:{}, intro:'', name:'',});
+        this.state.resumes[key]=this.state.oldAttendee;
+        this.setState({resumes:this.state.resumes});
+        this.refs['editattendee'+key].setState({pic:this.state.oldAttendee.pic, imageUrl:null});
+        this.setState({oldAttendee:null});
     }
 
     cancelIntro(){

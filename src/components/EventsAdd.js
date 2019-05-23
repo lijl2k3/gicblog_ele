@@ -11,7 +11,7 @@ import {_addEvents} from "../api/eventsApi";
 import qs from 'qs';
 import HeadBar from "./HeadBar";
 
-export default class NewsAdd extends Component{
+export default class EventsAdd extends Component{
     constructor(props) {
         super(props);
         this.submitIntro=this.submitIntro.bind(this);

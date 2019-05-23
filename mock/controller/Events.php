@@ -67,6 +67,109 @@ class Events extends Common
         }
     }
 
+//    public function editevents(){
+//        $this->datas=$this->params;
+//        $id=$this->datas['id'];
+//        dump($id);
+//    }
+
+
+
+
+    public function editevents(){
+        $this->datas=$this->params;
+        $id=$this->datas['id'];
+        unset($this->datas['id']);
+        $map['id']=$id;
+        $map['deleted']=0;
+        $event = db('events')->where($map)->find();
+        if (!empty($event)) {
+            if(!$this->checkUser($event)){
+                $this->returnMsg(400,'User Identification Error','You have no right to edit this event!');
+            }
+        }else{
+            $this->returnMsg(400,'fail to edit event','record not found!');
+        }
+        $this->datas['update_time']=time();
+        $this->datas['start_date']=strtotime($this->datas['start_date']);
+        $this->datas['end_date']=strtotime($this->datas['end_date']);
+        $pic_path='';
+        if($event['pic_path']!=null) {
+            $path = $event['pic_path'];
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'attendees' . DS . $path;
+        }else{
+            $path=Session::get('uid') . '_' .$event['create_time'];
+            $pic_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'attendees' . DS . $path;
+            mkdir($pic_path);
+            mkdir($pic_path.DS.'thumb');
+        }
+        $this->datas['pic_path']=$path;
+        //test
+
+//        if(!empty($this->datas['attendees'])){
+//            $attendees=$this->datas['attendees'];
+//            foreach($attendees as $one){
+//                $arr[]=$one['pic'];
+//            }
+//            //$this->returnMsg(200, 'test in add events', 'test in add events',$arr);
+//        }
+
+        if(!empty($this->datas['attendees'])) {
+            $attendees = ($this->datas['attendees']);
+            foreach ($attendees as $one) {
+                if(isset($one['replaced']) && $one['replaced']==true) {
+                    if(!empty($one['old'])){
+                        $oldone=$pic_path.DS.$one['old']['name'];
+                        $oldonethumb= $pic_path . DS . 'thumb' . DS . $one['old']['name'];
+                        if(file_exists($oldone)){
+                            unlink($oldone);
+                            unlink($oldonethumb);
+                        }
+                    }
+                    if(!empty($one['pic'])){
+                        $newpic = $pic_path . DS . $one['pic']['name'];
+                        $newthumb = $pic_path . DS . 'thumb' . DS . $one['pic']['name'];
+                        if (!file_exists($newpic)) {
+                            $oldpic = ROOT_PATH . 'public' . DS . 'uploads' . DS . $one['pic']['path'] . DS . $one['pic']['name'];
+                            $oldpic = iconv('UTF-8', 'GB2312', $oldpic);
+                            $oldthumb = ROOT_PATH . 'public' . DS . 'thumbnail' . DS . $one['pic']['path'] . DS . $one['pic']['name'];
+                            $oldthumb = iconv('UTF-8', 'GB2312', $oldthumb);
+
+                            rename($oldpic, iconv("utf-8", "gb2312", $newpic));
+                            rename($oldthumb, iconv("utf-8", "gb2312", $newthumb));
+                        }
+                    }
+                    unset($one['replaced']);
+                    unset($one['old']);
+                }
+            }
+            $this->datas['attendees']=json_encode($this->datas['attendees']);
+        }
+//        if(!empty($this->datas['files'])) {
+//            $files = ($this->datas['files']);
+//            $path=Session::get('uid') . '_' . $this->datas['create_time'];
+//            $file_path = ROOT_PATH . 'public' . DS . 'static' . DS . 'files' . DS . $path;
+//            mkdir($file_path);
+//            mkdir($file_path.DS.'thumb');
+//            $this->datas['file_path']=$path;
+//            unset($this->datas['files']);
+//            foreach ($files as $file) {
+//                $oldfile = ROOT_PATH . 'public' . DS . 'uploads' . DS . $file['path'] . DS . $file['name'];
+//                $oldfile=iconv('UTF-8','GB2312',$oldfile);
+//                $newfile=$file_path.DS.$file['name'];
+//                rename($oldfile,iconv("utf-8", "gb2312", $newfile));
+//            }
+//        }
+        if(!empty($this->datas['schedules']) && count($this->datas['schedules'])>0){
+            $this->datas['schedules']=json_encode($this->datas['schedules']);
+        }
+        if($id=db('events')->where('id', $id)->update($this->datas)){
+            $this->returnMsg(200, 'succeed in add events', 'succeed in edit events',['id'=>$id,'contents'=>$this->datas['contents']]);
+        }else{
+            $this->returnMsg(400, 'fail to edit events', 'fail to update to database');
+        }
+    }
+
     public function details($my=0){
         $this->datas=$this->params;
 

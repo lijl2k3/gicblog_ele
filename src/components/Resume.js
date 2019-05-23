@@ -78,6 +78,7 @@ export default class ResumeAdd extends Component{
         return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
     }
 
+
     render() {
         const { imageUrl } = this.state;
         switch(this.props.mode) {
